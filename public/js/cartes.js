@@ -1,7 +1,7 @@
 
 // treffle-clubs / pique-spades / coeur-hearts / carreau-diamonts 
 
-const cards = [
+export const cards = [
     // piques noirs
     {
         image: '../images/cartes/card_spades_02.png',
@@ -338,8 +338,7 @@ const cards = [
 let cardsInGame = cards;
 let cardsUsed = [];
 
-
-function getCard(tab) {
+export function getCard(tab) {
     // selectioner une carte
     const randIndex = Math.floor(Math.random() * (tab.length));
     const cardSelected = tab[randIndex];
@@ -353,10 +352,3 @@ function getCard(tab) {
 
     return cardSelected;
 }
-
-
-getCard(cardsInGame);
-
-console.log('original :    ' + cards.length)
-console.log('in game :    ' + cardsInGame.length)
-console.log('trash :   ' + cardsUsed.length)

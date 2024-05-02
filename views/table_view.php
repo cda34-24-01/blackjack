@@ -6,8 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Blackjack</title>
-    <link rel="stylesheet" href="../public/css/table.css">
-    <script src="../public/js/table.js"></script>
+    <link rel="stylesheet" href="<?= URL . "public/css/table.css" ?> ">
 
 </head>
 <body>
@@ -18,27 +17,28 @@
     <div class="table">
         <div class="ia_card_section">
             <div class="ia_card">
-                <div class="ia_card_1 card "></div>
-                <div class="ia_card_2 card "></div>
+                <div class="ia_card_1 cards_container "></div>
+                <div class="ia_card_2 cards_container "></div>
             </div>
             <div class="ia_number"><p>8</p></div>
         </div>
         <div class="user_card_section">
           
             <div class="player_card">
-                <div class="player_card_1 card"></div>
-                <div class="player_card_2 card"></div>
-                <div class="player_card_3 card"></div>
-                <div class="player_card_4 card "></div>
-                <div class="player_card_5 card "></div>
+                <div id="cardsPlayer1" class="player_card_1 cards_container">
+                </div>
+                <!-- <div id="cardsPlayer2" class="player_card_2 card"></div>
+                <div id="cardsPlayer3" class="player_card_3 card"></div>
+                <div id="cardsPlayer4" class="player_card_4 card "></div>
+                <div id="cardsPlayer5" class="player_card_5 card "></div> -->
             </div>
             <div class="player_number">
                 <p>21</p>
             </div>
         <div class="btn_section">
-            <button>Action1</button>
-            <button>action2</button>
-            <button>action3</button>
+            <button id="act1" >Action1</button>
+            <button id="act2" >action2</button>
+            <button id="act3" >action3</button>
         </div>
         </div>
 
@@ -49,6 +49,7 @@
         </div>
     </div>
 
-
+    <script type="module" src="<?= URL . "public/js/general.js" ?>"></script>
+    
 </body>
 </html>
