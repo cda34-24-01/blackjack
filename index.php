@@ -32,8 +32,22 @@ try {
             case 'accueil':
                 $globalController->displayHomePage();
                 break;
-            
 
+            case 'table':
+                $globalController->displayTable();
+                break;
+
+            case 'account':
+                $globalController->displayAccount();
+                break;
+
+            case 'inscription':
+                $globalController->displayInscription();
+                break;
+            
+            case 'connexion':
+                $globalController->displayConnexion();
+                break;
 
             default:
                 $globalController->displayHomePage();

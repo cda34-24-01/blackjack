@@ -10,8 +10,7 @@ class UserController
         $this->userManager = new UserManager;
     }
 
-    /* public function addWin($id) {
+    public function addWin($id) {
         $this->userManager->addWin($id);
-
-    } */
+    }
 }
