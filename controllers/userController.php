@@ -1,5 +1,5 @@
 <?php
-require_once "models/managers/UserManager.php";
+require_once "models/manager/UserManager.php";
 
 class UserController
 {
@@ -10,8 +10,7 @@ class UserController
         $this->userManager = new UserManager;
     }
 
-    /* public function addWin($id) {
+    public function addWin($id) {
         $this->userManager->addWin($id);
-
-    } */
+    }
 }

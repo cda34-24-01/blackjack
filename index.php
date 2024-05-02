@@ -6,12 +6,14 @@ error_reporting(E_ALL); */
 
 
 require_once "controllers/UserController.php";
+require_once "controllers/GlobalController.php";
 
 session_start();
 
 define("URL", str_replace("index.php", "", (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[PHP_SELF]"));
 
 $userController = new UserController;
+$globalController = new GlobalController;
 
 
 try {
@@ -27,11 +29,25 @@ try {
         //switch de GET page pour savoir vers quelle page renvoyer l'utilisateur
 
         switch ($url[0]) {
-            case 'home':
+            case 'accueil':
                 $globalController->displayHomePage();
                 break;
-            
 
+            case 'table':
+                $globalController->displayTable();
+                break;
+
+            case 'account':
+                $globalController->displayAccount();
+                break;
+
+            case 'inscription':
+                $globalController->displayInscription();
+                break;
+            
+            case 'connexion':
+                $globalController->displayConnexion();
+                break;
 
             default:
                 $globalController->displayHomePage();

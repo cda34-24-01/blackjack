@@ -1,6 +1,6 @@
 <?php
-session_start();
-$_SESSION['previous_url'] = $_SERVER['REQUEST_URI'];
+/* session_start();
+$_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
 ?>
 
 <!DOCTYPE html>
