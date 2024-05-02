@@ -20,11 +20,20 @@ body {
   flex-direction: column;
   justify-content: space-around;
 }
-
-.card {
+.cards_container {
+  background-color: aqua;
   width: 40px;
   height: 80px;
-  background-color: aliceblue;
+}
+
+.card {
+  border: solid 2px black;
+  width: 100%;
+  height: 100%;
+  /* background-color: blueviolet; */
+  position: relative;
+  bottom: 10px;
+  background-position: center center;
 }
 
 .ia_card_section {
