@@ -19,7 +19,7 @@ $globalController = new GlobalController;
 try {
 
     if (isset($_GET['page'])) {
-        $url = explode("/", filter_var($_GET['page']), FILTER_SANITIZE_URL);
+        $url = explode("/blackjack/", filter_var($_GET['page']), FILTER_SANITIZE_URL);
     }
 
     // si GET page est vide on redirige vers l'accueil
@@ -29,6 +29,7 @@ try {
         //switch de GET page pour savoir vers quelle page renvoyer l'utilisateur
 
         switch ($url[0]) {
+            
             case 'accueil':
                 $globalController->displayHomePage();
                 break;
@@ -44,9 +45,17 @@ try {
             case 'inscription':
                 $globalController->displayInscription();
                 break;
+
+            case 'inscription_validation':
+                $userController->inscription_validation();
+                break;
             
             case 'connexion':
                 $globalController->displayConnexion();
+                break;
+
+            case "connexion_validation":
+                $userController->connexion_validation();
                 break;
 
             default:

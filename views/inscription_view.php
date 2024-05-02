@@ -32,7 +32,7 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
 </head>
 
 <body class="">
-<?php
+    <?php
     $rdm = rand(1, 2);
     if ($rdm == 1) { ?>
         <div class="backdrop" style="background-image: url('<?= URL . "public/images/blackjack1.png" ?>');"></div>
@@ -87,15 +87,46 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
                             </div>
                         </div>
                     </div>
-                    <div class="button-group">
-                        <button type="submit" class="btn btnDarkCyan w-100">Valider</button>
-                    </div>
+
+                    <button type="submit" class="btn bgRouge w-100">Valider</button>
+
                 </form>
-                <span class="blanc">Déjà inscrit ? <a href="<?= URL . "connexion" ?>" class="yellow">Se connecter</a></span>
+                <span class="blanc">Déjà inscrit ? <a href="<?= URL . "/connexion" ?>" class="yellow">Se connecter</a></span>
             </div>
         </div>
     </div>
-    <script src="<?= URL . "public/js/inscription.js" ?>"></script>
+    <script src="<?= URL . "public/js/general.js" ?>"></script>
+    <?php
+    function displayAlert($alertClass, $alertMessage)
+    {
+        echo "<style>";
+        echo ".alert { top: 10%; left: 50%; transform: translateX(-50%); z-index: 999; width: fit-content; opacity: 1; transition: opacity 0.5s ease-in-out; }";
+        echo "@media (max-width: 767px) { .alert { width: 80%; text-align: center; } }";
+        echo "</style>";
+        echo "<div class='alert $alertClass' role='alert'>$alertMessage</div>";
+        echo "<script>setTimeout(function(){ 
+            var alert = document.querySelector('.alert');
+            alert.style.opacity = '0';
+            setTimeout(function() {
+                alert.style.display = 'none';
+            }, 500);
+        }, 8000);
+    </script>";
+    }
+
+    if ($_SESSION["success"]) {
+        displayAlert("alert-success", $_SESSION["success"]);
+        unset($_SESSION["success"]);
+    }
+
+    if ($_SESSION["error"]) {
+        displayAlert("alert-danger", $_SESSION["error"]);
+        unset($_SESSION["error"]);
+    }
+    ?>
+
 </body>
+
+
 
 </html>

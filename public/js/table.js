@@ -21,3 +21,4 @@ const playerUi = document.querySelector(".player_ui");
 const uiMoney = document.querySelector(".ui_money");
 const uiWins = document.querySelector(".ui_wins");
 const uiLoses = document.querySelector(".ui_loses");
+
