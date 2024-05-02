@@ -15,6 +15,30 @@ class UserController
         $this->userManager->addWin($id);
     }
 
+    public function addLose($id)
+    {
+        $this->userManager->addLose($id);
+    }
+
+    public function addMoney($id, $money)
+    {
+        $this->userManager->addMoney($id, $money);
+    }
+
+    public function getWins($id)
+    {
+        return $this->userManager->getWins($id);
+    }
+
+    public function getLoses($id)
+    {
+        return $this->userManager->getLoses($id);
+    }
+
+    public function getMoney($id)
+    {
+        return $this->userManager->getMoney($id);
+    }
 
     public function inscription_validation()
     {

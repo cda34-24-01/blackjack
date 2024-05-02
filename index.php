@@ -58,6 +58,9 @@ try {
                 $userController->connexion_validation();
                 break;
 
+            case "compte":
+                $globalController->displayCompte();
+
             default:
                 $globalController->displayHomePage();
                 exit();
