@@ -38,7 +38,7 @@ body {
   height: 600px;
 }
 .cartes_back {
-  transform: translateX(-50%);
+  transform: translateX(-70%);
 }
 
 .ia_card {

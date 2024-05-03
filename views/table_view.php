@@ -26,8 +26,8 @@ require_once "models/manager/UserManager.php";
         <!-- croupier section -->
         <section class="cards_section">
             <div class="player_desk">
+                <img class="cartes_back" src="../public/images/cartes/card_back.png"/>
                 <div id="cardsCroupier" class="cards_container">
-                    <img class="cartes_back" src="../public/images/cartes/card_back.png"/>
                     <!-- Cards rendues avec le script general.js -->
                 </div>
             </div>

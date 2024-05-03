@@ -22,7 +22,7 @@ const croupier = new player('Croupier', 1000, cardsInGame, croupierDeck);
 while (croupier.score < 17) {
     handleHitCart(croupier);
     crupierScore.textContent = croupier.score;
-}
+};
 
 
 // variable pour stocker les donnes du User
@@ -43,10 +43,18 @@ getUserInfos(userId.value)
 
 function newRound () {
     messageModal.classList.add('hidden');
+    // handle player reset
     player1.reset();
     playerScore.textContent = player1.score;
     handleHitCart(player1);
     handleHitCart(player1);
+    // handle croupier reset
+    croupier.reset();
+    crupierScore.textContent = croupier.score;
+    while (croupier.score < 17) {
+        handleHitCart(croupier);
+        crupierScore.textContent = croupier.score;
+    };
 };
 
 function handleHitCart(player) {
@@ -71,11 +79,6 @@ function checkScore(player) {
             newRound();
         });
     };
-}
-
-window.onload = () => {
-    
-
 }
 
 // Bouton pour demander une carte (Hit)
