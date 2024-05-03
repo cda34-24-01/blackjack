@@ -23,6 +23,7 @@
             <div class="ia_number"><p>8</p></div>
         </div>
 
+        <!-- On pourrais mettre plusieurs players avec js si on veut -->
         <div class="user_card_section">
             <div class="player_desk">
                 <div id="cardsPlayer1" class="cards_container">
@@ -30,19 +31,24 @@
                 </div>
             </div>
             <div class="player_number">
-                <p></p>
+                <p id="player_score"></p>
             </div>
             <div class="btn_section">
-                <button id="hit" >Action1</button>
                 <button id="act2" >action2</button>
+                <button id="hit" >Hit</button>
                 <button id="act3" >action3</button>
             </div>
         </div>
-
         <div class="player_ui">
-            <div class="ui_money">Money : 1000</div>
-            <div class="ui_wins">Wins = 10</div>
-            <div class="ui_loses">Loses = 5</div>
+            <p >Money 💵: <span class="ui_money" ></span></p>
+            <p class="ui_wins">Wins = 10</p>
+            <p class="ui_loses">Loses = 5</p>
+        </div>
+        <!-- message modal (win ou lose) -->
+        <div class="hidden message_modal">
+            <p>  <!-- Message rendu depuis general.js -->  </p> 
+            <button id="btn_continue_game">Continuer</button>
+            <button id="btn_exit_game">Sortir</button>
         </div>
     </div>
 
