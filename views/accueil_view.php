@@ -38,19 +38,19 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
 <div class="button_main">
 <?php if (isset($_SESSION['id'])) { ?>
             <div >
-                <button id="play_btn" class="log_btn"><a href="table" >PLAY</a></button>
+                <button id="play_btn" class="log_btn">PLAY<a href="table" ></a></button>
             </div>
         <?php } else { ?>
             <div >
-                <button class="log_btn"><a href="connexion" >CONNEXION</a></button>
+                <button class="log_btn">CONNEXION<a href="connexion" ></a></button>
             </div>
             <div class="">
-                <button class="log_btn"><a href="inscription" >INSCRIPTION</a></button>
+                <button class="log_btn">INSCRIPTION<a href="inscription" ></a></button>
             </div>
         <?php } ?>
         <?php if (isset($_SESSION['id'])) { ?>
             <div class="">
-                <button class="log_btn"><a href="deconnexion" >DECONNEXION</a></button>
+                <button class="log_btn">DECONNEXION<a href="deconnexion" ></a></button>
             </div>
         <?php } ?>
 </div>

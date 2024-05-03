@@ -42,16 +42,17 @@ button {
   padding: 6px 10px;
   border-radius: 5px;
   border-color: #a59615;
+  color: #a59615;
 }
 
 button:hover {
   border-color: #0d0d0c;
+  color: #0d0d0c;
 }
 .log_btn:hover {
   background-color: #a59615;
 }
 a:hover {
-  color: #0d0d0c;
 }
 
 a {
