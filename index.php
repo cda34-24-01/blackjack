@@ -18,7 +18,7 @@ $globalController = new GlobalController;
 try {
 
     if (isset($_GET['page'])) {
-        $url = explode("/blackjack/", filter_var($_GET['page']), FILTER_SANITIZE_URL);
+        $url = explode("/", filter_var($_GET['page']), FILTER_SANITIZE_URL);
     }
 
     // si GET page est vide on redirige vers l'accueil
@@ -64,7 +64,11 @@ try {
             case "deconnexion":
                 $userController->deconnexionUser();
                 break;
-                
+
+            case "removeMoney":
+                $userController->removeMoney($url[1]);
+                break;
+            
 
             default:
                 $globalController->displayHomePage();
