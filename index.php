@@ -61,9 +61,14 @@ try {
                 $globalController->displayCompte();
                 break;
 
-            case "deconnexion":
-                $userController->deconnexionUser();
-                break;
+                case "deconnexion":
+                    $userController->deconnexionUser();
+                    break;
+
+
+                    case "aide":
+                        require "views/aide_view.php";
+                        break;
                 
 
             default:
