@@ -33,7 +33,7 @@
                 <p></p>
             </div>
             <div class="btn_section">
-                <button id="act1" >Action1</button>
+                <button id="hit" >Action1</button>
                 <button id="act2" >action2</button>
                 <button id="act3" >action3</button>
             </div>

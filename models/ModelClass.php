@@ -5,7 +5,7 @@ abstract class Model
 
     private function setDB()
     {
-        $this->pdo = new PDO("mysql:host=localhost;dbname=blackjack;port=3306;charset=utf8", 'maganor', 'azerty');
+        $this->pdo = new PDO("mysql:host=localhost;dbname=blackjack;port=3306;charset=utf8", 'admin', 'admin');
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     }
 

@@ -35,7 +35,7 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
         ?>
     </footer>
 
-    <script src="<?= URL . "public/js/general.js" ?>"></script>
+    <script type="module" src="<?= URL . "public/js/general.js" ?>"></script>
 </body>
 
 </html>
