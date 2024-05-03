@@ -25,6 +25,9 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
         ?>
     </header>
     <main>
+        <div class="compte">
+            <p class="noir"><?= $user['pseudo'] ?></p>
+        </div>
         <?php var_dump($user); ?>
         <?php die; ?>
     </main>

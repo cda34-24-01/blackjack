@@ -40,9 +40,8 @@ class GlobalController
 
     public function displayCompte()
     {
-        $this->userManager->getUserById($_SESSION['id']);
+        $user = $this->userManager->getUserById($_SESSION['id']);
         require "views/compte_view.php";
     }
     
-
 }

@@ -8,7 +8,6 @@ error_reporting(E_ALL); */
 require_once "controllers/UserController.php";
 require_once "controllers/GlobalController.php";
 
-session_start();
 
 define("URL", str_replace("index.php", "", (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[PHP_SELF]"));
 
