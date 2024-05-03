@@ -11,44 +11,45 @@ const messageModal = document.querySelector('.message_modal');
 const btnContinuePlaying = document.getElementById('btn_continue_game'); 
 const btnExitGame = document.getElementById('btn_exit_game');
 
+    
+// Initialiser le jeu de cartes
+let cardsInGame = cards;
+
+// variable pour stocker les donnes du User
+let player1;
+
 // le input hidden avec la valeur id du utilisateur
 const userId = document.getElementById('user_id'); 
 getUserInfos(userId.value)
-    .then(userInfos => {
-        console.log(userInfos);
+.then(userInfos => {
+        // Instancier l'objet joueur avec les donnes de la BDD
+        player1 = new player(userInfos.pseudo, userInfos.money, cardsInGame, deck )
     })
     .catch(error => {
         console.error(error);
     });
 
-
-// Initialiser le jeu de cartes
-let cardsInGame = cards;
-// Instancier l'objet joueur (le nom et argante doivent venir depuis la session)
-let userArgent = 1000;
-const player1Name = 'facu';
-
-let player1 = new player(player1Name, userArgent, cardsInGame, deck );
-
-
-/* function newGame () {
+function resetGame () {
     cardsInGame = cards;
     deck.innerHTML = '';
-    player1.argent = 
+    messageModal.classList.add('hidden');
+    player1.reset();
+    player1.cardsInGame = cardsInGame;
+    playerScore.textContent = player1.score;
 }
- */
+
 // verifier le score et afficher le message s'il faut
 function checkScore(player) {
     if (player.score === 21) {
         messageModal.firstElementChild.textContent = 'You Win!';
-        messageModal.classList.toggle('hidden');
+        messageModal.classList.remove('hidden');
     } else if (player.score > 21) {
-        messageModal.firstElementChild.textContent = 'You Lose!';
-        messageModal.classList.toggle('hidden');
+        messageModal.firstElementChild.textContent = `${player.name} You Lose!`;
+        messageModal.classList.remove('hidden');
     };
     if (!messageModal.classList.contains('hidden')) {
         btnContinuePlaying.addEventListener('click', () => {
-            console.log(deck.innerHTML)
+            resetGame();
         });
     };
 }
@@ -57,9 +58,8 @@ function checkScore(player) {
 btnTakeCart.addEventListener('click', (e) => {
     e.preventDefault();
     player1.demanderUneCarte();
-    cardsInGame = player1.RefreshCardsInGame();
+    cardsInGame = player1.refreshCardsInGame();
     playerScore.textContent = player1.score;
-    player1.argent += 100;
     playerMoney.textContent = player1.argent;
     checkScore(player1);
 });

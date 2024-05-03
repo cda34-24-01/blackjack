@@ -9,7 +9,10 @@ export class player {
         this.playerCards = [];
         this.score = 0;
     };
-
+    reset () {
+        this.score = 0;
+        this.playerCards = [];
+    }
     calcScore () {
         return this.playerCards.reduce((sum, value) => {
             if (sum + value > 21 && value === 11) {
@@ -19,9 +22,10 @@ export class player {
             }
         }, 0);
     };
-    RefreshCardsInGame () {
+    refreshCardsInGame () {
         return this.cardsInGame;
     };
+
 
     demanderUneCarte () {
         const { cardSelected, currentsCarts } = getCard(this.cardsInGame);

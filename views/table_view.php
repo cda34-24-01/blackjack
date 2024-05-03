@@ -41,7 +41,7 @@ require_once "models/manager/UserManager.php";
                 </div>
             </div>
             <div class="player_number">
-                <p id="player_score"></p>
+                <p id="player_score">0</p>
             </div>
             <div class="btn_section">
                 <button id="act2" >action2</button>
