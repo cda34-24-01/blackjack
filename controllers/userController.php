@@ -171,4 +171,13 @@ class UserController
         unset($_SESSION['id']);
         header("Location: /accueil");
     }
+
+    public function removeMoney($money)
+    {
+        $id = $_SESSION['id'];
+        /* $money = $_SESSION['money']; */
+        /* var_dump($money);
+        die; */
+        $this->userManager->removeMoney($id, $money);
+    }
 }

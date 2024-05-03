@@ -1,26 +1,34 @@
+<?php 
+require_once "models/manager/UserManager.php";
+?>
+
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Blackjack</title>
+    <link rel="stylesheet" href="<?= URL . "public/css/general.css" ?>">
     <link rel="stylesheet" href="<?= URL . "public/css/table.css" ?>">
 
 </head>
+
 <body>
-<header>
-    <div class="logo">BlackJack</div>
-    <div class="user">Marceau</div>
-</header>
+    <header>
+        <div class="logo">BlackJack</div>
+        <div class="user"><?= $user['pseudo'] ?></div>
+    </header>
     <div class="table">
         <div class="ia_card_section">
             <div class="ia_card">
                 <!-- <div class="ia_card_1 cards_container "></div> -->
                 <!-- <div class="ia_card_2 cards_container "></div> -->
             </div>
-            <div class="ia_number"><p>8</p></div>
+            <div class="ia_number">
+                <p>8</p>
+            </div>
         </div>
 
         <!-- On pourrais mettre plusieurs players avec js si on veut -->
@@ -34,6 +42,7 @@
                 <p id="player_score"></p>
             </div>
             <div class="btn_section">
+<<<<<<< HEAD
                 <button id="act2" >action2</button>
                 <button id="hit" >Hit</button>
                 <button id="act3" >action3</button>
@@ -51,7 +60,7 @@
             <button id="btn_exit_game">Sortir</button>
         </div>
     </div>
-
-<script type="module" src="<?= URL . "public/js/general.js" ?> "></script>
+    <script type="module" src="<?= URL . "public/js/general.js" ?> "></script>
 </body>
+
 </html>
