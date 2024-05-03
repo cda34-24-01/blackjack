@@ -40,7 +40,7 @@ class UserManager extends Model
 
     public function getUserById($id) 
     {
-        $sql = "SELECT * FROM utilisateurs WHERE id = :id";
+        $sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = :id";
         $req = $this->getDB()->prepare($sql);
         $req->execute([
             "id" => $id
@@ -62,7 +62,17 @@ class UserManager extends Model
 
     public function addMoney($id, $money)
     {
-        $sql = "UPDATE utilisateurs SET money = money + :money WHERE id = :id";
+        $sql = "UPDATE utilisateurs SET money = money + :money WHERE id_utilisateur = :id";
+        $req = $this->getDB()->prepare($sql);
+        $req->execute([
+            "id" => $id,
+            "money" => $money
+        ]);
+    }
+
+    public function removeMoney($id, $money)
+    {
+        $sql = "UPDATE utilisateurs SET money = money - :money WHERE id_utilisateur = :id";
         $req = $this->getDB()->prepare($sql);
         $req->execute([
             "id" => $id,
@@ -72,7 +82,7 @@ class UserManager extends Model
 
     public function addWin($id)
     {
-        $sql = "UPDATE utilisateurs SET wins = wins + 1 WHERE id = :id";
+        $sql = "UPDATE utilisateurs SET wins = wins + 1 WHERE id_utilisateur = :id";
         $req = $this->getDB()->prepare($sql);
         $req->execute([
             "id" => $id
@@ -81,7 +91,7 @@ class UserManager extends Model
 
     public function addLose($id)
     {
-        $sql = "UPDATE utilisateurs SET loses = loses + 1 WHERE id = :id";
+        $sql = "UPDATE utilisateurs SET loses = loses + 1 WHERE id_utilisateur = :id";
         $req = $this->getDB()->prepare($sql);
         $req->execute([
             "id" => $id
@@ -90,7 +100,7 @@ class UserManager extends Model
 
     public function getMoney($id)
     {
-        $sql = "SELECT money FROM utilisateurs WHERE id = :id";
+        $sql = "SELECT money FROM utilisateurs WHERE id_utilisateur = :id";
         $req = $this->getDB()->prepare($sql);
         $req->execute([
             "id" => $id
@@ -101,7 +111,7 @@ class UserManager extends Model
 
     public function getWins($id)
     {
-        $sql = "SELECT wins FROM utilisateurs WHERE id = :id";
+        $sql = "SELECT wins FROM utilisateurs WHERE id_utilisateur = :id";
         $req = $this->getDB()->prepare($sql);
         $req->execute([
             "id" => $id
@@ -112,7 +122,7 @@ class UserManager extends Model
 
     public function getLoses($id)
     {
-        $sql = "SELECT loses FROM utilisateurs WHERE id = :id";
+        $sql = "SELECT loses FROM utilisateurs WHERE id_utilisateur = :id";
         $req = $this->getDB()->prepare($sql);
         $req->execute([
             "id" => $id

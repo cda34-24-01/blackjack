@@ -1,4 +1,5 @@
 <?php
+session_start();
 require_once "models/manager/UserManager.php";
 
 class UserController
@@ -136,6 +137,7 @@ class UserController
             if (!empty($user)) {
 
                 if (password_verify($_POST['password'], $user['mdp'])) {
+                    $this->sessionUser($user);
                     header("Location: /accueil");
                 } else {
                     throw new Exception("Mot de passe incorrect");
@@ -157,5 +159,16 @@ class UserController
     public function redirectInscription()
     {
         /* header("Location: /inscription"); */
+    }
+
+    public function sessionUser($user)
+    {
+        $_SESSION['id'] = $user['id_utilisateur'];
+    }
+
+    public function deconnexionUser()
+    {
+        unset($_SESSION['id']);
+        header("Location: /accueil");
     }
 }

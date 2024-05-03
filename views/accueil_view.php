@@ -47,6 +47,25 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
             <p>Le joueur perd s'il dépasse 21 points. Il perd également s'il obtient un total de points inférieur à celui du croupier sans dépasser 21. Si le croupier obtient un total de points supérieur à 21, tous les joueurs encore en jeu gagnent. Si le joueur et le croupier ont le même total de points, il y a égalité et le joueur récupère sa mise.</p>
         </div>
 
+
+        <?php if (isset($_SESSION['id'])) { ?>
+            <div class="btn">
+                <button class="fs-5 bgVertFonce"><a href="table" class="blanc">PLAY</a></button>
+            </div>
+        <?php } else { ?>
+            <div class="btn">
+                <button class="fs-5 bgVertFonce"><a href="connexion" class="blanc">CONNEXION</a></button>
+            </div>
+            <div class="btn">
+                <button class="fs-5 bgJaune"><a href="inscription" class="noir">INSCRIPTION</a></button>
+            </div>
+        <?php } ?>
+        <?php if (isset($_SESSION['id'])) { ?>
+            <div class="btn">
+                <button class="fs-5 bgRouge"><a href="deconnexion" class="blanc">DECONNEXION</a></button>
+            </div>
+        <?php } ?>
+
     </main>
 
     <footer>

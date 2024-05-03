@@ -20,6 +20,7 @@ class GlobalController
 
     public function displayTable() 
     {
+        $user = $this->userManager->getUserById($_SESSION['id']);
         require "views/table_view.php";
     }
 
@@ -40,9 +41,7 @@ class GlobalController
 
     public function displayCompte()
     {
-        $this->userManager->getUserById($_SESSION['id']);
         require "views/compte_view.php";
     }
     
-
 }
