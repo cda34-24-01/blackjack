@@ -1,5 +1,6 @@
 import { cards } from "./cartes.js";
 import { player } from "./player.js";
+import { getUserInfos } from "./getuser.js";
 
 // Prendre les elements HTML
 const btnTakeCart = document.getElementById('hit');
@@ -8,7 +9,18 @@ const playerScore = document.getElementById('player_score');
 const playerMoney = document.querySelector('.ui_money');
 const messageModal = document.querySelector('.message_modal');
 const btnContinuePlaying = document.getElementById('btn_continue_game'); 
-const btnExitGame = document.getElementById('btn_exit_game'); 
+const btnExitGame = document.getElementById('btn_exit_game');
+
+// le input hidden avec la valeur id du utilisateur
+const userId = document.getElementById('user_id'); 
+getUserInfos(userId.value)
+    .then(userInfos => {
+        console.log(userInfos);
+    })
+    .catch(error => {
+        console.error(error);
+    });
+
 
 // Initialiser le jeu de cartes
 let cardsInGame = cards;

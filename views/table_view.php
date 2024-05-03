@@ -12,6 +12,7 @@ require_once "models/manager/UserManager.php";
     <title>Blackjack</title>
     <link rel="stylesheet" href="<?= URL . "public/css/general.css" ?>">
     <link rel="stylesheet" href="<?= URL . "public/css/table.css" ?>">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 </head>
 
@@ -20,6 +21,7 @@ require_once "models/manager/UserManager.php";
         <div class="logo">BlackJack</div>
         <div class="user"><?= $user['pseudo'] ?></div>
     </header>
+    <input id="user_id" type="hidden" value=<?= $_SESSION['id'] ?>>
     <div class="table">
         <div class="ia_card_section">
             <div class="ia_card">
@@ -42,7 +44,6 @@ require_once "models/manager/UserManager.php";
                 <p id="player_score"></p>
             </div>
             <div class="btn_section">
-<<<<<<< HEAD
                 <button id="act2" >action2</button>
                 <button id="hit" >Hit</button>
                 <button id="act3" >action3</button>
@@ -61,6 +62,7 @@ require_once "models/manager/UserManager.php";
         </div>
     </div>
     <script type="module" src="<?= URL . "public/js/general.js" ?> "></script>
+    <script type="module" src="<?= URL . "public/js/getuser.js" ?> "></script>
 </body>
 
 </html>
