@@ -168,85 +168,85 @@ export const cards = [
         color: 'rouge',
         categorie: 'careau'
     },
-    // Treffle
+    // Treffles
     {
-        image: '../images/cartes/card_clubs_02.png',
+        image: '../images/cartes/card_treffle_02.png',
         value: 2,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: '../images/cartes/card_clubs_03.png',
+        image: '../images/cartes/card_treffle_03.png',
         value: 3,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: '../images/cartes/card_clubs_04.png',
+        image: '../images/cartes/card_treffle_04.png',
         value: 4,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: '../images/cartes/card_clubs_05.png',
+        image: '../images/cartes/card_treffle_05.png',
         value: 5,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: '../images/cartes/card_clubs_06.png',
+        image: '../images/cartes/card_treffle_06.png',
         value: 6,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: '../images/cartes/card_clubs_07.png',
+        image: '../images/cartes/card_treffle_07.png',
         value: 7,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: '../images/cartes/card_clubs_08.png',
+        image: '../images/cartes/card_treffle_08.png',
         value: 8,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: '../images/cartes/card_clubs_09.png',
+        image: '../images/cartes/card_treffle_09.png',
         value: 9,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: '../images/cartes/card_clubs_10.png',
+        image: '../images/cartes/card_treffle_10.png',
         value: 10,
         color: 'noir',
         categorie: 'treffle'
     },
     {
         // J
-        image: '../images/cartes/card_clubs_J.png',
+        image: '../images/cartes/card_treffle_J.png',
         value: 10,
         color: 'noir',
         categorie: 'treffle'
     },
     {
         // Q
-        image: '../images/cartes/card_clubs_Q.png',
+        image: '../images/cartes/card_treffle_Q.png',
         value: 10,
         color: 'noir',
         categorie: 'treffle'
     },
     {
         // K
-        image: '../images/cartes/card_clubs_K.png',
+        image: '../images/cartes/card_treffle_K.png',
         value: 10,
         color: 'noir',
         categorie: 'treffle'
     },
     {
         // A
-        image: '../images/cartes/card_clubs_A.png',
+        image: '../images/cartes/card_treffle_A.png',
         value: [1, 10],
         color: 'noir',
         categorie: 'treffle'

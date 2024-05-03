@@ -13,33 +13,30 @@
 <header>
     <div class="logo">BlackJack</div>
     <div class="user">Marceau</div>
-    </header>
+</header>
     <div class="table">
         <div class="ia_card_section">
             <div class="ia_card">
-                <div class="ia_card_1 cards_container "></div>
-                <div class="ia_card_2 cards_container "></div>
+                <!-- <div class="ia_card_1 cards_container "></div> -->
+                <!-- <div class="ia_card_2 cards_container "></div> -->
             </div>
             <div class="ia_number"><p>8</p></div>
         </div>
+
         <div class="user_card_section">
-          
-            <div class="player_card">
-                <div id="cardsPlayer1" class="player_card_1 cards_container">
+            <div class="player_desk">
+                <div id="cardsPlayer1" class="cards_container">
+                    <!-- Cards rendues avec le script general.js -->
                 </div>
-                <!-- <div id="cardsPlayer2" class="player_card_2 card"></div>
-                <div id="cardsPlayer3" class="player_card_3 card"></div>
-                <div id="cardsPlayer4" class="player_card_4 card "></div>
-                <div id="cardsPlayer5" class="player_card_5 card "></div> -->
             </div>
             <div class="player_number">
-                <p>21</p>
+                <p></p>
             </div>
-        <div class="btn_section">
-            <button id="act1" >Action1</button>
-            <button id="act2" >action2</button>
-            <button id="act3" >action3</button>
-        </div>
+            <div class="btn_section">
+                <button id="act1" >Action1</button>
+                <button id="act2" >action2</button>
+                <button id="act3" >action3</button>
+            </div>
         </div>
 
         <div class="player_ui">
@@ -49,11 +46,6 @@
         </div>
     </div>
 
-<<<<<<< HEAD
 <script src="<?= URL . "public/js/general.js" ?>"></script>
-=======
-    <script type="module" src="<?= URL . "public/js/general.js" ?>"></script>
-    
->>>>>>> a4433d750b2aff67e0c5dbdcbed6c53979913cdb
 </body>
 </html>

@@ -1,5 +1,10 @@
 // import { getCard, cards } from "./cartes";
 
+window.onload = () => {
+    demanderUneCarte();
+    demanderUneCarte();
+};
+
 const btnTakeCart = document.getElementById('act1');
 const cardsPlayer = document.getElementById('cardsPlayer1');
 let cardsPlayer1 = [];
@@ -83,7 +88,7 @@ const cards = [
     {
         // A
         image: './public/images/cartes/card_spades_A.png',
-        value: [1, 10],
+        value: 11,
         color: 'noir',
         categorie: 'pique'
     },
@@ -166,90 +171,90 @@ const cards = [
     {
         // A
         image: './public/images/cartes/card_diamonds_A.png',
-        value: [1, 10],
+        value: 11,
         color: 'rouge',
         categorie: 'careau'
     },
     // Treffle
     {
-        image: './public/images/cartes/card_clubs_02.png',
+        image: './public/images/cartes/card_treffle_02.png',
         value: 2,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: './public/images/cartes/card_clubs_03.png',
+        image: './public/images/cartes/card_treffle_03.png',
         value: 3,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: './public/images/cartes/card_clubs_04.png',
+        image: './public/images/cartes/card_treffle_04.png',
         value: 4,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: './public/images/cartes/card_clubs_05.png',
+        image: './public/images/cartes/card_treffle_05.png',
         value: 5,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: './public/images/cartes/card_clubs_06.png',
+        image: './public/images/cartes/card_treffle_06.png',
         value: 6,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: './public/images/cartes/card_clubs_07.png',
+        image: './public/images/cartes/card_treffle_07.png',
         value: 7,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: './public/images/cartes/card_clubs_08.png',
+        image: './public/images/cartes/card_treffle_08.png',
         value: 8,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: './public/images/cartes/card_clubs_09.png',
+        image: './public/images/cartes/card_treffle_09.png',
         value: 9,
         color: 'noir',
         categorie: 'treffle'
     },
     {
-        image: './public/images/cartes/card_clubs_10.png',
+        image: './public/images/cartes/card_treffle_10.png',
         value: 10,
         color: 'noir',
         categorie: 'treffle'
     },
     {
         // J
-        image: './public/images/cartes/card_clubs_J.png',
+        image: './public/images/cartes/card_treffle_J.png',
         value: 10,
         color: 'noir',
         categorie: 'treffle'
     },
     {
         // Q
-        image: './public/images/cartes/card_clubs_Q.png',
+        image: './public/images/cartes/card_treffle_Q.png',
         value: 10,
         color: 'noir',
         categorie: 'treffle'
     },
     {
         // K
-        image: './public/images/cartes/card_clubs_K.png',
+        image: './public/images/cartes/card_treffle_K.png',
         value: 10,
         color: 'noir',
         categorie: 'treffle'
     },
     {
         // A
-        image: './public/images/cartes/card_clubs_A.png',
-        value: [1, 10],
+        image: './public/images/cartes/card_treffle_A.png',
+        value: 11,
         color: 'noir',
         categorie: 'treffle'
     },
@@ -332,7 +337,7 @@ const cards = [
     {
         // A
         image: './public/images/cartes/card_hearts_A.png',
-        value: [1, 10],
+        value: 11,
         color: 'rouge',
         categorie: 'coeur'
     },
@@ -348,26 +353,28 @@ function getCard(tab) {
     // Ajouter la carte au tableau de cartes utilises
     cardsUsed.push(cards[randIndex]);
 
-    // actualiser le tableau de cartes qui restent
+    // actualiser le tableau de cartes restant
     const tempCards = cardsInGame.filter(card => card.image != cardSelected.image);
     cardsInGame = tempCards;
 
     return cardSelected;
 }
-
+// ajouter qui demande la carte
 function demanderUneCarte () {
     const newCarte = getCard(cardsInGame);
-    console.log(newCarte)
     if (newCarte) {
-        const htmlCarte = document.createElement('div');
-        htmlCarte.classList.add('card');
+        const htmlCarte = document.createElement('img');
         cardsPlayer.appendChild(htmlCarte);
-        htmlCarte.style.backgroundImage =  `url(${newCarte.image})`
-        cardsPlayer1.push(newCarte)
+        htmlCarte.classList.add('card');
+        htmlCarte.style.left = `${cardsPlayer1.length * 50}%`;
+        htmlCarte.src = newCarte.image;
+        cardsPlayer1.push(newCarte.value);
     }
+
+    console.log(cardsPlayer1.reduce((sum, value)=> sum + value, 0));
 }
 
 btnTakeCart.addEventListener('click', (e) => {
-    e.preventDefault()
+    e.preventDefault();
     demanderUneCarte();
 })
