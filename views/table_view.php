@@ -23,24 +23,26 @@ require_once "models/manager/UserManager.php";
     </header>
     <input id="user_id" type="hidden" value=<?= $_SESSION['id'] ?>>
     <div class="table">
-        <div class="ia_card_section">
-            <div class="ia_card">
-                <!-- <div class="ia_card_1 cards_container "></div> -->
-                <!-- <div class="ia_card_2 cards_container "></div> -->
+        <!-- croupier section -->
+        <section class="cards_section">
+            <div class="player_desk">
+                <div id="cardsCroupier" class="cards_container">
+                    <img class="cartes_back" src="../public/images/cartes/card_back.png"/>
+                    <!-- Cards rendues avec le script general.js -->
+                </div>
             </div>
-            <div class="ia_number">
-                <p>8</p>
+            <div class="score_container">
+                <p id="croupier_score">0</p>
             </div>
-        </div>
-
-        <!-- On pourrais mettre plusieurs players avec js si on veut -->
-        <div class="user_card_section">
+        </section>
+        <!-- player section -->
+        <section class="cards_section">
             <div class="player_desk">
                 <div id="cardsPlayer1" class="cards_container">
                     <!-- Cards rendues avec le script general.js -->
                 </div>
             </div>
-            <div class="player_number">
+            <div class="score_container">
                 <p id="player_score">0</p>
             </div>
             <div class="btn_section">
@@ -48,33 +50,37 @@ require_once "models/manager/UserManager.php";
                 <button id="hit" >Hit</button>
                 <button id="act3" >action3</button>
             </div>
-        </div>
-        <button class="btn btnMoney" data-value="<?= password_hash("1", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
-            +1
-        </button>
-        <button class="btn btnMoney" data-value="<?= password_hash("5", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
-            +5
-        </button>
-        <button class="btn btnMoney">
-            +25
-        </button>
-        <button class="btn btnMoney">
-            +50
-        </button>
-        <button class="btn btnMoney">
-            +100
-        </button>
-        <button class="btn btnMoney">
-            +500
-        </button>
-        <button class="btn btnMoney">
-            +1000
-        </button>
-        <div class="player_ui">
-            <p >Money 💵: <?= $user['money'] ?></p>
-            <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
-            <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
-        </div>
+        </section>
+        <!-- bouttons section -->
+        <section>
+            <button class="btn btnMoney" data-value="<?= password_hash("1", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
+                +1
+            </button>
+            <button class="btn btnMoney" data-value="<?= password_hash("5", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
+                +5
+            </button>
+            <button class="btn btnMoney">
+                +25
+            </button>
+            <button class="btn btnMoney">
+                +50
+            </button>
+            <button class="btn btnMoney">
+                +100
+            </button>
+            <button class="btn btnMoney">
+                +500
+            </button>
+            <button class="btn btnMoney">
+                +1000
+            </button>
+            <div class="player_ui">
+                <p class="ui_money" >Money 💵: <?= $user['money'] ?></p>
+                <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
+                <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
+            </div>
+        </section>
+
         <!-- message modal (win ou lose) -->
         <div class="hidden message_modal">
             <p>  <!-- Message rendu depuis general.js -->  </p> 
