@@ -30,11 +30,10 @@ getUserInfos(userId.value)
     });
 
 function resetGame () {
-    cardsInGame = cards;
-    deck.innerHTML = '';
+    // cardsInGame = cards;
+    // deck.innerHTML = '';
     messageModal.classList.add('hidden');
     player1.reset();
-    player1.cardsInGame = cardsInGame;
     playerScore.textContent = player1.score;
 }
 

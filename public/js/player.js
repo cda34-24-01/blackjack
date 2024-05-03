@@ -11,16 +11,16 @@ export class player {
     };
     reset () {
         this.score = 0;
-        this.playerCards = [];
+        this.deck.innerHTML = '';
+        // this.playerCards = [];
     }
-    calcScore () {
-        return this.playerCards.reduce((sum, value) => {
-            if (sum + value > 21 && value === 11) {
-                return sum + 1;
-            } else {
-                return sum + value;
-            }
-        }, 0);
+    calcScore (newValue) {
+        if (this.score + newValue > 21 && newValue === 11) {
+            return this.score += 1;
+        } else {
+            return this.score += newValue;
+        }
+
     };
     refreshCardsInGame () {
         return this.cardsInGame;
@@ -35,9 +35,11 @@ export class player {
             htmlCarte.classList.add('card');
             htmlCarte.style.left = `${this.playerCards.length * 20}%`;
             htmlCarte.src = cardSelected.image;
-            this.playerCards.push(cardSelected.value);
-            this.score = this.calcScore();
+            this.score = this.calcScore(cardSelected.value);
+            this.playerCards.push(cardSelected);
             this.cardsInGame = currentsCarts;
+            console.log('cards used :' + this.playerCards.length)
+            console.log('cards in game :' + this.cardsInGame.length)
         };
     };
 }
