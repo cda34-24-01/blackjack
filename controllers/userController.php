@@ -165,4 +165,10 @@ class UserController
     {
         $_SESSION['id'] = $user['id_utilisateur'];
     }
+
+    public function deconnexionUser()
+    {
+        unset($_SESSION['id']);
+        header("Location: /accueil");
+    }
 }

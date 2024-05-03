@@ -59,6 +59,12 @@ try {
 
             case "compte":
                 $globalController->displayCompte();
+                break;
+
+            case "deconnexion":
+                $userController->deconnexionUser();
+                break;
+                
 
             default:
                 $globalController->displayHomePage();
