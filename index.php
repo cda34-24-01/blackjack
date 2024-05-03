@@ -68,6 +68,10 @@ try {
             case "removeMoney":
                 $userController->removeMoney($url[1]);
                 break;
+
+            case "aide":
+                require "views/aide_view.php";
+                break;
             
 
             default:
