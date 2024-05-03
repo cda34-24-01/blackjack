@@ -66,7 +66,6 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
             </div>
         <?php } ?>
 
-
     </main>
 
     <footer>
