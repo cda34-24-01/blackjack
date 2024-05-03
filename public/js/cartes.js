@@ -334,20 +334,15 @@ export const cards = [
         categorie: 'coeur'
     },
 ];
-let cardsInGame = cards;
-let cardsUsed = [];
 
 export function getCard(tab) {
     // selectioner une carte
     const randIndex = Math.floor(Math.random() * (tab.length));
     const cardSelected = tab[randIndex];
 
-    // Ajouter la carte au tableau de cartes utilises
-    cardsUsed.push(cards[randIndex]);
 
     // actualiser le tableau de cartes qui restent
-    const tempCards = cardsInGame.filter(card => card.image != cardSelected.image);
-    cardsInGame = tempCards;
+    const currentsCarts = tab.filter(card => card.image != cardSelected.image);
 
-    return cardSelected;
+    return {cardSelected, currentsCarts };
 };

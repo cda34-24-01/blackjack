@@ -171,4 +171,31 @@ class UserController
         unset($_SESSION['id']);
         header("Location: /accueil");
     }
+
+    public function removeMoney($money)
+    {
+        $id = $_SESSION['id'];
+        /* $money = $_SESSION['money']; */
+        /* var_dump($money);
+        die; */
+
+        if (password_verify($money, 1)) {
+            $money = 1;
+        } elseif (password_verify($money, 5)) {
+            $money = 5;
+        } elseif (password_verify($money, 25)) {
+            $money = 25;
+        } elseif (password_verify($money, 50)) {
+            $money = 50;
+        } elseif (password_verify($money, 100)) {
+            $money = 100;
+        } elseif (password_verify($money, 500)) {
+            $money = 500;
+        } elseif (password_verify($money, 1000)) {
+            $money = 1000;
+        }
+        var_dump($money);
+        die;
+        $this->userManager->removeMoney($id, $money);
+    }
 }

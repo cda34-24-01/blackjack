@@ -24,7 +24,7 @@ class UserManager extends Model
             "email" => $email
         ]);
 
-        return $req->fetch();
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     public function findUserByPseudo($pseudo)
@@ -35,7 +35,7 @@ class UserManager extends Model
             "pseudo" => $pseudo
         ]);
 
-        return $req->fetch();
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUserById($id) 
@@ -46,7 +46,7 @@ class UserManager extends Model
             "id" => $id
         ]);
 
-        return $req->fetch();
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getUserByIdentifier($identifier)
@@ -57,7 +57,7 @@ class UserManager extends Model
             "identifier" => $identifier
         ]);
 
-        return $req->fetch();
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     public function addMoney($id, $money)
@@ -106,7 +106,7 @@ class UserManager extends Model
             "id" => $id
         ]);
 
-        return $req->fetch();
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getWins($id)
@@ -117,7 +117,7 @@ class UserManager extends Model
             "id" => $id
         ]);
 
-        return $req->fetch();
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 
     public function getLoses($id)
@@ -128,6 +128,6 @@ class UserManager extends Model
             "id" => $id
         ]);
 
-        return $req->fetch();
+        return $req->fetch(PDO::FETCH_ASSOC);
     }
 }

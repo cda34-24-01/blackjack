@@ -103,6 +103,18 @@ body {
   height: 200px;
   background-color: burlywood;
 }
+.message_modal {
+  background-color: rgba(127, 255, 212, 0.4);
+  width: 70%;
+  height: 200px;
+  position: absolute;
+  top: center;
+  left: center;
+}
+
+.hidden {
+  display: none;
+}
 
 header {
   display: flex;

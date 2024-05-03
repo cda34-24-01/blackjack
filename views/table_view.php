@@ -12,6 +12,7 @@ require_once "models/manager/UserManager.php";
     <title>Blackjack</title>
     <link rel="stylesheet" href="<?= URL . "public/css/general.css" ?>">
     <link rel="stylesheet" href="<?= URL . "public/css/table.css" ?>">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 </head>
 
@@ -20,6 +21,7 @@ require_once "models/manager/UserManager.php";
         <div class="logo">BlackJack</div>
         <div class="user"><?= $user['pseudo'] ?></div>
     </header>
+    <input id="user_id" type="hidden" value=<?= $_SESSION['id'] ?>>
     <div class="table">
         <div class="ia_card_section">
             <div class="ia_card">
@@ -31,6 +33,7 @@ require_once "models/manager/UserManager.php";
             </div>
         </div>
 
+        <!-- On pourrais mettre plusieurs players avec js si on veut -->
         <div class="user_card_section">
             <div class="player_desk">
                 <div id="cardsPlayer1" class="cards_container">
@@ -38,43 +41,50 @@ require_once "models/manager/UserManager.php";
                 </div>
             </div>
             <div class="player_number">
-                <p></p>
+                <p id="player_score"></p>
             </div>
             <div class="btn_section">
-                <button id="act1">Action1</button>
-                <button id="act2">action2</button>
-                <button id="act3">action3</button>
+                <button id="act2" >action2</button>
+                <button id="hit" >Hit</button>
+                <button id="act3" >action3</button>
             </div>
         </div>
-
-            <button class="btn" onclick="<?= $this->userManager->removeMoney($user['id_utilisateur'], 1) ?>">
-                +1
-            </button>
-            <button class="btn">
-                +5
-            </button>
-            <button class="btn">
-                +25
-            </button>
-            <button class="btn">
-                +50
-            </button>
-            <button class="btn">
-                +100
-            </button>
-            <button class="btn">
-                +500
-            </button>
-            <button class="btn">
-                +1000
-            </button>
+        <button class="btn btnMoney" data-value="<?= password_hash("1", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
+            +1
+        </button>
+        <button class="btn btnMoney" data-value="<?= password_hash("5", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
+            +5
+        </button>
+        <button class="btn btnMoney">
+            +25
+        </button>
+        <button class="btn btnMoney">
+            +50
+        </button>
+        <button class="btn btnMoney">
+            +100
+        </button>
+        <button class="btn btnMoney">
+            +500
+        </button>
+        <button class="btn btnMoney">
+            +1000
+        </button>
         <div class="player_ui">
-            <div class="ui_money">Argent : <?= $user['money'] ?></div>
-            <div class="ui_wins">Victoires : <?= $user['wins'] ?></div>
-            <div class="ui_loses">Défaites : <?= $user['loses'] ?></div>
+            <p >Money 💵: <?= $user['money'] ?></p>
+            <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
+            <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
+        </div>
+        <!-- message modal (win ou lose) -->
+        <div class="hidden message_modal">
+            <p>  <!-- Message rendu depuis general.js -->  </p> 
+            <button id="btn_continue_game">Continuer</button>
+            <button id="btn_exit_game">Sortir</button>
         </div>
     </div>
+    <input type="hidden" id="url" value="<?= URL ?>">
     <script type="module" src="<?= URL . "public/js/general.js" ?> "></script>
+    <script type="module" src="<?= URL . "public/js/table.js" ?> "></script>
 </body>
 
 </html>
