@@ -49,10 +49,31 @@ require_once "models/manager/UserManager.php";
                 <button id="act3" >action3</button>
             </div>
         </div>
+        <button class="btn btnMoney" data-value="<?= password_hash("1", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
+            +1
+        </button>
+        <button class="btn btnMoney" data-value="<?= password_hash("5", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
+            +5
+        </button>
+        <button class="btn btnMoney">
+            +25
+        </button>
+        <button class="btn btnMoney">
+            +50
+        </button>
+        <button class="btn btnMoney">
+            +100
+        </button>
+        <button class="btn btnMoney">
+            +500
+        </button>
+        <button class="btn btnMoney">
+            +1000
+        </button>
         <div class="player_ui">
-            <p >Money 💵: <span class="ui_money" ></span></p>
-            <p class="ui_wins">Wins = 10</p>
-            <p class="ui_loses">Loses = 5</p>
+            <p >Money 💵: <?= $user['money'] ?></p>
+            <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
+            <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
         </div>
         <!-- message modal (win ou lose) -->
         <div class="hidden message_modal">
@@ -61,8 +82,9 @@ require_once "models/manager/UserManager.php";
             <button id="btn_exit_game">Sortir</button>
         </div>
     </div>
+    <input type="hidden" id="url" value="<?= URL ?>">
     <script type="module" src="<?= URL . "public/js/general.js" ?> "></script>
-    <script type="module" src="<?= URL . "public/js/getuser.js" ?> "></script>
+    <script type="module" src="<?= URL . "public/js/table.js" ?> "></script>
 </body>
 
 </html>
