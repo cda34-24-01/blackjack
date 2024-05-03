@@ -46,6 +46,6 @@
         </div>
     </div>
 
-<script src="<?= URL . "public/js/general.js" ?>"></script>
+<script type="module" src="<?= URL . "public/js/general.js" ?> "></script>
 </body>
 </html>

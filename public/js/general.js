@@ -1,4 +1,4 @@
-// import { getCard, cards } from "./cartes";
+import { getCard, cards } from "./cartes";
 
 window.onload = () => {
     demanderUneCarte();
@@ -341,7 +341,7 @@ const cards = [
         color: 'rouge',
         categorie: 'coeur'
     },
-]
+];
 let cardsInGame = cards;
 let cardsUsed = [];
 
@@ -358,7 +358,7 @@ function getCard(tab) {
     cardsInGame = tempCards;
 
     return cardSelected;
-}
+};
 // ajouter qui demande la carte
 function demanderUneCarte () {
     const newCarte = getCard(cardsInGame);
