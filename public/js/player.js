@@ -19,12 +19,12 @@ export class player {
         this.currentHand = [];
     };
     addWin() {
-        this.wins += 1;
+        this.wins ++;
         // console.log(`${this.name} has ${this.wins} wins`)
         // ici nous ferions l'insertion dans la base de données
     }
     addLose() {
-        this.loses += 1;
+        this.loses ++;
         // console.log(`${this.name} has ${this.loses} loses`)
         // ici nous ferions l'insertion dans la base de données
     }

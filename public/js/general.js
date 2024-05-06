@@ -61,10 +61,10 @@ function newRound () {
     currentPlayer.reset();
     croupier.reset();
     crupierScore.textContent = 0;
-    handleCroupierHits();
     playerScore.textContent = 0;
     handleHitCart(currentPlayer);
     handleHitCart(currentPlayer);
+    handleCroupierHits();
 };
 
 function handleHitCart(player) {
@@ -95,25 +95,15 @@ function handleStay(player) {
 };
 function handleWin(player) {
     player.addWin();
-    console.log(player.wins)
+    console.log(`wins: ${player.wins}`)
     messageModal.firstElementChild.textContent = `You Win!`;
     messageModal.classList.remove('hidden');
-    if (!messageModal.classList.contains('hidden')) {
-        btnContinuePlaying.addEventListener('click', () => {
-            newRound();
-        });
-    };
 };
 function handleLose(player) {
     player.addLose();
-    console.log(player.loses)
+    console.log(`loses: ${player.loses}`)
     messageModal.firstElementChild.textContent = `You Lose!`;
     messageModal.classList.remove('hidden');
-    if (!messageModal.classList.contains('hidden')) {
-        btnContinuePlaying.addEventListener('click', () => {
-            newRound();
-        });
-    };
 };
 
 // Bouton pour demander une carte (Hit)
@@ -126,4 +116,8 @@ btnTakeCart.addEventListener('click', (e) => {
 btnStay.addEventListener('click', (e) => {
     e.preventDefault();
     handleStay(currentPlayer);
+});
+btnContinuePlaying.addEventListener('click', (e) => {
+    e.preventDefault();
+    newRound();
 });
