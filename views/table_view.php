@@ -48,7 +48,7 @@ require_once "models/manager/UserManager.php";
             <div class="btn_section">
                 <button id="act2" >action2</button>
                 <button id="hit" >Hit</button>
-                <button id="act3" >action3</button>
+                <button id="stay" >Stay</button>
             </div>
         </section>
         <!-- bouttons section -->

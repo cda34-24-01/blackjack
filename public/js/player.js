@@ -1,8 +1,10 @@
 import { getCard } from "./cartes.js";
 
 export class player {
-    constructor (name, argent, cardsInGame, deck) {
+    constructor (name, argent, cardsInGame, deck, wins, loses) {
         this.cardsInGame = cardsInGame; // les cartes disponibles
+        this.wins = wins
+        this.loses = loses
         this.deck = deck; // le conteneur html ou on va inserer les cartes
         this.name = name;
         this.argent = argent;
@@ -16,6 +18,16 @@ export class player {
         this.deck.innerHTML = '';
         this.currentHand = [];
     };
+    addWin() {
+        this.wins += 1;
+        // console.log(`${this.name} has ${this.wins} wins`)
+        // ici nous ferions l'insertion dans la base de données
+    }
+    addLose() {
+        this.loses += 1;
+        // console.log(`${this.name} has ${this.loses} loses`)
+        // ici nous ferions l'insertion dans la base de données
+    }
 
     calcScore() {
         let score = this.currentHand.reduce((sum, value) => sum + value, 0);
