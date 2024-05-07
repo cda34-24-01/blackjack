@@ -22,14 +22,13 @@ const uiMoney = document.querySelector(".ui_money");
 const uiWins = document.querySelector(".ui_wins");
 const uiLoses = document.querySelector(".ui_loses");
 
-
 let url = document.getElementById("url").value;
 
 let btnMoney = document.querySelectorAll(".btnMoney");
-btnMoney.forEach(element => {
-    element.addEventListener("click", function (event) {
-        let money = element.dataset.value;
-        /* event.preventDefault();
+btnMoney.forEach((element) => {
+  element.addEventListener("click", function (event) {
+    let money = element.dataset.value;
+    /* event.preventDefault();
         let xhr = new XMLHttpRequest();
         xhr.open('POST', 'update_money.php', true);
         xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -54,23 +53,30 @@ btnMoney.forEach(element => {
             }
         };
         xhr.send(); */
-        console.log(money)
-        event.preventDefault();
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4) {
-                if (this.status === 200) {
-                    //console.log("ok");   
-                } else {
-                    //console.error("Erreur");
-                }
-            }
-        };
-        window.location.href = url + "removeMoney/" + money;
-        /* xhttp.open("GET", url + "removeMoney/" + money, true);
+    console.log(money);
+    event.preventDefault();
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+      if (this.readyState === 4) {
+        if (this.status === 200) {
+          //console.log("ok");
+        } else {
+          //console.error("Erreur");
+        }
+      }
+    };
+    window.location.href = url + "removeMoney/" + money;
+    /* xhttp.open("GET", url + "removeMoney/" + money, true);
         xhttp.send(); */
-
-    });
+  });
 });
 
+// audio  version teste
 
+function playAudio() {
+  x.play();
+}
+
+function pauseAudio() {
+  x.pause();
+}
