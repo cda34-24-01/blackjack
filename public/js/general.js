@@ -153,11 +153,11 @@ btnTakeCart.addEventListener("click", (e) => {
   handleHitCart(currentPlayer);
 });
 
-// Bouton pour stay
 btnStay.addEventListener("click", (e) => {
-  e.preventDefault();
-  handleStay(currentPlayer);
+    e.preventDefault();
+    handleStay(currentPlayer);
 });
+// Bouton pour new round
 btnContinuePlaying.addEventListener("click", (e) => {
   e.preventDefault();
   newRound();
