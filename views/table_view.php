@@ -67,18 +67,26 @@ require_once "models/manager/UserManager.php";
                 <p id="player_score">0</p>
             </div>
             <div class="btn_section">
-                <div class="money_btn">
-                <button class="btn btnMoney" data-value="<?= password_hash("1", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
-                <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
-                </button>
-                <button class="btn btnMoney" data-value="<?= password_hash("5", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
-                <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
-                </button>
-                <button class="btn btnMoney" data-value="<?= password_hash("5", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
-                <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
-                </button>
-                <button class="btn btnMoney"data-value="<?= password_hash("5", PASSWORD_BCRYPT, array('cost' => 12)) ?>">
-                <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
+
+            <div class="money_btn">
+            <button class="btn btnMoney" data-value="1">
+            <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
+            </button>
+            <button class="btn btnMoney" data-value="5">
+            <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
+            </button>
+
+            <button class="btn btnMoney" data-value="25">
+            <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
+            </button>
+            <button class="btn btnMoney" data-value="50">
+            <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
+            <button class="btn btnMoney" data-value="100">
+            <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
+            <button class="btn btnMoney" data-value="500">
+            <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
+            <button class="btn btnMoney" data-value="1000">
+            <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
             </div>
                 <div class="action_btn">
                 <button id="leave" >Leave</button>
