@@ -75,8 +75,6 @@ require_once "models/manager/UserManager.php";
             <button class="btn btnMoney" data-value="5">
             <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
             </button>
-
-            <button class="btn btnMoney" data-value="25">
             <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
             </button>
             <button class="btn btnMoney" data-value="50">
