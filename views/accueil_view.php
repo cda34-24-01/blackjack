@@ -16,65 +16,44 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
     <link href="<?= URL . "public/css/general.css" ?>" rel="stylesheet" type="text/css">
     <link href="<?= URL . "public/css/accueil.css" ?>" rel="stylesheet" type="text/css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sedan+SC&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
     <link rel="icon" type="image/svg+xml" href="<?= URL . "public/images/cineramaimg.svg" ?>">
 </head>
 
-<body class="">
-    <header>
-        <?php
-        /* include("navbar.php"); */
-        ?>
-    </header>
-
-    <main>
-        
-    <div class="title">
-<h1>Black Jack</h1>
-
-</div>
-<div class="button_main">
-    
-<?php if (isset($_SESSION['id'])) { ?>
-            <div >
-            <a href="table" >  <button  id="play_btn" class="log_btn">PLAY</button></a>
-            </div>
-
-            <div >
-            <a href="aide" ><button  id="play_btn" class="log_btn">AIDE</button></a>
-            </div>
-        <?php } else { ?>
-            <div >
-            <a href="connexion" > <button class="log_btn">CONNEXION</button></a>
-            </div>
-            <div >
-            <a href="aide" ><button  id="play_btn" class="log_btn">AIDE</button></a>
-            </div>
-            <div class="">
-            <a href="inscription" >  <button class="log_btn">INSCRIPTION</button></a>
-            </div>
-
-            
-        <?php } ?>
-        <?php if (isset($_SESSION['id'])) { ?>
-            <div class="">
-            <a href="deconnexion" >  <button class="log_btn">DECONNEXION</button></a>
-            </div>
-        <?php } ?>
-</div>
-
-   
+<body>
 
 
-    </main>
 
-    <footer>
-        <?php
-        //include("footer.php");
-        ?>
-    </footer>
+
+
+    <div class="form_section">
+        <div class="home_div">
+            <a href="accueil">Accueil</a>
+        </div>
+        <div class="header_text">
+            <h1>Bienvenue au jeu de Blackjack!</h1>
+        </div>
+        <div class="text-center">
+            <p>
+
+
+                Que vous soyez un joueur débutant ou un expert en blackjack, vous êtes au bon endroit pour vous amuser et défier vos compétences de jeu.
+            </p>
+        </div>
+
+
+    </div>
+
+    <div class="form_bg">
+        <div class="nav_div">
+            <a href="connexion">Connexion </a>
+            <a href="inscription">Inscription</a>
+        </div>
+    </div>
+
+
 
     <script src="<?= URL . "public/js/general.js" ?>"></script>
 </body>

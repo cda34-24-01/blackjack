@@ -2,6 +2,7 @@
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+  font-family: "Montserrat", sans-serif;
 }
 
 body {
@@ -12,8 +13,7 @@ body {
   height: 100dvh;
   width: 100dvh;
   margin: auto;
-  background-image: url(/public/images/55.png);
-  background-size: cover;
+  background-color: #0a1122;
 }
 
 .header_text {
@@ -29,10 +29,35 @@ body {
   height: 70dvh;
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
   align-items: center;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
   margin-top: 5dvh;
   gap: 20px;
+  color: #000000;
+  background-color: #ffffff;
+  box-shadow: rgba(255, 255, 255, 0.007) 0px 2px 1px,
+    rgba(255, 254, 254, 0.041) 0px 4px 2px, rgba(0, 0, 0, 0.007) 0px 8px 4px,
+    rgba(255, 253, 253, 0.09) 0px 16px 8px,
+    rgba(255, 251, 251, 0.021) 0px 32px 16px;
+}
+
+.form_bg {
+  width: 900px;
+  height: 70dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 5dvh;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+
+  gap: 20px;
   color: #ffffff;
+  background-image: url(/public/images/login.jpg);
+  background-size: cover;
   box-shadow: rgba(255, 255, 255, 0.007) 0px 2px 1px,
     rgba(255, 254, 254, 0.041) 0px 4px 2px, rgba(0, 0, 0, 0.007) 0px 8px 4px,
     rgba(255, 253, 253, 0.09) 0px 16px 8px,
@@ -44,7 +69,7 @@ form {
   text-align: center;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 form a {
   color: #8bc959;
@@ -60,6 +85,18 @@ form div {
   flex-direction: column;
   gap: 15px;
 }
+
+.label_div {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+}
+
+.label_div p {
+  color: #ff8e8e;
+}
 label {
   padding: 7px;
 }
@@ -69,8 +106,7 @@ input {
   border-radius: 6px;
   font-size: 16px;
   background-color: #ffffff0c;
-
-  color: #ffffff;
+  color: #000000;
   border: 2px solid transparent;
   height: 46px;
   box-shadow: 0 0 0 1px #dddddd, 0 2px 4px 0 rgb(0 0 0 / 7%),
@@ -79,13 +115,6 @@ input {
     border: 2px solid #000;
     border-radius: 4px;
   }
-}
-
-input::placeholder {
-}
-
-input::placeholder {
-  color: #ffffff;
 }
 
 .submit_btn {

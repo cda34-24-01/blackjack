@@ -7,37 +7,58 @@
     <title>Connexion</title>
     <link rel="stylesheet" href="<?= URL . "public/css/general.css" ?>">
     <link rel="stylesheet" href="<?= URL . "public/css/connexion.css" ?>">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
 </head>
 
 <body>
-<?php
-    $rdm = rand(1, 2);
-    if ($rdm == 1) { ?>
-        <div class="backdrop" style="background-image: url('<?= URL . "public/images/blackjack1.png" ?>');"></div>
-    <?php } elseif ($rdm == 2) { ?>
-        <div class="backdrop" style="background-image: url('<?= URL . "public/images/blackjack2.png" ?>');"></div>
-    <?php } ?>
 
-    <div class="login_form">
-        <h1>Connecter vous a votre compte</h1>
-        <form action="connexion_validation" method="POST" class="d-flex flex-column flex-md-row" id="connexionForm">
-            <div class="col-md-12">
-                <div class="form-group mb-2 mt-2">
-                    <label class="blanc fw-bold">Identifiants :</label>
-                    <input type="text" name="identifier" placeholder="E-mail / pseudo" class="form-control">
+
+
+    <div class="form_section">
+
+        <div class="header_text">
+            <h1>Connexion</h1>
+        </div>
+        <form>
+            <div>
+                <div class="label_div">
+                    <label for="username">Nom d'utilisateur </label>
+                    <p>*</p>
                 </div>
-                <div class="form-group">
-                    <label class="blanc fw-bold">Mot de passe :</label>
-                    <input type="password" name="password" placeholder="******" class="form-control">
-                </div>
-                <div class="button-group mt-4 mb-3">
-                    <button class="btn bgRouge family w-100" type="submit">Connexion</button>
-                </div>
-                <div class="mb-3">
-                    <span class="blanc">Pas de compte ? <a href="<?= URL . "inscription" ?>" class="yellow">S'inscrire ici</a></span>
-                </div>
+                <input type="text" name="pseudo" id="pseudo" placeholder="Entre un nom d'utilisateur">
             </div>
+
+
+
+
+            <div>
+                <div class="label_div">
+                    <label for="password">Mot de passe </label>
+                    <p>*</p>
+                </div>
+
+                <input type="password" name="password" id="password" placeholder="Entre un mot de passe">
+            </div>
+
+
+            <div>
+                <input class="submit_btn" type="submit" value="Se connecter">
+            </div>
+
+            <div>
+                <p>Vous n'avez pas de compte ?</p>
+                <a href="inscription">Crée un compte</a>
+            </div>
+
+
         </form>
+
+
+    </div>
+
+    <div class="form_bg">
+
     </div>
 
 </body>
