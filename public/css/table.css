@@ -86,10 +86,10 @@ nav a {
   width: 100%;
 }
 
-.action_btn :nth-last-child(1) {
+.action_btn :nth-last-child(2) {
   background-color: #8bc959;
 }
-.action_btn :nth-last-child(2) {
+.action_btn :nth-last-child(3) {
   background-color: #8bc959;
 }
 .action_btn :nth-child(1) {
@@ -140,9 +140,13 @@ a:hover {
 }
 
 .cards_container {
-  width: 25%;
+  background-color: #8bc9598e;
+  width: 100%;
   display: flex;
   flex-direction: row;
+}
+.split {
+  background-color: #5f3a0b;
 }
 
 .player_ui {
@@ -152,7 +156,7 @@ a:hover {
   align-items: center;
 }
 .player_desk {
-  /* background-color: aqua; */
+  background-color: aqua;
   width: 200px;
   height: 180px;
   display: flex;
@@ -200,12 +204,11 @@ a:hover {
 }
 
 .message_modal {
-  background-color: #ff8e8e;
   width: 30dvh;
   height: 10dvh;
   position: absolute;
-  top: center;
-  left: center;
+  top: 50%;
+  left: 30%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -228,14 +231,12 @@ a:hover {
   background-color: #4b6587;
   color: white;
 }
-
-.greenAlert {
+/* .greenAlert {
   background-color: #8bc959;
 }
 .redAlert {
   background-color: #ff8e8e;
-}
-
+} */
 .hidden {
   display: none;
 }

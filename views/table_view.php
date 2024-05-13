@@ -59,6 +59,9 @@ require_once "models/manager/UserManager.php";
                 <div id="cardsPlayer1" class="cards_container">
                     <!-- Cards rendues avec le script general.js -->
                 </div>
+                <div id="cardsPlayer1Split" class="cards_container split">
+                    <!-- Cards rendues avec le script general.js -->
+                </div>
             </div>
             <div class="score_container">
                 <p id="player_score">0</p>
@@ -86,9 +89,10 @@ require_once "models/manager/UserManager.php";
             <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
             </div>
                 <div class="action_btn">
-                <button id="act2" >action2</button>
+                <button id="leave" >Leave</button>
                 <button id="hit" >Hit</button>
                 <button id="stay" >Stay</button>
+                <button id="split" class="hidden" >Split</button>
                 </div>
                 <div class="player_ui">
                 <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
