@@ -7,13 +7,13 @@ const btnHit = document.getElementById("hit");
 const btnStay = document.getElementById("stay");
 const btnLeave = document.getElementById("leave");
 const btnSplit = document.getElementById("split");
-const btnsMises = document.querySelectorAll("btnMoney");
+const btnsMises = document.querySelectorAll(".btnMoney");
 
 const playerScore = document.getElementById("player_score");
 const playerWins = document.querySelector(".ui_wins");
 const playerLoses = document.querySelector(".ui_loses");
 const playerCardsContainer = document.getElementById("cardsPlayer1");
-const playerMoney = document.querySelector(".ui_money");
+const playerMoneyDisplay = document.querySelector(".ui_money");
 
 const messageModal = document.querySelector(".message_modal");
 const btnContinuePlaying = document.getElementById("btn_continue_game");
@@ -46,28 +46,28 @@ audioBtn.addEventListener("click", () => {
 let cardsInGame = cards;
 
 // variable pour stocker les donnes du User
-let currentPlayer;
+let currentPlayer = new player;
+let currentMise = 0;
+let currentMoney = 0;
+
 // Instancier l'objet joueur avec les donnes de la BDD
 // le input hidden contient la valeur id du utilisateur
 const userId = document.getElementById("user_id");
 getUserInfos(userId.value)
   .then((userInfos) => {
     const { pseudo, money, wins, loses } = userInfos;
-    currentPlayer = new player(
-      pseudo,
-      money,
-      cardsInGame,
-      playerCardsContainer,
-      wins,
-      loses
-    );
-    // Initialiser le jeu
-    startGame(currentPlayer);
+    currentPlayer.name = pseudo;
+    currentPlayer.money = money;
+    currentPlayer.cardsInGame = cardsInGame;
+    currentPlayer.deck = playerCardsContainer;
+    currentPlayer.wins = wins;
+    currentPlayer.loses = loses;
+    currentMoney = money;
   })
   .catch((error) => {
     console.error(error);
   });
-
+console.log(currentPlayer)
 // Instancier l'objet joueur pour le croupier
 let croupierWins = 0;
 let croupierLoses = 0;
@@ -79,8 +79,9 @@ const croupier = new player(
   croupierWins,
   croupierLoses
 );
-let areBtnsAvailables = false;
 
+// si c'est false on ne peut pas cliquer les boutons
+let areBtnsAvailables = false;
 
 function startGame(currentPlayer) {
   areBtnsAvailables = false;
@@ -112,7 +113,8 @@ function newRound() {
   playerScore.textContent = 0;
   playerWins.textContent = `Wins: ${currentPlayer.wins}`;
   playerLoses.textContent = `Loses: ${currentPlayer.loses}`;
-  startGame(currentPlayer);
+  currentMise = 0;
+  // startGame(currentPlayer);
 };
 
 function handleHitCart(player) {
@@ -161,7 +163,7 @@ function checkScores(player) {
   }
 };
 async function handleStay(player) {
-  if (!areBtnsAvailables) return;
+  if (!areBtnsAvailables && currentMise === 0) return;
   croupierDeck.lastChild.src = croupier.usedCards[1].image;
   crupierScore.textContent = croupier.score;
   
@@ -190,24 +192,65 @@ function handleWin(player, blackJack = false) {
     if (blackJack) {
         console.log('BlackJack!!');
     }
+    currentMoney += currentMise;
+    playerMoneyDisplay.style.color = '#8bc959';
+    playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
     player.addWin();
 };
 function handleLose(player, blackJack = false) {
-    showModal('You Lose!', '#ff8e8e', moneySound);
-    if (blackJack) {
-        console.log('you lose by backjack... lol')
-    }
-    player.addLose();
+  showModal('You Lose!', '#ff8e8e', moneySound);
+  if (blackJack) {
+    console.log('you lose by backjack... lol')
+  }
+  currentMoney -= currentMise;
+  playerMoneyDisplay.style.color = '#ff8e8e';
+  playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
+  player.addLose();
 };
+
+
 // Boutons pour les misses
-/* btnsMises.forEach(btn => {
-  btn.addEventListener(async()=> {
-        if(!areBtnsAvailables) return;
-        await console.log('kakak');
+let url = document.getElementById("url").value;
+let $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
+btnsMises.forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (currentMise !== 0) return;
+    let money = btn.dataset.value;
+
+    if (!$moneyValues.includes(parseInt(money))) {
+      console.log("Erreur");
+      // exit(); // Cette ligne ne fonctionnera pas en JavaScript, voir la note ci-dessous
+      return;
+    } else {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+            console.log("ok");
+            // si tout est ok on comence le jeu avec la mise selectione
+            currentMise = parseInt(money);
+            startGame(currentPlayer);
+          } else {
+            console.error("Erreur");
+          }
+        }
+      };
+      // window.location.href = url + "removeMoney/" + money;
+      xhttp.open("GET", url + "removeMoney/" + money, true);
+      // xhttp.open("GET", `${url}removeMoney/${money}&_=${new Date().getTime()}`, true);
+      xhttp.send();
+      btnsMises.forEach((e) => {
+        e.disabled = true;
+        setTimeout(() => {
+          e.disabled = false;
+        }, 2000);
+      });
+    }
     });
-}); */
+});
 // Bouton pour Split
-btnSplit.addEventListener("click", (e)=> {
+/* btnSplit.addEventListener("click", (e)=> {
     e.preventDefault();
     const deckContainer = document.querySelector(".player_desk");
     deckContainer.style.width = "400px";
@@ -219,24 +262,24 @@ btnSplit.addEventListener("click", (e)=> {
     deckContainer.lastElementChild.appendChild(cardSplited);
     // console.log(currentPlayer.usedCards)
     console.log(currentPlayer.usedCards[1])
-})
+}) */
 
 // Bouton pour abandonner
 btnLeave.addEventListener("click", (e)=> {
-    if (!areBtnsAvailables) return;
+    if (!areBtnsAvailables && currentMise === 0) return;
     e.preventDefault();
     console.log("mise devise en 2");
 });
 // Bouton pour demander une carte (Hit)
 btnHit.addEventListener("click", (e) => {
-  if (!areBtnsAvailables) return;
+  if (!areBtnsAvailables && currentMise === 0) return;
   cardSound.play();
   e.preventDefault();
   handleHitCart(currentPlayer);
 });
 // Bouton pour stay
 btnStay.addEventListener("click", (e) => {
-  if (!areBtnsAvailables) return;
+  if (!areBtnsAvailables && currentMise === 0) return;
   e.preventDefault();
   handleStay(currentPlayer);
 });

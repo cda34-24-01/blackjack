@@ -22,7 +22,7 @@ const uiMoney = document.querySelector(".ui_money");
 const uiWins = document.querySelector(".ui_wins");
 const uiLoses = document.querySelector(".ui_loses");
 
-let url = document.getElementById("url").value;
+/* let url = document.getElementById("url").value;
 let $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
 
 let btnMoney = document.querySelectorAll(".btnMoney");
@@ -45,9 +45,9 @@ btnMoney.forEach((element) => {
           }
         }
       };
-      /* window.location.href = url + "removeMoney/" + money; */
+      // window.location.href = url + "removeMoney/" + money;
       xhttp.open("GET", url + "removeMoney/" + money, true);
-      /* xhttp.open("GET", `${url}removeMoney/${money}&_=${new Date().getTime()}`, true); */
+      // xhttp.open("GET", `${url}removeMoney/${money}&_=${new Date().getTime()}`, true);
       xhttp.send();
       btnMoney.forEach((element) => {
         element.disabled = true;
@@ -57,7 +57,7 @@ btnMoney.forEach((element) => {
       });
     }
   });
-});
+}); */
 
 // audio  version teste
 
