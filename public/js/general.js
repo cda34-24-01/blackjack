@@ -61,7 +61,7 @@ getUserInfos(userId.value)
       wins,
       loses
     );
-    // initialiser le jeu
+    // Initialiser le jeu
     startGame(currentPlayer);
   })
   .catch((error) => {
@@ -79,24 +79,24 @@ const croupier = new player(
   croupierWins,
   croupierLoses
 );
+let areBtnsAvailables = false;
 
 
 function startGame(currentPlayer) {
-    // 1 carte pour le player
-    setTimeout(() => handleHitCart(currentPlayer), 500);
-    // 1 carte pour le croupier
-    setTimeout(() => handleHitCart(croupier), 1000);
-    // 1 autre carte pour le player
-    setTimeout(() => handleHitCart(currentPlayer), 1500);
-    // 1 autre carte pour le croupier (cachée)
-    setTimeout(() => {
-      handleHitCart(croupier);
-      croupierDeck.lastChild.src = './public/images/cartes/card_back.png';
-    }, 2000);
-  
-
-
-  };
+  areBtnsAvailables = false;
+  // 1 carte pour le player
+  setTimeout(() => handleHitCart(currentPlayer), 500);
+  // 1 carte pour le croupier
+  setTimeout(() => handleHitCart(croupier), 1000);
+  // 1 autre carte pour le player
+  setTimeout(() => handleHitCart(currentPlayer), 1500);
+  // 1 autre carte pour le croupier (cachée)
+  setTimeout(() => {
+    handleHitCart(croupier);
+    croupierDeck.lastChild.src = './public/images/cartes/card_back.png';
+    areBtnsAvailables = true;
+  }, 2000);
+};
   // case de split
   /* currentPlayer.currentHand = [2, 2]
   console.log(currentPlayer.currentHand);
@@ -116,17 +116,19 @@ function newRound() {
 };
 
 function handleHitCart(player) {
-    player.demanderUneCarte();
-    cardsInGame = player.refreshCardsInGame();
-    if (player.name === 'Croupier') {
-        crupierScore.textContent = player.currentHand[0];
+  player.cardsInGame = cardsInGame;
+  player.demanderUneCarte();
+  cardsInGame = player.refreshCardsInGame();
+  if (player.name === 'Croupier') {
+    crupierScore.textContent = player.currentHand[0];
     } else {
-        playerScore.textContent = player.score;
-        // On a blackjack ou on depasse 21 alors on ne peut pas jouer plus des cartes
-        if (player.score > 21) {
-            handleLose(currentPlayer);
-        }
+      playerScore.textContent = player.score;
+      // On a blackjack ou on depasse 21 alors on ne peut pas jouer plus des cartes
+      if (player.score > 21) {
+        handleLose(currentPlayer);
+      }
     }
+    console.log(cardsInGame.length);
 };
 
 function checkScores(player) {
@@ -159,9 +161,10 @@ function checkScores(player) {
   }
 };
 async function handleStay(player) {
+  if (!areBtnsAvailables) return;
   croupierDeck.lastChild.src = croupier.usedCards[1].image;
   crupierScore.textContent = croupier.score;
-
+  
   // Le croupier demandera une carte s'il n'as pas 17 points
   for (let delay = 500; croupier.score < 17; delay += 500) {
     await new Promise(resolve => setTimeout(resolve, delay));
@@ -169,11 +172,11 @@ async function handleStay(player) {
     cardsInGame = croupier.refreshCardsInGame();
     crupierScore.textContent = croupier.score;
   }
-
   // Comparer les scores
   checkScores(player);
 }
 function showModal(message, colorAlert, sound) {
+  areBtnsAvailables = false;
     sound.play();
     messageModal.firstElementChild.textContent = message;
     messageModal.classList.remove("hidden");
@@ -198,10 +201,11 @@ function handleLose(player, blackJack = false) {
 };
 // Boutons pour les misses
 /* btnsMises.forEach(btn => {
-    btn.addEventListener(()=> {
-        console.log(btn.dataset.value);
-    })
-}) */
+  btn.addEventListener(async()=> {
+        if(!areBtnsAvailables) return;
+        await console.log('kakak');
+    });
+}); */
 // Bouton pour Split
 btnSplit.addEventListener("click", (e)=> {
     e.preventDefault();
@@ -211,7 +215,7 @@ btnSplit.addEventListener("click", (e)=> {
     playerCardsContainer.removeChild(playerCardsContainer.lastChild);
     const cardSplited = document.createElement('img');
 
-    cardSplited.src = currentPlayer.usedCards[1].image;z
+    cardSplited.src = currentPlayer.usedCards[1].image;
     deckContainer.lastElementChild.appendChild(cardSplited);
     // console.log(currentPlayer.usedCards)
     console.log(currentPlayer.usedCards[1])
@@ -219,19 +223,22 @@ btnSplit.addEventListener("click", (e)=> {
 
 // Bouton pour abandonner
 btnLeave.addEventListener("click", (e)=> {
+    if (!areBtnsAvailables) return;
     e.preventDefault();
     console.log("mise devise en 2");
 });
 // Bouton pour demander une carte (Hit)
 btnHit.addEventListener("click", (e) => {
+  if (!areBtnsAvailables) return;
   cardSound.play();
   e.preventDefault();
   handleHitCart(currentPlayer);
 });
 // Bouton pour stay
 btnStay.addEventListener("click", (e) => {
-    e.preventDefault();
-    handleStay(currentPlayer);
+  if (!areBtnsAvailables) return;
+  e.preventDefault();
+  handleStay(currentPlayer);
 });
 // Bouton pour new round
 btnContinuePlaying.addEventListener("click", (e) => {

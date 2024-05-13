@@ -109,10 +109,9 @@ require_once "models/manager/UserManager.php";
         <div class="hidden message_modal">
             <p>  <!-- Message rendu depuis general.js -->  </p> 
             <div class="div">
-            <button id="btn_continue_game">Continuer</button>
-            <button id="btn_exit_game">Sortir</button>
+                <button id="btn_continue_game">Continuer</button>
+                <button id="btn_exit_game">Sortir</button>
             </div>
-            
         </div>
     </div>
     <input type="hidden" id="url" value="<?= URL ?>">
