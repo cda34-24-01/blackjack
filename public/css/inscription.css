@@ -1,0 +1,133 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 100dvh;
+  width: 100dvh;
+  margin: auto;
+  background-image: url(/public/images/55.png);
+  background-size: cover;
+}
+
+.header_text {
+  width: 400px;
+
+  display: flex;
+  flex-direction: column;
+  padding: 7px;
+  gap: 10px;
+}
+.form_section {
+  width: 900px;
+  height: 70dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5dvh;
+  gap: 20px;
+  color: #ffffff;
+  box-shadow: rgba(255, 255, 255, 0.007) 0px 2px 1px,
+    rgba(255, 254, 254, 0.041) 0px 4px 2px, rgba(0, 0, 0, 0.007) 0px 8px 4px,
+    rgba(255, 253, 253, 0.09) 0px 16px 8px,
+    rgba(255, 251, 251, 0.021) 0px 32px 16px;
+}
+form {
+  width: 400px;
+  height: 50dvh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+form a {
+  color: #8bc959;
+}
+form a:hover {
+  color: #ff8e8e;
+}
+
+form div {
+  width: 400px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+label {
+  padding: 7px;
+}
+
+input {
+  padding: 7px;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #ffffff0c;
+
+  color: #ffffff;
+  border: 2px solid transparent;
+  height: 46px;
+  box-shadow: 0 0 0 1px #dddddd, 0 2px 4px 0 rgb(0 0 0 / 7%),
+    0 1px 1.5px 0 rgb(0 0 0 / 5%);
+  :focus {
+    border: 2px solid #000;
+    border-radius: 4px;
+  }
+}
+
+input::placeholder {
+}
+
+input::placeholder {
+  color: #ffffff;
+}
+
+.submit_btn {
+  appearance: none;
+  background-color: #8bc959;
+  border: 2px solid #fcfcfc;
+  border-radius: 15px;
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-block;
+
+  font-size: 16px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  min-height: 60px;
+  min-width: 0;
+  outline: none;
+  padding: 16px 24px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 300ms cubic-bezier(0.23, 1, 0.32, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 100%;
+  will-change: transform;
+}
+
+.submit_btn:disabled {
+  pointer-events: none;
+}
+
+.submit_btn:hover {
+  color: #fff;
+  background-color: #ff8e8e;
+  box-shadow: rgba(0, 0, 0, 0.25) 0 8px 15px;
+  transform: translateY(-2px);
+}
+
+.submit_btn:active {
+  box-shadow: none;
+  transform: translateY(0);
+}
