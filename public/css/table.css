@@ -239,3 +239,8 @@ a:hover {
 .hidden {
   display: none;
 }
+
+.card-hidden {
+  background-image: url(/public/images/cartes/card_back.png)!important;
+}
+
