@@ -97,7 +97,7 @@ require_once "models/manager/UserManager.php";
             </div>
             </div>
         </div>
-        <!-- bouttons section -->
+        <!-- boutons section -->
 
        
             

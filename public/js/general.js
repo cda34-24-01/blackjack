@@ -20,7 +20,7 @@ const btnContinuePlaying = document.getElementById("btn_continue_game");
 const btnExitGame = document.getElementById("btn_exit_game");
 // le croupier
 const croupierDeck = document.getElementById("cardsCroupier");
-const crupierScore = document.getElementById("croupier_score");
+const croupierScore = document.getElementById("croupier_score");
 const cardSound = document.getElementById("cardHit");
 const moneySound = document.getElementById("moneyPick");
 const playerWinSound = document.getElementById("playerWinSound");
@@ -109,7 +109,7 @@ function newRound() {
   messageModal.classList.add("hidden");
   currentPlayer.reset();
   croupier.reset();
-  crupierScore.textContent = 0;
+  croupierScore.textContent = 0;
   playerScore.textContent = 0;
   playerWins.textContent = `Wins: ${currentPlayer.wins}`;
   playerLoses.textContent = `Loses: ${currentPlayer.loses}`;
@@ -122,10 +122,10 @@ function handleHitCart(player) {
   player.demanderUneCarte();
   cardsInGame = player.refreshCardsInGame();
   if (player.name === 'Croupier') {
-    crupierScore.textContent = player.currentHand[0];
+    croupierScore.textContent = player.currentHand[0];
     } else {
       playerScore.textContent = player.score;
-      // On a blackjack ou on depasse 21 alors on ne peut pas jouer plus des cartes
+      // On a blackjack ou on dépasse 21 alors on ne peut pas jouer plus des cartes
       if (player.score > 21) {
         handleLose(currentPlayer);
       }
@@ -165,14 +165,14 @@ function checkScores(player) {
 async function handleStay(player) {
   if (!areBtnsAvailables && currentMise === 0) return;
   croupierDeck.lastChild.src = croupier.usedCards[1].image;
-  crupierScore.textContent = croupier.score;
+  croupierScore.textContent = croupier.score;
   
   // Le croupier demandera une carte s'il n'as pas 17 points
   for (let delay = 500; croupier.score < 17; delay += 500) {
     await new Promise(resolve => setTimeout(resolve, delay));
     croupier.demanderUneCarte();
     cardsInGame = croupier.refreshCardsInGame();
-    crupierScore.textContent = croupier.score;
+    croupierScore.textContent = croupier.score;
   }
   // Comparer les scores
   checkScores(player);
@@ -200,7 +200,7 @@ function handleWin(player, blackJack = false) {
 function handleLose(player, blackJack = false) {
   showModal('You Lose!', '#ff8e8e', moneySound);
   if (blackJack) {
-    console.log('you lose by backjack... lol')
+    console.log('you lose by blackjack... lol')
   }
   currentMoney -= currentMise;
   playerMoneyDisplay.style.color = '#ff8e8e';
@@ -228,7 +228,7 @@ btnsMises.forEach(btn => {
         if (this.readyState === 4) {
           if (this.status === 200) {
             console.log("ok");
-            // si tout est ok on comence le jeu avec la mise selectione
+            // si tout est ok on commence le jeu avec la mise sélectionné
             currentMise = parseInt(money);
             startGame(currentPlayer);
           } else {
@@ -293,13 +293,13 @@ btnContinuePlaying.addEventListener("click", (e) => {
 /* 
 Distribution des cartes :
      
-Une carte pour moi façe visible
-Une carte pour lui (croupier) façe visible
-Une deuxième carte pour moi façe visible
-Et une deuxième carte pour le croupier MAIS façe cachée.
+Une carte pour moi face visible
+Une carte pour lui (croupier) face visible
+Une deuxième carte pour moi face visible
+Et une deuxième carte pour le croupier MAIS face cachée.
 
 Ensuite : 
-Le joueur tire autant de cartes qu'il souhaite SAUF si il dépasse 21 dans quel cas, le jeu s'arrete et le croupier gagne.
+Le joueur tire autant de cartes qu'il souhaite SAUF si il dépasse 21 dans quel cas, le jeu s’arrête et le croupier gagne.
 
 Dès que le joueur appuis sur STAY
 Révélation de la carte face cachée du croupier ( donc calcul de ses deux cartes )
@@ -308,7 +308,7 @@ Ensuite :
 Le croupier tire des cartes tant qu'il n'a pas 17 maximum. ( si il a plus de 17 le jeu s'arrête et celui qui a la plus grosse main, gagne. )
 
 Spécificité : 
-Si le croupier tire un AS façe visible ( donc sa première carte ) Et que sa carte cachée est un 10 ou une tête 
+Si le croupier tire un AS face visible ( donc sa première carte ) Et que sa carte cachée est un 10 ou une tête 
      
-Le jeu s'arrete et le croupier gagne SAUF si le joueur a un blackjack aussi alors le jeu s'arrête quand même mais le joueur est remboursée de sa somme misée.
+Le jeu s’arrête et le croupier gagne SAUF si le joueur a un blackjack aussi alors le jeu s'arrête quand même mais le joueur est remboursée de sa somme misée.
 */
