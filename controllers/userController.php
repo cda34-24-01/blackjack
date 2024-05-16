@@ -43,6 +43,7 @@ class UserController
 
     public function inscription_validation()
     {
+        var_dump($_POST['pseudo']);
         unset($_SESSION['error']);
         try {
             if (empty($_POST['pseudo']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['password_confirm'])) {

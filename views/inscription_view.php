@@ -43,6 +43,7 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
             <h1>Inscription</h1>
             <p>crée un compte pour pouvoir jouer au blackjack</p>
         </div>
+    
         <form action="inscription_validation" method="POST">
             <div>
                 <div class="label_div">
@@ -89,7 +90,7 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
                 <input class="submit_btn" type="submit" value="S'enregistrer">
             </div>
 
-            <div>
+            <div class="text_div">
                 <p>Vous avez un compte ?</p>
                 <a href="connexion">Se connecter</a>
             </div>
