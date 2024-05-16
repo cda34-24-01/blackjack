@@ -205,15 +205,20 @@ function showModal(message, colorAlert, sound) {
 }
 function handleEquality(player) {
   showModal('Equality!', '#8bc959', playerWinSound);
+  currentMoney += (currentMise * 2);
+  playerMoneyDisplay.style.color = '#8bc959';
+  playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
+  addMoney(currentMise);
 };
 function handleWin(player, blackJack = false) {
   showModal('You win!', '#8bc959', playerWinSound);
   if (blackJack) {
     console.log('BlackJack!!');
   }
-  currentMoney += currentMise;
+  currentMoney += (currentMise * 2);
   playerMoneyDisplay.style.color = '#8bc959';
   playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
+  addMoney(currentMise * 2);
   player.addWin();
 };
 function handleLose(player, blackJack = false) {
@@ -221,9 +226,9 @@ function handleLose(player, blackJack = false) {
   if (blackJack) {
     console.log('you lose by blackjack... lol')
   }
-  currentMoney -= currentMise;
+  //currentMoney -= currentMise;
   playerMoneyDisplay.style.color = '#ff8e8e';
-  playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
+  //playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
   player.addLose();
 };
 
@@ -249,9 +254,20 @@ btnsMises.forEach(btn => {
             console.log("ok");
             // si tout est ok on commence le jeu avec la mise sélectionné
             btnStart.disabled = false;
-             currentMise = parseInt(money);
-             playerMiseDisplay.textContent = `${currentMise}`;
-            /*startGame(currentPlayer); */
+            // Assuming money is a valid number or a string that can be converted to a number
+            currentMise = parseInt(money);
+
+            // Check if playerMiseDisplay.textContent contains a number
+            let totalMise = parseInt(playerMiseDisplay.textContent) || 0;
+
+            // Add currentMise to totalMise
+            totalMise += currentMise;
+
+            // Update playerMiseDisplay.textContent with the calculated total
+            playerMiseDisplay.textContent = `${totalMise}`;
+
+            currentMoney -= currentMise;
+            playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
           } else {
             console.error("Erreur");
           }
@@ -260,15 +276,24 @@ btnsMises.forEach(btn => {
       // window.location.href = url + "removeMoney/" + money;
       xhttp.open("GET", url + "removeMoney/" + money, true);
       xhttp.send();
-      btnsMises.forEach((e) => {
-        e.disabled = true;
-        setTimeout(() => {
-          e.disabled = false;
-        }, 2000);
-      });
     }
   });
 });
+
+function addMoney(money) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState === 4) {
+      if (this.status === 200) {
+        console.log("ok");
+      } else {
+        console.error("Erreur");
+      }
+    }
+  };
+  xhttp.open("GET", url + "addMoney/" + money, true);
+  xhttp.send();
+}
 // Bouton pour Split
 /* btnSplit.addEventListener("click", (e)=> {
     e.preventDefault();

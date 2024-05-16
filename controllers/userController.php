@@ -21,11 +21,6 @@ class UserController
         $this->userManager->addLose($id);
     }
 
-    public function addMoney($id, $money)
-    {
-        $this->userManager->addMoney($id, $money);
-    }
-
     public function getWins($id)
     {
         return $this->userManager->getWins($id);
@@ -172,6 +167,18 @@ class UserController
     {
         unset($_SESSION['id']);
         header("Location: /accueil");
+    }
+
+    public function addMoney($money)
+    {
+        if (!isset($_SESSION['id'])) {
+            header("Location: /connexion");
+            return;
+        }
+        
+        $id = $_SESSION['id'];
+
+        $this->userManager->addMoney($id, $money);
     }
 
     public function removeMoney($money)

@@ -14,6 +14,7 @@ abstract class Model
         }
     }
 
+
     protected function getDB()
     {
         if ($this->pdo == null) {
@@ -22,4 +23,3 @@ abstract class Model
         return $this->pdo;
     }
 }
-

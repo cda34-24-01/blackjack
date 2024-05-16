@@ -29,6 +29,7 @@ export class player {
         // ici nous ferions l'insertion dans la base de données
     }
 
+
     calcScore() {
         let score = this.currentHand.reduce((sum, value) => sum + value, 0);
         let numAces = this.currentHand.filter(card => card === 11).length;
