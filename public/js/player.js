@@ -1,13 +1,13 @@
 import { getCard } from "./cartes.js";
 
 export class player {
-    constructor (name, argent, cardsInGame, deck, wins, loses) {
+    constructor (name, money, cardsInGame, deck, wins, loses) {
         this.cardsInGame = cardsInGame; // les cartes disponibles
         this.wins = wins
         this.loses = loses
         this.deck = deck; // le conteneur html ou on va inserer les cartes
         this.name = name;
-        this.argent = argent;
+        this.money = money;
         this.usedCards = [];
         this.currentHand = [];
         this.score = 0;

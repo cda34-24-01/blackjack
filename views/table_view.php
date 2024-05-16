@@ -66,8 +66,6 @@ require_once "models/manager/UserManager.php";
             <div class="score_container">
                 <p id="player_score">0</p>
             </div>
-            <div class="btn_section">
-
             <div class="money_btn">
             <button class="btn btnMoney" data-value="1">
             <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
@@ -75,7 +73,6 @@ require_once "models/manager/UserManager.php";
             <button class="btn btnMoney" data-value="5">
             <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
             </button>
-
             <button class="btn btnMoney" data-value="25">
             <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
             </button>
@@ -100,7 +97,7 @@ require_once "models/manager/UserManager.php";
             </div>
             </div>
         </div>
-        <!-- bouttons section -->
+        <!-- boutons section -->
 
        
             
