@@ -10,8 +10,6 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  height: 100dvh;
-  width: 100dvh;
   margin: auto;
   background-color: #0a1122;
 }
@@ -25,16 +23,17 @@ body {
   gap: 10px;
 }
 .form_section {
-  width: 900px;
-  height: 70dvh;
+  width: 35dvw;
+  height: 90dvh;
+
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   margin-top: 5dvh;
-  gap: 20px;
+  gap: 10px;
   color: #000000;
   background-color: #ffffff;
   box-shadow: rgba(255, 255, 255, 0.007) 0px 2px 1px,
@@ -44,8 +43,8 @@ body {
 }
 
 .form_bg {
-  width: 900px;
-  height: 70dvh;
+  width: 35dvw;
+  height: 90dvh;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -54,7 +53,7 @@ body {
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
 
-  gap: 20px;
+  gap: 15px;
   color: #ffffff;
   background-image: url(/public/images/login.jpg);
   background-size: cover;
@@ -65,7 +64,7 @@ body {
 }
 form {
   width: 400px;
-  height: 50dvh;
+  height: 70dvh;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -83,7 +82,8 @@ form div {
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  justify-content: space-evenly;
+  gap: 20px;
 }
 
 .label_div {
@@ -92,6 +92,8 @@ form div {
   width: 100%;
   flex-direction: row;
   align-items: center;
+  height: 10px;
+  font-size: 12px;
 }
 
 .label_div p {
@@ -159,4 +161,8 @@ input {
 .submit_btn:active {
   box-shadow: none;
   transform: translateY(0);
+}
+
+.text_div {
+  margin-bottom: 20px;
 }
