@@ -235,48 +235,77 @@ function handleLose(player, blackJack = false) {
 
 // Boutons pour les mises
 let url = document.getElementById("url").value;
+let id_user = document.getElementById('user').value;
 let $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
 btnsMises.forEach(btn => {
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    /* if (currentMise !== 0) return; */
-    let money = btn.dataset.value;
 
-    if (!$moneyValues.includes(parseInt(money))) {
-      console.log("Erreur");
-      // exit(); // Cette ligne ne fonctionnera pas en JavaScript, voir la note ci-dessous
-      return;
-    } else {
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function () {
-        if (this.readyState === 4) {
-          if (this.status === 200) {
-            console.log("ok");
-            // si tout est ok on commence le jeu avec la mise sélectionné
-            btnStart.disabled = false;
-            // Assuming money is a valid number or a string that can be converted to a number
-            currentMise = parseInt(money);
+    $.ajax({
+      type: "GET",
+      url: "get_user_infos.php",
+      data: {
+        userId: id_user,
+      },
+      dataType: "json",
+      success: function (response) {
+        if (!response.error) {
 
-            // Check if playerMiseDisplay.textContent contains a number
-            let totalMise = parseInt(playerMiseDisplay.textContent) || 0;
+          /* if (currentMise !== 0) return; */
+          let money = btn.dataset.value;
 
-            // Add currentMise to totalMise
-            totalMise += currentMise;
-
-            // Update playerMiseDisplay.textContent with the calculated total
-            playerMiseDisplay.textContent = `${totalMise}`;
-
-            currentMoney -= currentMise;
-            playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
+          if (response.money < money) {
+            console.log("Vous n'avez pas assez d'argent");
           } else {
-            console.error("Erreur");
+            if (!$moneyValues.includes(parseInt(money))) {
+              console.log("Erreur");
+              // exit(); // Cette ligne ne fonctionnera pas en JavaScript, voir la note ci-dessous
+              return;
+            } else {
+              var xhttp = new XMLHttpRequest();
+              xhttp.onreadystatechange = function () {
+                if (this.readyState === 4) {
+                  if (this.status === 200) {
+                    console.log("ok");
+                    // si tout est ok on commence le jeu avec la mise sélectionné
+                    btnStart.disabled = false;
+                    // Assuming money is a valid number or a string that can be converted to a number
+                    currentMise = parseInt(money);
+
+                    // Check if playerMiseDisplay.textContent contains a number
+                    let totalMise = parseInt(playerMiseDisplay.textContent) || 0;
+
+                    // Add currentMise to totalMise
+                    totalMise += currentMise;
+
+                    // Update playerMiseDisplay.textContent with the calculated total
+                    playerMiseDisplay.textContent = `${totalMise}`;
+
+                    currentMoney -= currentMise;
+                    playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
+                  } else {
+                    console.error("Erreur");
+                  }
+                }
+              };
+              // window.location.href = url + "removeMoney/" + money;
+              xhttp.open("GET", url + "removeMoney/" + money, true);
+              xhttp.send();
+            }
           }
+
+
+
+        } else {
+          console.log("Erreur de récupération des données utilisateur");
         }
-      };
-      // window.location.href = url + "removeMoney/" + money;
-      xhttp.open("GET", url + "removeMoney/" + money, true);
-      xhttp.send();
-    }
+      },
+      error: function (xhr, status, error) {
+        reject("Erreur AJAX : " + error);
+      },
+    });
+
+
   });
 });
 
@@ -299,10 +328,10 @@ function addMoney(money) {
     e.preventDefault();
     const deckContainer = document.querySelector(".player_desk");
     deckContainer.style.width = "400px";
-
+ 
     playerCardsContainer.removeChild(playerCardsContainer.lastChild);
     const cardSplited = document.createElement('img');
-
+ 
     cardSplited.src = currentPlayer.usedCards[1].image;
     deckContainer.lastElementChild.appendChild(cardSplited);
     // console.log(currentPlayer.usedCards)
