@@ -81,7 +81,7 @@ nav a {
   border-radius: 100%;
   width: 64px;
   height: 64px;
-  box-shadow: rgba(255, 255, 255, 0.911) 0px 5px;
+  /* box-shadow: rgba(255, 255, 255, 0.911) 0px 5px; */
   border-color: #ffffff;
 }
 .money_btn button img {
@@ -248,3 +248,14 @@ a:hover {
   background-image: url(/public/images/cartes/card_back.png)!important;
 }
 
+.btnMoney {
+  position: relative; /* Establish button as reference point */
+  cursor: pointer;
+}
+
+.btnMoney .position-absolute {
+  position: absolute; /* Make p element positionable */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* Center p element */
+}

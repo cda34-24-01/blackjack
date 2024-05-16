@@ -43,6 +43,7 @@ class UserController
 
     public function inscription_validation()
     {
+        unset($_SESSION['error']);
         try {
             if (empty($_POST['pseudo']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['password_confirm'])) {
                 //throw new Exception("Veuillez remplir tous les champs");
@@ -84,13 +85,13 @@ class UserController
                 $this->redirectInscription();
             } */
             $user = $this->userManager->FindUserByPseudo($_POST['pseudo']);
-            if (!empty($user)) {
+            if ($user) {
                 //throw new Exception("Ce pseudo est déjà utilisé");
                 $_SESSION['error'] = "Ce pseudo est déjà utilisé";
                 $this->redirectInscription();
             }
             $user = $this->userManager->FindUserByEmail($_POST['email']);
-            if (!empty($user)) {
+            if ($user) {
                 //throw new Exception("Cette adresse email est déjà utilisée");
                 $_SESSION['error'] = "Cette adresse email est déjà utilisée";
                 $this->redirectInscription();
@@ -174,6 +175,11 @@ class UserController
 
     public function removeMoney($money)
     {
+        if (!isset($_SESSION['id'])) {
+            header("Location: /connexion");
+            return;
+        }
+
         $id = $_SESSION['id'];
 
         $moneyValues = [1, 5, 25, 50, 100, 500, 1000];

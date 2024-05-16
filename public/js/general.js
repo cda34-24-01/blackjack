@@ -3,6 +3,8 @@ import { player } from "./player.js";
 import { getUserInfos } from "./getuser.js";
 
 // Prendre les elements HTML
+let divJetons = document.querySelector(".money_btn");
+const btnStart = document.getElementById('start');
 const btnHit = document.getElementById("hit");
 const btnStay = document.getElementById("stay");
 const btnLeave = document.getElementById("leave");
@@ -14,10 +16,12 @@ const playerWins = document.querySelector(".ui_wins");
 const playerLoses = document.querySelector(".ui_loses");
 const playerCardsContainer = document.getElementById("cardsPlayer1");
 const playerMoneyDisplay = document.querySelector(".ui_money");
+let playerMiseDisplay = document.querySelector(".ui_mise");
 
 const messageModal = document.querySelector(".message_modal");
 const btnContinuePlaying = document.getElementById("btn_continue_game");
 const btnExitGame = document.getElementById("btn_exit_game");
+
 // le croupier
 const croupierDeck = document.getElementById("cardsCroupier");
 const croupierScore = document.getElementById("croupier_score");
@@ -26,6 +30,14 @@ const moneySound = document.getElementById("moneyPick");
 const playerWinSound = document.getElementById("playerWinSound");
 const audioBtn = document.getElementById("audioMute");
 let musicNone = false;
+
+document.addEventListener("DOMContentLoaded", () => {
+  btnStay.style.display = "none";
+  btnHit.style.display = "none";
+  btnLeave.style.display = "none";
+  btnSplit.style.display = "none";
+  btnStart.disabled = true;
+});
 
 audioBtn.addEventListener("click", () => {
   if (musicNone == false) {
@@ -98,12 +110,12 @@ function startGame(currentPlayer) {
     areBtnsAvailables = true;
   }, 2000);
 };
-  // case de split
-  /* currentPlayer.currentHand = [2, 2]
-  console.log(currentPlayer.currentHand);
-  if (currentPlayer.currentHand[0] === currentPlayer.currentHand[1]) {
-      btnSplit.classList.remove("hidden");
-  } */
+// case de split
+/* currentPlayer.currentHand = [2, 2]
+console.log(currentPlayer.currentHand);
+if (currentPlayer.currentHand[0] === currentPlayer.currentHand[1]) {
+    btnSplit.classList.remove("hidden");
+} */
 
 function newRound() {
   messageModal.classList.add("hidden");
@@ -114,6 +126,13 @@ function newRound() {
   playerWins.textContent = `Wins: ${currentPlayer.wins}`;
   playerLoses.textContent = `Loses: ${currentPlayer.loses}`;
   currentMise = 0;
+  playerMiseDisplay.textContent = `${currentMise}`;
+  btnStart.style.display = "block";
+  btnStart.disabled = true;
+  btnLeave.style.display = "none";
+  btnHit.style.display = "none";
+  btnStay.style.display = "none";
+  divJetons.style.display = "block";
   // startGame(currentPlayer);
 };
 
@@ -123,14 +142,14 @@ function handleHitCart(player) {
   cardsInGame = player.refreshCardsInGame();
   if (player.name === 'Croupier') {
     croupierScore.textContent = player.currentHand[0];
-    } else {
-      playerScore.textContent = player.score;
-      // On a blackjack ou on dépasse 21 alors on ne peut pas jouer plus des cartes
-      if (player.score > 21) {
-        handleLose(currentPlayer);
-      }
+  } else {
+    playerScore.textContent = player.score;
+    // On a blackjack ou on dépasse 21 alors on ne peut pas jouer plus des cartes
+    if (player.score > 21) {
+      handleLose(currentPlayer);
     }
-    console.log(cardsInGame.length);
+  }
+  console.log(cardsInGame.length);
 };
 
 function checkScores(player) {
@@ -141,32 +160,32 @@ function checkScores(player) {
   const playerBlackJack = player.score === 21;
   const croupierBlackJack = croupier.score === 21;
 
-    if (playerWin && !playerPass21 && !playerBlackJack) {
-      handleWin(player);
+  if (playerWin && !playerPass21 && !playerBlackJack) {
+    handleWin(player);
   } else if (croupierPass21 && !playerPass21 && !playerBlackJack) {
-      handleWin(player);
+    handleWin(player);
   } else if (playerBlackJack && !croupierBlackJack) {
-      // on gagne avec blackjack
-      handleWin(player, true);
+    // on gagne avec blackjack
+    handleWin(player, true);
   } else if ((playerPass21 && croupierPass21) || player.score === croupier.score) {
-      handleEquality(player);
+    handleEquality(player);
   } else if (!playerBlackJack && croupierBlackJack) {
-      // on perde pour blackjack
-      handleLose(player, true);
+    // on perde pour blackjack
+    handleLose(player, true);
   } else if (croupierWin && !croupierPass21) {
-      handleLose(player);
+    handleLose(player);
   } else if (playerPass21 && !croupierPass21) {
-      handleLose(player);
+    handleLose(player);
   } else if (croupier.usedCards.length === 2 && croupierBlackJack && playerBlackJack) {
-      // ici on rembourse la mise...
-      handleEquality(player);
+    // ici on rembourse la mise...
+    handleEquality(player);
   }
 };
 async function handleStay(player) {
   if (!areBtnsAvailables && currentMise === 0) return;
   croupierDeck.lastChild.src = croupier.usedCards[1].image;
   croupierScore.textContent = croupier.score;
-  
+
   // Le croupier demandera une carte s'il n'as pas 17 points
   for (let delay = 500; croupier.score < 17; delay += 500) {
     await new Promise(resolve => setTimeout(resolve, delay));
@@ -179,23 +198,23 @@ async function handleStay(player) {
 }
 function showModal(message, colorAlert, sound) {
   areBtnsAvailables = false;
-    sound.play();
-    messageModal.firstElementChild.textContent = message;
-    messageModal.classList.remove("hidden");
-    messageModal.style.backgroundColor = colorAlert;
+  sound.play();
+  messageModal.firstElementChild.textContent = message;
+  messageModal.classList.remove("hidden");
+  messageModal.style.backgroundColor = colorAlert;
 }
 function handleEquality(player) {
-    showModal('Equality!', '#8bc959', playerWinSound);
+  showModal('Equality!', '#8bc959', playerWinSound);
 };
 function handleWin(player, blackJack = false) {
-    showModal('You win!', '#8bc959', playerWinSound);
-    if (blackJack) {
-        console.log('BlackJack!!');
-    }
-    currentMoney += currentMise;
-    playerMoneyDisplay.style.color = '#8bc959';
-    playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
-    player.addWin();
+  showModal('You win!', '#8bc959', playerWinSound);
+  if (blackJack) {
+    console.log('BlackJack!!');
+  }
+  currentMoney += currentMise;
+  playerMoneyDisplay.style.color = '#8bc959';
+  playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
+  player.addWin();
 };
 function handleLose(player, blackJack = false) {
   showModal('You Lose!', '#ff8e8e', moneySound);
@@ -209,13 +228,13 @@ function handleLose(player, blackJack = false) {
 };
 
 
-// Boutons pour les misses
+// Boutons pour les mises
 let url = document.getElementById("url").value;
 let $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
 btnsMises.forEach(btn => {
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    if (currentMise !== 0) return;
+    /* if (currentMise !== 0) return; */
     let money = btn.dataset.value;
 
     if (!$moneyValues.includes(parseInt(money))) {
@@ -229,8 +248,10 @@ btnsMises.forEach(btn => {
           if (this.status === 200) {
             console.log("ok");
             // si tout est ok on commence le jeu avec la mise sélectionné
-            currentMise = parseInt(money);
-            startGame(currentPlayer);
+            btnStart.disabled = false;
+             currentMise = parseInt(money);
+             playerMiseDisplay.textContent = `${currentMise}`;
+            /*startGame(currentPlayer); */
           } else {
             console.error("Erreur");
           }
@@ -238,7 +259,6 @@ btnsMises.forEach(btn => {
       };
       // window.location.href = url + "removeMoney/" + money;
       xhttp.open("GET", url + "removeMoney/" + money, true);
-      // xhttp.open("GET", `${url}removeMoney/${money}&_=${new Date().getTime()}`, true);
       xhttp.send();
       btnsMises.forEach((e) => {
         e.disabled = true;
@@ -247,7 +267,7 @@ btnsMises.forEach(btn => {
         }, 2000);
       });
     }
-    });
+  });
 });
 // Bouton pour Split
 /* btnSplit.addEventListener("click", (e)=> {
@@ -264,11 +284,22 @@ btnsMises.forEach(btn => {
     console.log(currentPlayer.usedCards[1])
 }) */
 
+
+btnStart.addEventListener("click", (e) => {
+  e.preventDefault();
+  btnStart.style.display = "none";
+  btnLeave.style.display = "block";
+  btnHit.style.display = "block";
+  btnStay.style.display = "block";
+  divJetons.style.display = "none";
+  startGame(currentPlayer);
+});
+
 // Bouton pour abandonner
-btnLeave.addEventListener("click", (e)=> {
-    if (!areBtnsAvailables && currentMise === 0) return;
-    e.preventDefault();
-    console.log("mise devise en 2");
+btnLeave.addEventListener("click", (e) => {
+  if (!areBtnsAvailables && currentMise === 0) return;
+  e.preventDefault();
+  console.log("mise devise en 2");
 });
 // Bouton pour demander une carte (Hit)
 btnHit.addEventListener("click", (e) => {

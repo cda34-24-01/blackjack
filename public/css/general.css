@@ -381,4 +381,12 @@
     cursor: pointer;
 }
 
+.position-absolute {
+    position: absolute;
+}
+
+.z-index-top {
+    z-index: 1000;
+}
+
 /* FIN GENERAL */
