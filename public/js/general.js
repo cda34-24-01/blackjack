@@ -246,7 +246,7 @@ function handleLose(player, blackJack = false) {
 
 // Boutons pour les mises
 let url = document.getElementById("url").value;
-let id_user = document.getElementById('user').value;
+let id_user = document.getElementById("user").value;
 let $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
 btnsMises.forEach((btn) => {
   btn.addEventListener("click", (e) => {
@@ -261,7 +261,6 @@ btnsMises.forEach((btn) => {
       dataType: "json",
       success: function (response) {
         if (!response.error) {
-
           /* if (currentMise !== 0) return; */
           let money = btn.dataset.value;
 
@@ -284,7 +283,8 @@ btnsMises.forEach((btn) => {
                     currentMise = parseInt(money);
 
                     // Check if playerMiseDisplay.textContent contains a number
-                    let totalMise = parseInt(playerMiseDisplay.textContent) || 0;
+                    let totalMise =
+                      parseInt(playerMiseDisplay.textContent) || 0;
 
                     // Add currentMise to totalMise
                     totalMise += currentMise;
@@ -304,9 +304,6 @@ btnsMises.forEach((btn) => {
               xhttp.send();
             }
           }
-
-
-
         } else {
           console.log("Erreur de récupération des données utilisateur");
         }
@@ -315,8 +312,6 @@ btnsMises.forEach((btn) => {
         reject("Erreur AJAX : " + error);
       },
     });
-
-
   });
 });
 

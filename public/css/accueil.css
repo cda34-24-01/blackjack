@@ -10,14 +10,12 @@ body {
   justify-content: center;
   align-items: center;
   overflow: hidden;
-
   margin: auto;
   background-color: #0a1122;
 }
 
 .header_text {
   width: 400px;
-
   display: flex;
   flex-direction: column;
   padding: 7px;
@@ -30,43 +28,36 @@ body {
   padding: 7px;
 }
 
+.form_bg,
 .form_section {
   width: 35dvw;
   height: 90dvh;
   display: flex;
+  margin-top: 5dvh;
+  gap: 20px;
+  box-shadow: rgba(255, 255, 255, 0.007) 0 2px 1px,
+    rgba(255, 254, 254, 0.041) 0 4px 2px, rgba(0, 0, 0, 0.007) 0 8px 4px,
+    rgba(255, 253, 253, 0.09) 0 16px 8px, rgba(255, 251, 251, 0.021) 0 32px 16px;
+}
+
+.form_section {
   flex-direction: column;
   justify-content: center;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
-  margin-top: 5dvh;
   position: relative;
-  gap: 20px;
-  color: #000000;
-  background-color: #ffffff;
-  box-shadow: rgba(255, 255, 255, 0.007) 0px 2px 1px,
-    rgba(255, 254, 254, 0.041) 0px 4px 2px, rgba(0, 0, 0, 0.007) 0px 8px 4px,
-    rgba(255, 253, 253, 0.09) 0px 16px 8px,
-    rgba(255, 251, 251, 0.021) 0px 32px 16px;
+  color: #000;
+  background-color: #fff;
 }
 
 .form_bg {
-  width: 35dvw;
-  height: 90dvh;
-  display: flex;
   justify-content: flex-end;
   align-items: start;
-  margin-top: 5dvh;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
-
-  gap: 20px;
-  color: #ffffff;
+  color: #fff;
   background-image: url(/public/images/login.jpg);
   background-size: cover;
-  box-shadow: rgba(255, 255, 255, 0.007) 0px 2px 1px,
-    rgba(255, 254, 254, 0.041) 0px 4px 2px, rgba(0, 0, 0, 0.007) 0px 8px 4px,
-    rgba(255, 253, 253, 0.09) 0px 16px 8px,
-    rgba(255, 251, 251, 0.021) 0px 32px 16px;
 }
 
 .nav_div {
@@ -77,8 +68,9 @@ body {
   align-items: center;
 }
 
+.home_div a,
 .nav_div a {
-  color: #ffffff;
+  color: #fff;
   text-decoration: none;
 }
 
@@ -91,18 +83,15 @@ body {
 
 .home_div a {
   color: #070707;
-  text-decoration: none;
 }
 
-.home_div a:hover {
+.home_div a:hover,
+.nav_div a:hover {
   transition: all 300ms;
-
   color: #8bc959;
   text-decoration: underline;
 }
 
 .nav_div a:hover {
-  transition: all 300ms;
   color: #ff8e8e;
-  text-decoration: underline;
 }
