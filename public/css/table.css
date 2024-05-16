@@ -149,13 +149,13 @@ a:hover {
 }
 
 .cards_container {
-  background-color: #8bc9598e;
+  /* background-color: #8bc9598e; */
   width: 100%;
   display: flex;
   flex-direction: row;
 }
 .split {
-  background-color: #5f3a0b;
+  /* background-color: #5f3a0b; */
 }
 
 .player_ui .ui_money {
@@ -164,7 +164,7 @@ a:hover {
   width: 150px;
 }
 .player_desk {
-  background-color: aqua;
+  /* background-color: aqua; */
   width: 200px;
   height: 180px;
   display: flex;
@@ -177,7 +177,7 @@ a:hover {
 }
 
 .ia_card_section {
-  background-color: aquamarine;
+  /* background-color: aquamarine; */
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

@@ -1,5 +1,10 @@
 <?php
 require_once "models/manager/UserManager.php";
+
+if (!isset($_SESSION['id'])) {
+    header('Location: connexion');
+    exit;
+}
 ?>
 
 <!doctype html>
@@ -71,29 +76,28 @@ require_once "models/manager/UserManager.php";
                     <p class="position-absolute z-index-top noir valueCoin">1</p>
                     <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
                 </button>
-
                 <button class="btnMoney" data-value="5">
-                <p class="position-absolute z-index-top noir valueCoin">5</p>
+                    <p class="position-absolute z-index-top noir valueCoin">5</p>
                     <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
                 </button>
                 <button class="btnMoney" data-value="25">
-                <p class="position-absolute z-index-top noir valueCoin">25</p>
+                    <p class="position-absolute z-index-top noir valueCoin">25</p>
                     <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
                 </button>
                 <button class="btnMoney" data-value="50">
-                <p class="position-absolute z-index-top noir valueCoin">50</p>
+                    <p class="position-absolute z-index-top noir valueCoin">50</p>
                     <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
                 </button>
                 <button class="btnMoney" data-value="100">
-                <p class="position-absolute z-index-top noir valueCoin">100</p>
+                    <p class="position-absolute z-index-top noir valueCoin">100</p>
                     <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
                 </button>
                 <button class="btnMoney" data-value="500">
-                <p class="position-absolute z-index-top noir valueCoin">500</p>
+                    <p class="position-absolute z-index-top noir valueCoin">500</p>
                     <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
                 </button>
                 <button class="btnMoney" data-value="1000">
-                <p class="position-absolute z-index-top noir valueCoin">1000</p>
+                    <p class="position-absolute z-index-top noir valueCoin">1000</p>
                     <img src="public/images/Chips/chipBlueWhite.png" alt="chips coins" />
                 </button>
             </div>
@@ -119,6 +123,8 @@ require_once "models/manager/UserManager.php";
         </div>
     </div>
     </div>
+
+    <input type="hidden" id="user" value="<?= $user['id_utilisateur'] ?>">
     <input type="hidden" id="url" value="<?= URL ?>">
     <script type="module" src="<?= URL . "public/js/general.js" ?> "></script>
     <script type="module" src="<?= URL . "public/js/table.js" ?> "></script>
