@@ -45,14 +45,14 @@ body {
 header {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
 }
 
 nav {
   width: 20%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
 }
 
@@ -66,6 +66,12 @@ nav a {
   height: 25px;
   width: 25px;
   background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+}
+
+nav img {
+  height: 25px;
+  width: 25px;
   border-radius: 50%;
 }
 
@@ -152,11 +158,10 @@ a:hover {
   background-color: #5f3a0b;
 }
 
-.player_ui {
-  margin-top: 50px;
+.player_ui .ui_money {
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  justify-content: space-evenly;
+  width: 150px;
 }
 .player_desk {
   background-color: aqua;
@@ -245,7 +250,7 @@ a:hover {
 }
 
 .card-hidden {
-  background-image: url(/public/images/cartes/card_back.png)!important;
+  background-image: url(/public/images/cartes/card_back.png) !important;
 }
 
 .btnMoney {

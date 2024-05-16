@@ -135,7 +135,7 @@ class UserController
 
                 if (password_verify($_POST['password'], $user['mdp'])) {
                     $this->sessionUser($user);
-                    header("Location: /accueil");
+                    header("Location: /table");
                 } else {
                     throw new Exception("Mot de passe incorrect");
                     $_SESSION['error'] = "Identifiant ou mot de passe incorrect";
