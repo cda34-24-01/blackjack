@@ -66,6 +66,10 @@ try {
                 $userController->deconnexionUser();
                 break;
 
+            case "addMoney":
+                $userController->addMoney($url[1]);
+                break;
+
             case "removeMoney":
                 $userController->removeMoney($url[1]);
                 break;
