@@ -110,18 +110,6 @@ if (!isset($_SESSION['id'])) {
             </div>
 
         </div>
-        <div class="player_ui">
-            <p class="ui_money">Money 💵: <?= $user['money'] ?></p>
-            <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
-            <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
-        </div>
-        <!-- message modal (win ou lose) -->
-        <div class="hidden message_modal">
-            <p> <!-- Message rendu depuis general.js --> </p>
-        </div>
-        <!-- boutons section -->
-
-
         <!-- message modal (win ou lose) -->
         <div class="hidden message_modal">
             <p> <!-- Message rendu depuis general.js --> </p>
