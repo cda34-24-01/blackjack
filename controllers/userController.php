@@ -196,4 +196,16 @@ class UserController
             $this->userManager->removeMoney($id, $money);
         }
     }
+
+    public function toggleSound()
+    {
+        if (!isset($_SESSION['id'])) {
+            header("Location: /connexion");
+            return;
+        }
+
+        $id = $_SESSION['id'];
+
+        $this->userManager->toggleSound($id);
+    }
 }

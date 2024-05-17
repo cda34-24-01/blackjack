@@ -57,7 +57,15 @@ audioBtn.addEventListener("click", () => {
       (el) => (el.muted = false)
     );
   }
+  toggleSound();
 });
+
+function turnOffSound() {
+  Array.from(document.querySelectorAll("audio")).forEach((el) => (el.muted = true));
+  musicNone = true;
+  volumeBtn.src = "http://localhost/public/images/icons/volume_off.png";
+}
+
 
 // Initialiser le jeu de cartes
 let cardsInGame = cards;
@@ -138,6 +146,7 @@ function newRound() {
   btnHit.style.display = "none";
   btnStay.style.display = "none";
   divJetons.style.display = "block";
+  totalMise = 0;
   // startGame(currentPlayer);
 }
 
@@ -217,7 +226,7 @@ function showModal(message, colorAlert, sound) {
 }
 function handleEquality(player) {
   showModal("Equality!", "#8bc959", playerWinSound);
-  currentMoney += currentMise * 2;
+  currentMoney += totalMise * 2;
   playerMoneyDisplay.style.color = "#8bc959";
   playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
   addMoney(totalMise);
@@ -227,7 +236,7 @@ function handleWin(player, blackJack = false) {
   if (blackJack) {
     console.log("BlackJack!!");
   }
-  currentMoney += currentMise * 2;
+  currentMoney += totalMise * 2;
   playerMoneyDisplay.style.color = "#8bc959";
   playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
   addMoney(totalMise * 2);
@@ -381,6 +390,21 @@ btnContinuePlaying.addEventListener("click", (e) => {
   newRound();
 });
 
+function toggleSound() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState === 4) {
+      if (this.status === 200) {
+        console.log("Sound Toggle");
+      }
+    }
+  };
+  // window.location.href = url + "removeMoney/" + money;
+  xhttp.open("GET", url + "toggleSound", true);
+  xhttp.send();
+}
+
+
 /* 
 Distribution des cartes :
      
@@ -403,3 +427,4 @@ Si le croupier tire un AS face visible ( donc sa première carte ) Et que sa car
      
 Le jeu s’arrête et le croupier gagne SAUF si le joueur a un blackjack aussi alors le jeu s'arrête quand même mais le joueur est remboursée de sa somme misée.
 */
+

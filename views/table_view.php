@@ -5,6 +5,8 @@ if (!isset($_SESSION['id'])) {
     header('Location: connexion');
     exit;
 }
+
+
 ?>
 
 <!doctype html>
@@ -26,9 +28,12 @@ if (!isset($_SESSION['id'])) {
 </head>
 
 <body>
+ <?php if ($user['sound'] == 0) {
+  echo "<script>turnOffSound();</script>";
+} ?>
     <audio id="cardHit" src="/public/Audio/cardPlace3.ogg"></audio>
-    <audio id=moneyPick src="/public/Audio/chipsHandle5.ogg"></audio>
-    <audio id=playerWinSound src="/public/Audio/player-wins.ogg"></audio>
+    <audio id="moneyPick" src="/public/Audio/chipsHandle5.ogg"></audio>
+    <audio id="playerWinSound" src="/public/Audio/player-wins.ogg"></audio>
 
     <input id="user_id" type="hidden" value=<?= $_SESSION['id'] ?>>
     <div class="container">
