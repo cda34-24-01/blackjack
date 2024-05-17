@@ -37,11 +37,14 @@ if (!isset($_SESSION['id'])) {
                 <p class="ui_money">Money 💵: <?= $user['money'] ?></p>
                 <p>Mise : <span class="ui_mise"></span></p>
             </div>
+            <div class="player_ui">
+                <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
+                <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
+            </div>
             <div class="logo">BlackJack</div>
             <nav>
-                <a href="compte"><img src="public/images/icons/person.svg" /></a>
-                <a href="aide"><img src="public/images/icons/help.svg" /></a>
-                <a id="audioMute"><img src="public/images/icons/volume.svg" /></a>
+                <a href="aide" target="_blank"><img src="public/images/icons/help.svg" /></a>
+                <a id="audioMute"><img  id="volume_btn" src="public/images/icons/volume.svg" /></a>
                 <a href="connexion"><img src="public/images/icons/logout.svg" /></a>
             </nav>
         </header>
@@ -105,10 +108,7 @@ if (!isset($_SESSION['id'])) {
                 <button id="start">Start</button>
                 <button id="split" class="hidden">Split</button>
             </div>
-            <div class="player_ui">
-                <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
-                <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
-            </div>
+        
         </div>
     </div>
     <!-- boutons section -->
