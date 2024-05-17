@@ -208,7 +208,7 @@ function handleEquality(player) {
   currentMoney += (currentMise * 2);
   playerMoneyDisplay.style.color = '#8bc959';
   playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
-  addMoney(currentMise);
+  addMoney(totalMise);
 };
 function handleWin(player, blackJack = false) {
   showModal('You win!', '#8bc959', playerWinSound);
@@ -218,7 +218,7 @@ function handleWin(player, blackJack = false) {
   currentMoney += (currentMise * 2);
   playerMoneyDisplay.style.color = '#8bc959';
   playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
-  addMoney(currentMise * 2);
+  addMoney(totalMise * 2);
   player.addWin();
 };
 function handleLose(player, blackJack = false) {
@@ -236,6 +236,7 @@ function handleLose(player, blackJack = false) {
 // Boutons pour les mises
 let url = document.getElementById("url").value;
 let id_user = document.getElementById('user').value;
+let totalMise = 0;
 let $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
 btnsMises.forEach(btn => {
   btn.addEventListener('click', (e) => {
@@ -270,10 +271,11 @@ btnsMises.forEach(btn => {
                     // si tout est ok on commence le jeu avec la mise sélectionné
                     btnStart.disabled = false;
                     // Assuming money is a valid number or a string that can be converted to a number
+
                     currentMise = parseInt(money);
 
                     // Check if playerMiseDisplay.textContent contains a number
-                    let totalMise = parseInt(playerMiseDisplay.textContent) || 0;
+                    totalMise = parseInt(playerMiseDisplay.textContent) || 0;
 
                     // Add currentMise to totalMise
                     totalMise += currentMise;
