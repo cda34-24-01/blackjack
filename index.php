@@ -74,6 +74,10 @@ try {
                 $userController->removeMoney($url[1]);
                 break;
 
+            case "toggleSound":
+                $userController->toggleSound();
+                break;
+
             case "aide":
                 require "views/aide_view.php";
                 break;

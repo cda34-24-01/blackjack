@@ -130,4 +130,27 @@ class UserManager extends Model
 
         return $req->fetch(PDO::FETCH_ASSOC);
     }
+
+    public function toggleSound($id)
+    {
+        $sql = 'SELECT sound FROM utilisateurs WHERE id_utilisateur = :id';
+        $req = $this->getDB()->prepare($sql);
+        $req->execute([
+            "id" => $id
+        ]);
+
+        $sound = $req->fetch(PDO::FETCH_ASSOC);
+
+        if ($sound['sound'] == 1) {
+            $sql = 'UPDATE utilisateurs SET sound = 0 WHERE id_utilisateur = :id';
+        } else {
+            $sql = 'UPDATE utilisateurs SET sound = 1 WHERE id_utilisateur = :id';
+        }
+        $req = $this->getDB()->prepare($sql);
+        $req->execute([
+            "id" => $id
+        ]);
+
+        return $req->fetch(PDO::FETCH_ASSOC);
+    }
 }
