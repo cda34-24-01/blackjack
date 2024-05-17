@@ -203,24 +203,14 @@ async function handleStay(player) {
   if (!areBtnsAvailables && currentMise === 0) return;
   croupierDeck.lastChild.src = croupier.usedCards[croupier.usedCards.length - 1].image;
   croupierScore.textContent = croupier.score;
-  const hitTo17 = () => {
-    croupier.demanderUneCarte();
-    cardsInGame = croupier.refreshCardsInGame();
-    croupierScore.textContent = croupier.score;
-  }
-  let delay = 500;
-  while (croupier.score < 17) {
-    areBtnsAvailables = false;
-    hitTo17();
-    
-  }
   // Le croupier demandera une carte s'il n'as pas 17 points
-  /* for (let delay = 500; croupier.score < 17; delay += 500) {
+  for (let delay = 500; croupier.score < 17; delay += 500) {
+    areBtnsAvailables = false;
     await new Promise((resolve) => setTimeout(resolve, delay));
     croupier.demanderUneCarte();
     cardsInGame = croupier.refreshCardsInGame();
     croupierScore.textContent = croupier.score;
-  } */
+  }
   // Comparer les scores
   checkScores(player);
 }
@@ -280,7 +270,6 @@ btnsMises.forEach((btn) => {
         if (!response.error) {
           /* if (currentMise !== 0) return; */
           let money = btn.dataset.value;
-          console.log(money);
           if (response.money < money) {
             console.log("Vous n'avez pas assez d'argent");
           } else {
@@ -363,6 +352,7 @@ function addMoney(money) {
 }) */
 
 btnStart.addEventListener("click", (e) => {
+  if(currentMise === 0) return;
   e.preventDefault();
   btnStart.style.display = "none";
   btnLeave.style.display = "block";
