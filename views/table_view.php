@@ -71,7 +71,7 @@ require_once "models/manager/UserManager.php";
             +1000
         </button>
         <div class="player_ui">
-            <p >Money 💵: <?= $user['money'] ?></p>
+            <p class="ui_money">Money 💵: <?= $user['money'] ?></p>
             <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
             <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
         </div>
