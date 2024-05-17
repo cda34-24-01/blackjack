@@ -31,7 +31,6 @@ const playerWinSound = document.getElementById("playerWinSound");
 const audioBtn = document.getElementById("audioMute");
 let musicNone = false;
 const volumeBtn = document.getElementById("volume_btn");
-console.log(volumeBtn);
 
 document.addEventListener("DOMContentLoaded", () => {
   btnStay.style.display = "none";
@@ -84,7 +83,6 @@ getUserInfos(userId.value)
   .catch((error) => {
     console.error(error);
   });
-console.log(currentPlayer);
 // Instancier l'objet joueur pour le croupier
 let croupierWins = 0;
 let croupierLoses = 0;
@@ -154,7 +152,6 @@ function handleHitCart(player) {
       handleLose(currentPlayer);
     }
   }
-  console.log(cardsInGame.length);
 }
 
 function checkScores(player) {
@@ -195,16 +192,26 @@ function checkScores(player) {
 }
 async function handleStay(player) {
   if (!areBtnsAvailables && currentMise === 0) return;
-  croupierDeck.lastChild.src = croupier.usedCards[1].image;
+  croupierDeck.lastChild.src = croupier.usedCards[croupier.usedCards.length - 1].image;
   croupierScore.textContent = croupier.score;
-
-  // Le croupier demandera une carte s'il n'as pas 17 points
-  for (let delay = 500; croupier.score < 17; delay += 500) {
-    await new Promise((resolve) => setTimeout(resolve, delay));
+  const hitTo17 = () => {
     croupier.demanderUneCarte();
     cardsInGame = croupier.refreshCardsInGame();
     croupierScore.textContent = croupier.score;
   }
+  let delay = 500;
+  while (croupier.score < 17) {
+    areBtnsAvailables = false;
+    hitTo17();
+    
+  }
+  // Le croupier demandera une carte s'il n'as pas 17 points
+  /* for (let delay = 500; croupier.score < 17; delay += 500) {
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    croupier.demanderUneCarte();
+    cardsInGame = croupier.refreshCardsInGame();
+    croupierScore.textContent = croupier.score;
+  } */
   // Comparer les scores
   checkScores(player);
 }
@@ -264,7 +271,7 @@ btnsMises.forEach((btn) => {
         if (!response.error) {
           /* if (currentMise !== 0) return; */
           let money = btn.dataset.value;
-
+          console.log(money);
           if (response.money < money) {
             console.log("Vous n'avez pas assez d'argent");
           } else {
@@ -358,20 +365,20 @@ btnStart.addEventListener("click", (e) => {
 
 // Bouton pour abandonner
 btnLeave.addEventListener("click", (e) => {
-  if (!areBtnsAvailables && currentMise === 0) return;
+  if (!areBtnsAvailables || currentMise === 0) return;
   e.preventDefault();
   console.log("mise devise en 2");
 });
 // Bouton pour demander une carte (Hit)
 btnHit.addEventListener("click", (e) => {
-  if (!areBtnsAvailables && currentMise === 0) return;
+  if (!areBtnsAvailables || currentMise === 0) return;
   cardSound.play();
   e.preventDefault();
   handleHitCart(currentPlayer);
 });
 // Bouton pour stay
 btnStay.addEventListener("click", (e) => {
-  if (!areBtnsAvailables && currentMise === 0) return;
+  if (!areBtnsAvailables || currentMise === 0) return;
   e.preventDefault();
   handleStay(currentPlayer);
 });

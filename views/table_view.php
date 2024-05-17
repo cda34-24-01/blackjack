@@ -44,7 +44,7 @@ if (!isset($_SESSION['id'])) {
             <div class="logo">BlackJack</div>
             <nav>
                 <a href="aide" target="_blank"><img src="public/images/icons/help.svg" /></a>
-                <a id="audioMute"><img  id="volume_btn" src="public/images/icons/volume.svg" /></a>
+                <a id="audioMute"><img id="volume_btn" src="public/images/icons/volume.svg" /></a>
                 <a href="connexion"><img src="public/images/icons/logout.svg" /></a>
             </nav>
         </header>
@@ -108,20 +108,16 @@ if (!isset($_SESSION['id'])) {
                 <button id="start">Start</button>
                 <button id="split" class="hidden">Split</button>
             </div>
-        
-        </div>
-    </div>
-    <!-- boutons section -->
 
-
-    <!-- message modal (win ou lose) -->
-    <div class="hidden message_modal">
-        <p> <!-- Message rendu depuis general.js --> </p>
-        <div class="div">
-            <button id="btn_continue_game">Continuer</button>
-            <button id="btn_exit_game">Sortir</button>
         </div>
-    </div>
+        <!-- message modal (win ou lose) -->
+        <div class="hidden message_modal">
+            <p> <!-- Message rendu depuis general.js --> </p>
+            <div class="div">
+                <button id="btn_continue_game">Continuer</button>
+                <button id="btn_exit_game">Sortir</button>
+            </div>
+        </div>
     </div>
 
     <input type="hidden" id="user" value="<?= $user['id_utilisateur'] ?>">
