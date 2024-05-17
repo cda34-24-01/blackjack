@@ -14,39 +14,42 @@
     <div class="container">
         <div class="head_content">
 
-            <p>FAQS</p>
 
             <h1>Questions les plus fréquents</h1>
-            <p>Trouve une question avec le jeux et la gestion du compte</p>
+            <p>Tous ce que vous devez savoir sur les régle du jeux</p>
         </div>
 
 
 
         <div class="faq_container">
             <div class="faq_content">
-                <p>Regle du jeux</p>
+                <p>Le but du jeu est d'obtenir une main dont la valeur est la plus proche possible de 21 sans dépasser ce total</p>
             </div>
             <div class="faq_content">
-                <p>j'ai perdu l'accés a mon compte</p>
+                <p>Les cartes numérotées de 2 à 10 ont leur valeur nominale, les figures (roi, dame, valet) valent 10 points et l'as peut valoir 1 ou 11 points selon ce qui est le plus avantageux pour le joueur.</p>
             </div>
             <div class="faq_content">
-                <p>je peut retire mon argent en paypal ?</p>
+                <p>Le joueur peut demander des cartes supplémentaires ("hit") pour améliorer sa main ou rester avec sa main actuelle ("stand").?</p>
             </div>
             <div class="faq_content">
-                <p>quel est le minimum d'argent en compte pour jouer ?</p>
+                <p>Le joueur peut doubler sa mise et recevoir une seule carte supplémentaire ("double down").</p>
             </div>
             <div class="faq_content">
-                <p>le jeux est disponible sur smartphone ?</p>
+                <p>Le joueur peut séparer une paire de cartes de même valeur en deux mains distinctes et miser une seconde fois ("split").</p>
             </div>
             <div class="faq_content">
-                <p>je sais pas quoi mettre mais tkt</p>
+                <p>Si le total des cartes du joueur dépasse 21, il perd automatiquement la partie ("bust").</p>
+            </div>
+            <div class="faq_content">
+                <p>Le croupier doit tirer des cartes supplémentaires jusqu'à ce que sa main atteigne au moins 17.</p>
+            </div>
+            <div class="faq_content">
+                <p>Le joueur gagne si sa main est plus proche de 21 que celle du croupier sans dépasser ce total.</p>
             </div>
 
 
 
-            <p>Contactez-nous à blackJack@JLF.com</p>
-        </div>
-    </div>
+       
     </div>
 
 

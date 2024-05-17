@@ -21,11 +21,6 @@ class UserController
         $this->userManager->addLose($id);
     }
 
-    public function addMoney($id, $money)
-    {
-        $this->userManager->addMoney($id, $money);
-    }
-
     public function getWins($id)
     {
         return $this->userManager->getWins($id);
@@ -43,6 +38,8 @@ class UserController
 
     public function inscription_validation()
     {
+        var_dump($_POST['pseudo']);
+        unset($_SESSION['error']);
         try {
             if (empty($_POST['pseudo']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['password_confirm'])) {
                 //throw new Exception("Veuillez remplir tous les champs");
@@ -84,13 +81,13 @@ class UserController
                 $this->redirectInscription();
             } */
             $user = $this->userManager->FindUserByPseudo($_POST['pseudo']);
-            if (!empty($user)) {
+            if ($user) {
                 //throw new Exception("Ce pseudo est déjà utilisé");
                 $_SESSION['error'] = "Ce pseudo est déjà utilisé";
                 $this->redirectInscription();
             }
             $user = $this->userManager->FindUserByEmail($_POST['email']);
-            if (!empty($user)) {
+            if ($user) {
                 //throw new Exception("Cette adresse email est déjà utilisée");
                 $_SESSION['error'] = "Cette adresse email est déjà utilisée";
                 $this->redirectInscription();
@@ -138,7 +135,7 @@ class UserController
 
                 if (password_verify($_POST['password'], $user['mdp'])) {
                     $this->sessionUser($user);
-                    header("Location: /accueil");
+                    header("Location: /table");
                 } else {
                     throw new Exception("Mot de passe incorrect");
                     $_SESSION['error'] = "Identifiant ou mot de passe incorrect";
@@ -172,30 +169,31 @@ class UserController
         header("Location: /accueil");
     }
 
+    public function addMoney($money)
+    {
+        if (!isset($_SESSION['id'])) {
+            header("Location: /connexion");
+            return;
+        }
+        
+        $id = $_SESSION['id'];
+
+        $this->userManager->addMoney($id, $money);
+    }
+
     public function removeMoney($money)
     {
-        $id = $_SESSION['id'];
-        /* $money = $_SESSION['money']; */
-        /* var_dump($money);
-        die; */
-
-        if (password_verify($money, 1)) {
-            $money = 1;
-        } elseif (password_verify($money, 5)) {
-            $money = 5;
-        } elseif (password_verify($money, 25)) {
-            $money = 25;
-        } elseif (password_verify($money, 50)) {
-            $money = 50;
-        } elseif (password_verify($money, 100)) {
-            $money = 100;
-        } elseif (password_verify($money, 500)) {
-            $money = 500;
-        } elseif (password_verify($money, 1000)) {
-            $money = 1000;
+        if (!isset($_SESSION['id'])) {
+            header("Location: /connexion");
+            return;
         }
-        var_dump($money);
-        die;
-        $this->userManager->removeMoney($id, $money);
+
+        $id = $_SESSION['id'];
+
+        $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
+
+        if (in_array($money, $moneyValues)) {
+            $this->userManager->removeMoney($id, $money);
+        }
     }
 }

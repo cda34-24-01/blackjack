@@ -1,70 +1,97 @@
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: "Montserrat", sans-serif;
+}
+
 body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  font-family: "Sedan SC", serif;
-  font-weight: 400;
-  font-style: normal;
-}
-
-main {
-  width: 900px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  background-image: url(/public/images/home-bg.jpg);
-  background-size: cover;
-  background-position: 50%;
-  height: 800px;
-  gap: 65px;
-}
-
-h1 {
-  font-size: 60px;
-  color: #d6c41f;
-}
-
-.button_main {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 70px;
+  overflow: hidden;
   margin: auto;
+  background-color: #0a1122;
 }
 
-.log_btn {
-  background-color: #007c3e;
+.header_text {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  padding: 7px;
+  gap: 10px;
 }
 
-button {
-  padding: 6px 10px;
-  border-radius: 5px;
-  border-color: #a59615;
-  color: #a59615;
+.text-center {
+  text-align: inherit;
+  text-wrap: pretty;
+  padding: 7px;
 }
 
-button:hover {
-  border-color: #0d0d0c;
-  color: #0d0d0c;
-}
-.log_btn:hover {
-  background-color: #a59615;
-}
-a:hover {
+.form_bg,
+.form_section {
+  width: 35dvw;
+  height: 90dvh;
+  display: flex;
+  margin-top: 5dvh;
+  gap: 20px;
+  box-shadow: rgba(255, 255, 255, 0.007) 0 2px 1px,
+    rgba(255, 254, 254, 0.041) 0 4px 2px, rgba(0, 0, 0, 0.007) 0 8px 4px,
+    rgba(255, 253, 253, 0.09) 0 16px 8px, rgba(255, 251, 251, 0.021) 0 32px 16px;
 }
 
-a {
+.form_section {
+  flex-direction: column;
+  justify-content: center;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  position: relative;
+  color: #000;
+  background-color: #fff;
+}
+
+.form_bg {
+  justify-content: flex-end;
+  align-items: start;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  color: #fff;
+  background-image: url(/public/images/login.jpg);
+  background-size: cover;
+}
+
+.nav_div {
+  margin: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.home_div a,
+.nav_div a {
+  color: #fff;
   text-decoration: none;
-  color: #e5d75a;
 }
 
-.title {
-  margin-top: 50px;
+.home_div {
+  margin: 20px;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
-#play_btn {
-  text-align: center;
-  padding: 6px 45px;
+.home_div a {
+  color: #070707;
+}
+
+.home_div a:hover,
+.nav_div a:hover {
+  transition: all 300ms;
+  color: #8bc959;
+  text-decoration: underline;
+}
+
+.nav_div a:hover {
+  color: #ff8e8e;
 }

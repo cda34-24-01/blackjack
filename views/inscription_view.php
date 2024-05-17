@@ -29,101 +29,112 @@ $_SESSION['previous_url'] = $_SERVER['REQUEST_URI']; */
     <link href="<?= URL . "public/css/inscription.css" ?>" rel="stylesheet" type="text/css">
 
     <link rel="icon" type="image/svg+xml" href="<?= URL . "public/images/cineramaimg.svg" ?>">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
+
 </head>
 
-<body class="">
-    <?php
-    $rdm = rand(1, 2);
-    if ($rdm == 1) { ?>
-        <div class="backdrop" style="background-image: url('<?= URL . "public/images/blackjack1.png" ?>');"></div>
-    <?php } elseif ($rdm == 2) { ?>
-        <div class="backdrop" style="background-image: url('<?= URL . "public/images/blackjack2.png" ?>');"></div>
-    <?php } ?>
-    <div class="background"></div>
-    <div class="center">
-        <div class="row justify-content-center w-25 inscriptionDivParent">
-            <div class="inscriptionDiv bgVertClair rounded p-3 border">
-                <div class="d-flex justify-content-center">
-                    <div class="d-flex">
-                        <h1 class="jaune mb-2">BlackJack</h1>
-                    </div>
+<body>
+
+
+
+    <div class="form_section">
+
+        <div class="header_text">
+            <h1>Inscription</h1>
+            <p>crée un compte pour pouvoir jouer au blackjack</p>
+        </div>
+    
+        <form action="inscription_validation" method="POST">
+            <div>
+                <div class="label_div">
+                    <label for="pseudo">Nom d'utilisateur </label>
+                    <p>*</p>
+                </div>
+                <input type="text" name="pseudo" id="pseudo" placeholder="Entre un nom d'utilisateur">
+            </div>
+
+            <div>
+                <div class="label_div">
+                    <label for="email">E-mail </label>
+                    <p>*</p>
 
                 </div>
-                <h4 class="blanc mb-1 fs-5">Inscription</h4>
-                <p class="error yellow">* champs obligatoires</p>
-                <form action="inscription_validation" method="POST" class="mb-2" id="inscriptionForm">
-                    <div class="d-flex flex-column flex-md-row divInsc">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="blanc fw-bold">Pseudo* :<?php if (!empty($error) && $error == "2") { ?>
-                                    <small class="rouge">incorrect</small>
-                                <?php } ?></label>
-                                <input type="text" name="pseudo" placeholder="Pseudonyme" class="form-control">
-                            </div>
 
-                            <div class="form-group mt-2">
-                                <label class="blanc fw-bold">E-mail* :<?php if (!empty($error) && $error == "1") { ?>
-                                    <small class="rouge">incorrect</small>
-                                <?php } ?></label>
-                                <input type="email" name="email" placeholder="Adresse_e-mail" class="form-control">
-                            </div>
-                            <div class="form-group mt-2">
-                                <label class="blanc fw-bold">Mot_de_passe* :<?php if (!empty($error) && $error == "5") { ?>
-                                    <small class="rouge">incorrect</small>
-                                <?php } ?></label>
-                                <input type="password" name="password" placeholder="********" class="form-control" id="mdpInput">
-
-                            </div>
-                            <div class="form-group mt-2">
-                                <label class="blanc fw-bold">Confirmation* :</label>
-                                <input type="password" name="password_confirm" placeholder="********" class="form-control">
-                            </div>
-                            <div class="infosMdp">
-                                <ul class="mt-1 blanc">
-                                    <li class="mdpLenght">8 caracteres minimum</li>
-                                    <li class="mdpUpper">1 majuscule</li>
-                                    <li class="mdpSpecial">1 caractere special</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button type="submit" class="btn bgRouge w-100">Valider</button>
-
-                </form>
-                <span class="blanc">Déjà inscrit ? <a href="<?= URL . "/connexion" ?>" class="yellow">Se connecter</a></span>
+                <input type="email" name="email" id="email" placeholder="Entre une adresse email">
             </div>
-        </div>
+
+
+            <div>
+                <div class="label_div">
+                    <label for="password">Mot de passe</label>
+                    <p>*</p>
+
+                </div>
+
+                <input type="password" name="password" id="password" placeholder="Entre un mot de passe">
+            </div>
+
+            <div>
+                <div class="label_div">
+                    <label for="password">Confirmez mot de passe </label>
+                    <p>*</p>
+
+                </div>
+                <div>
+
+                    <input type="password" name="password_confirm" id="password_confirm" placeholder="Confirmer le mot de passe">
+                </div>
+
+
+
+                <input class="submit_btn" type="submit" value="S'enregistrer">
+            </div>
+
+            <div class="text_div">
+                <p>Vous avez un compte ?</p>
+                <a href="connexion">Se connecter</a>
+            </div>
+
+
+        </form>
+
+
     </div>
+
+    <div class="form_bg">
+
+    </div>
+
     <script src="<?= URL . "public/js/general.js" ?>"></script>
-    <?php
-    function displayAlert($alertClass, $alertMessage)
-    {
-        echo "<style>";
-        echo ".alert { top: 10%; left: 50%; transform: translateX(-50%); z-index: 999; width: fit-content; opacity: 1; transition: opacity 0.5s ease-in-out; }";
-        echo "@media (max-width: 767px) { .alert { width: 80%; text-align: center; } }";
-        echo "</style>";
-        echo "<div class='alert $alertClass' role='alert'>$alertMessage</div>";
-        echo "<script>setTimeout(function(){ 
-            var alert = document.querySelector('.alert');
-            alert.style.opacity = '0';
-            setTimeout(function() {
-                alert.style.display = 'none';
-            }, 500);
-        }, 8000);
-    </script>";
-    }
+    <!-- <?php
+            // function displayAlert($alertClass, $alertMessage)
+            // {
+            //     echo "<style>";
+            //     echo ".alert { top: 10%; left: 50%; transform: translateX(-50%); z-index: 999; width: fit-content; opacity: 1; transition: opacity 0.5s ease-in-out; }";
+            //     echo "@media (max-width: 767px) { .alert { width: 80%; text-align: center; } }";
+            //     echo "</style>";
+            //     echo "<div class='alert $alertClass' role='alert'>$alertMessage</div>";
+            //     echo "<script>setTimeout(function(){ 
+            //         var alert = document.querySelector('.alert');
+            //         alert.style.opacity = '0';
+            //         setTimeout(function() {
+            //             alert.style.display = 'none';
+            //         }, 500);
+            //     }, 8000);
+            // </script>";
+            // }
 
-    if ($_SESSION["success"]) {
-        displayAlert("alert-success", $_SESSION["success"]);
-        unset($_SESSION["success"]);
-    }
+            // if ($_SESSION["success"]) {
+            //     displayAlert("alert-success", $_SESSION["success"]);
+            //     unset($_SESSION["success"]);
+            // }
 
-    if ($_SESSION["error"]) {
-        displayAlert("alert-danger", $_SESSION["error"]);
-        unset($_SESSION["error"]);
-    }
-    ?>
+            // if ($_SESSION["error"]) {
+            //     displayAlert("alert-danger", $_SESSION["error"]);
+            //     unset($_SESSION["error"]);
+            // }
+            // 
+            ?> -->
 
 </body>
 

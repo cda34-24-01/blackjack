@@ -22,55 +22,49 @@ const uiMoney = document.querySelector(".ui_money");
 const uiWins = document.querySelector(".ui_wins");
 const uiLoses = document.querySelector(".ui_loses");
 
-
-let url = document.getElementById("url").value;
+/* let url = document.getElementById("url").value;
+let $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
 
 let btnMoney = document.querySelectorAll(".btnMoney");
-btnMoney.forEach(element => {
-    element.addEventListener("click", function (event) {
-        let money = element.dataset.value;
-        /* event.preventDefault();
-        let xhr = new XMLHttpRequest();
-        xhr.open('POST', 'update_money.php', true);
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === XMLHttpRequest.DONE) {
-                if (xhr.status === 200) {
-                    let xhttp = new XMLHttpRequest();
-                    xhttp.onreadystatechange = function () {
-                        if (this.readyState === 4) {
-                            if (this.status === 200) {
-                                // Gérer la réponse comme nécessaire
-                            } else {
-                                // Gérer les erreurs si nécessaire
-                            }
-                        }
-                    };
-                    xhttp.open("GET", url + "removeMoney/" + money, true);
-                    xhttp.send();
-                } else {
-                    // Gérer les erreurs si nécessaire
-                }
-            }
-        };
-        xhr.send(); */
-        console.log(money)
-        event.preventDefault();
-        var xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function () {
-            if (this.readyState === 4) {
-                if (this.status === 200) {
-                    //console.log("ok");   
-                } else {
-                    //console.error("Erreur");
-                }
-            }
-        };
-        window.location.href = url + "removeMoney/" + money;
-        /* xhttp.open("GET", url + "removeMoney/" + money, true);
-        xhttp.send(); */
+btnMoney.forEach((element) => {
+  element.addEventListener("click", function (event) {
+    let money = element.dataset.value;
 
-    });
-});
+    if (!$moneyValues.includes(parseInt(money))) {
+      console.log("Erreur");
+      exit(); // Cette ligne ne fonctionnera pas en JavaScript, voir la note ci-dessous
+    } else {
+      event.preventDefault();
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState === 4) {
+          if (this.status === 200) {
+            console.log("ok");
+          } else {
+            console.error("Erreur");
+          }
+        }
+      };
+      // window.location.href = url + "removeMoney/" + money;
+      xhttp.open("GET", url + "removeMoney/" + money, true);
+      // xhttp.open("GET", `${url}removeMoney/${money}&_=${new Date().getTime()}`, true);
+      xhttp.send();
+      btnMoney.forEach((element) => {
+        element.disabled = true;
+        setTimeout(() => {
+          element.disabled = false;
+        }, 2000);
+      });
+    }
+  });
+}); */
 
+// audio  version teste
 
+function playAudio() {
+  x.play();
+}
+
+function pauseAudio() {
+  x.pause();
+}
