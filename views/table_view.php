@@ -28,9 +28,6 @@ if (!isset($_SESSION['id'])) {
 </head>
 
 <body>
- <?php if ($user['sound'] == 0) {
-  echo "<script>turnOffSound();</script>";
-} ?>
     <audio id="cardHit" src="/public/Audio/cardPlace3.ogg"></audio>
     <audio id="moneyPick" src="/public/Audio/chipsHandle5.ogg"></audio>
     <audio id="playerWinSound" src="/public/Audio/player-wins.ogg"></audio>
@@ -54,28 +51,63 @@ if (!isset($_SESSION['id'])) {
             </nav>
         </header>
         <div class="table">
+
             <!-- croupier section -->
+
             <div class="cpu_desk">
-                <img class="cartes_back" src="../public/images/cartes/card_back.png" />
+                <div>
+                    <div class="score_container">
+                        <p id="croupier_score">0</p>
+                    </div>
+                    <img class="cartes_back" src="../public/images/cartes/card_back.png" />
+                </div>
                 <div id="cardsCroupier" class="cards_container">
                     <!-- Cards rendues avec le script general.js -->
                 </div>
             </div>
-            <div class="score_container">
-                <p id="croupier_score">0</p>
-            </div>
+
             <!-- player section -->
-            <div class="player_desk">
-                <div id="cardsPlayer1" class="cards_container">
-                    <!-- Cards rendues avec le script general.js -->
+
+            <div id="player_desk" class="player_desk">
+                <!-- desk hors split -->
+                <div class="cards_container ">
+                    <div id="cardsPlayer1">
+                        <!-- Cards rendues avec le script general.js -->
+                    </div>
+                    <div class="score_container">
+                        <p id="player_score">0</p>
+                    </div>
                 </div>
-                <div id="cardsPlayer1Split" class="cards_container split">
-                    <!-- Cards rendues avec le script general.js -->
+                <!-- desk avec split -->
+                <div id="cardsPlayer1Split" class="cards_container hidden split">
+
+                    <div class="leftHand">
+                        <div id="cartes_split_left" class="cartesSplit">
+                            <!-- Cards rendues avec le script general.js -->
+                        </div>
+                        <div class="score_container">
+                            <p id="score_split_left">0</p>
+                        </div>
+                        <div class="action_btn">
+                            <button id="btn_split_hit_left" class="btnsSplit">Hit</button>
+                            <button id="btn_split_stay_left" class="btnsSplit">Stay</button>
+                        </div>
+                    </div>
+                    <div class="rightHand">
+                        <div id="cartes_split_right" class="cartesSplit">
+                            <!-- Cards rendues avec le script general.js -->
+                        </div>
+                        <div class="score_container">
+                            <p id="score_split_right">0</p>
+                        </div>
+                        <div class="action_btn" style="background-color: red;">
+                            <button id="btn_split_hit_right" class="btnsSplit">Hit</button>
+                            <button id="btn_split_stay_right" class="btnsSplit">Stay</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="score_container">
-                <p id="player_score">0</p>
-            </div>
+
             <div class="money_btn">
                 <button class="btnMoney" data-value="1">
                     <p class="position-absolute z-index-top noir valueCoin">1</p>

@@ -1,4 +1,4 @@
-import { cards } from "./cartes.js";
+import { cards, getCard } from "./cartes.js";
 import { player } from "./player.js";
 import { getUserInfos } from "./getuser.js";
 
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   btnStay.style.display = "none";
   btnHit.style.display = "none";
   btnLeave.style.display = "none";
-  btnSplit.style.display = "none";
+  btnSplit.classList.add('hidden');
   btnStart.disabled = true;
 });
 
@@ -120,13 +120,15 @@ function startGame(currentPlayer) {
     croupierDeck.lastChild.src = "./public/images/cartes/card_back.png";
     areBtnsAvailables = true;
   }, 2000);
-}
-// case de split
-/* currentPlayer.currentHand = [2, 2]
-console.log(currentPlayer.currentHand);
-if (currentPlayer.currentHand[0] === currentPlayer.currentHand[1]) {
+
+  // case de split
+  currentPlayer.currentHand = [1, 1]
+  if (currentPlayer.currentHand[0] === currentPlayer.currentHand[1]) {
+    console.log('spliting')
+    // areBtnsAvailables = false;
     btnSplit.classList.remove("hidden");
-} */
+  }
+}
 
 function newRound() {
   messageModal.classList.add("hidden");
@@ -168,8 +170,8 @@ function checkScores(player) {
   const croupierPass21 = croupier.score > 21;
   const playerWin = player.score > croupier.score;
   const croupierWin = player.score < croupier.score;
-  const playerBlackJack = player.score === 21;
-  const croupierBlackJack = croupier.score === 21;
+  const playerBlackJack = player.score === 21 && player.currentHand.length === 2;
+  const croupierBlackJack = croupier.score === 21 && croupier.currentHand.length === 2;
 
   if (playerWin && !playerPass21 && !playerBlackJack) {
     handleWin(player);
@@ -229,14 +231,18 @@ function handleEquality(player) {
   addMoney(totalMise);
 };
 function handleWin(player, blackJack = false) {
-  showModal("You win!", "#8bc959", playerWinSound);
+  let message = '';
   if (blackJack) {
-    console.log("BlackJack!!");
+    message = 'BlackJack!!'
+    currentMoney += totalMise * 2 + totalMise / 2;
+  } else {
+    currentMoney += totalMise * 2;
+    message = 'You win!!'
   }
-  currentMoney += totalMise * 2;
+  showModal(message, "#8bc959", playerWinSound);
   playerMoneyDisplay.style.color = "#8bc959";
   playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
-  addMoney(totalMise * 2);
+  addMoney(blackJack ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
   player.addWin();
 }
 function handleLose(player, blackJack = false) {
@@ -336,20 +342,85 @@ function addMoney(money) {
   xhttp.open("GET", url + "addMoney/" + money, true);
   xhttp.send();
 }
+
+// <<<<<<<<< ---- Split ---- >>>>>>>>>>
+
+// elements
+const deckContainer = document.getElementById('player_desk');
+const splitDeck = deckContainer.lastElementChild;
+const cartesRight = document.getElementById('cartes_split_right');
+const cartesLeft = document.getElementById('cartes_split_left');
+const scoreRight = document.getElementById('score_split_right');
+const scoreLeft =  document.getElementById('score_split_left');
+
+// btns hit et stay du split
+const btnSplitHitRight = document.getElementById('btn_split_hit_right');
+const btnSplitStayRight = document.getElementById('btn_split_stay_right')
+
+const btnSplitStayLeft = document.getElementById('btn_split_stay_left');
+const btnSplitHitLeft = document.getElementById('btn_split_hit_left');
+
+let handLeft = 0;
+let handRight = 0;
+
+function handleHitCardOnSplit (side, sideContainer, scoreOfSide, hand) {
+  const { cardSelected, currentsCards } = getCard(cardsInGame);
+  // console.log(currentsCards);
+
+  const newCard = document.createElement('img');
+  newCard.src = cardSelected.image;
+  sideContainer.appendChild(newCard);
+
+  const cardsOnThisSide = sideContainer.getElementsByTagName('img');
+
+
+  // this.deck.children.length === 1 ? '0' : `${(this.deck.children.length - 1) * 20}%`
+  // let i = cardsOnThisSide.length - 1;
+  for (const card of cardsOnThisSide) {
+    for (let i = 0; i<cardsOnThisSide.length; i++) {
+      if (side === 'left') {
+        card.style.left = `${ i * card.clientWidth * -1 }px`;
+      }
+    }
+  };
+  // i --;
+  scoreOfSide.textContent = hand + cardSelected.value;
+
+  // cardsInGame = currentsCards;
+}
+
+btnSplitHitRight.addEventListener('click', ()=> {
+  handleHitCardOnSplit('right', cartesRight, scoreRight, handRight);
+})
+btnSplitHitLeft.addEventListener('click', ()=> {
+  handleHitCardOnSplit('left', cartesLeft, scoreLeft, handLeft);
+})
+
 // Bouton pour Split
-/* btnSplit.addEventListener("click", (e)=> {
+btnSplit.addEventListener("click", (e)=> {
     e.preventDefault();
-    const deckContainer = document.querySelector(".player_desk");
-    deckContainer.style.width = "400px";
- 
-    playerCardsContainer.removeChild(playerCardsContainer.lastChild);
-    const cardSplited = document.createElement('img');
- 
-    cardSplited.src = currentPlayer.usedCards[1].image;
-    deckContainer.lastElementChild.appendChild(cardSplited);
-    // console.log(currentPlayer.usedCards)
-    console.log(currentPlayer.usedCards[1])
-}) */
+    if(!areBtnsAvailables) return;
+
+    areBtnsAvailables = false;
+    currentPlayer.score = 0;
+    // Set the scores
+    handRight = currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value;
+    handLeft = currentPlayer.usedCards[currentPlayer.usedCards.length - 2].value;
+    // Hidden le desk normal
+    deckContainer.firstElementChild.classList.add('hidden');
+    // Visible le desk split
+    splitDeck.classList.remove('hidden');
+    // Add the cards in any side
+    const cardSplitedRight = document.createElement('img');
+    const cardSplitedLeft = document.createElement('img');
+    cardSplitedRight.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 1].image;
+    cardSplitedLeft.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 2].image;
+    cartesRight.appendChild(cardSplitedRight);
+    cartesLeft.appendChild(cardSplitedLeft);
+    // Add the scores
+    scoreRight.textContent = handRight;
+    scoreLeft.textContent = handLeft;
+})
 
 btnStart.addEventListener("click", (e) => {
   if(currentMise === 0) return;

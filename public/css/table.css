@@ -146,12 +146,58 @@ a:hover {
   color: #ff8e8e;
   opacity: 0.68;
 }
-
 .cards_container {
   width: 100%;
   display: flex;
-  flex-direction: row;
 }
+.cpu_desk {
+  min-height: 170px;
+}
+.cpu_desk :first-child {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.player_desk .cards_container {
+  flex-direction: column;
+  background-color: rgba(255, 0, 0, 0.263);
+  justify-content: space-between;
+  align-items: center;
+}
+/* split */
+.split {
+  flex-direction: row!important;
+  justify-content: flex-end;
+}
+.split .cartesSplit {
+  width: 80px;
+  height: 120px;
+  background-color: #4b6587;
+  margin-bottom: 10px;
+}
+.split .cartesSplit img {
+  transform: translateX(-20px);
+  position: absolute;
+}
+.split .rightHand, .split .leftHand {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.split .action_btn {
+  width: 100%;
+}
+.split button {
+  font-size: 12px!important;
+  padding: 4px 10px!important;
+  margin: 2px;
+  background-color: #8bc959!important;
+}
+
+
 
 .player_ui .ui_money {
   display: flex;
@@ -180,9 +226,9 @@ a:hover {
   height: 600px;
 }
 
-.cartes_back {
+/* .cartes_back {
   transform: translateX(-70%);
-}
+} */
 
 .ia_card {
   width: 90px;

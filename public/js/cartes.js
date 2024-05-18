@@ -339,8 +339,8 @@ export function getCard(tab) {
     // selectioner une carte
     const randIndex = Math.floor(Math.random() * (tab.length));
     const cardSelected = tab[randIndex];
-
-
+    
+    
     // actualiser le tableau de cartes qui restent
     const currentsCarts = tab.filter(card => card.image != cardSelected.image);
 
