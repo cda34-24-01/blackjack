@@ -9,6 +9,7 @@ const btnHit = document.getElementById("hit");
 const btnStay = document.getElementById("stay");
 const btnLeave = document.getElementById("leave");
 const btnSplit = document.getElementById("split");
+const btnDouble = document.getElementById("double");
 const btnsMises = document.querySelectorAll(".btnMoney");
 
 const playerScore = document.getElementById("player_score");
@@ -51,6 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   btnHit.style.display = "none";
   btnLeave.style.display = "none";
   btnSplit.style.display = "none";
+  btnDouble.style.display = "none";
   btnStart.disabled = true;
 });
 
@@ -125,6 +127,7 @@ function startGame(currentPlayer) {
   btnLeave.disabled = true;
   btnHit.disabled = true;
   btnStay.disabled = true;
+  btnDouble.disabled = true;
   // 1 carte pour le player
   setTimeout(() => handleHitCart(currentPlayer), 500);
   // 1 carte pour le croupier
@@ -139,6 +142,7 @@ function startGame(currentPlayer) {
     btnLeave.disabled = false;
     btnHit.disabled = false;
     btnStay.disabled = false;
+    btnDouble.disabled = false;
     // case of split
     if (currentPlayer.currentHand[0] === currentPlayer.currentHand[1]) {
       btnSplit.style.display = "block";
@@ -172,6 +176,7 @@ function newRound() {
   btnLeave.style.display = "none";
   btnHit.style.display = "none";
   btnStay.style.display = "none";
+  btnDouble.style.display = "none";
   divJetons.style.display = "block";
   totalMise = 0;
   // startGame(currentPlayer);
@@ -230,7 +235,7 @@ function checkScores(score, hand) {
     return {result: 'equity', blackJack: false};
   }
 }
-async function handleStay(player) {
+async function handleStay(player, double = false) {
   if (!areBtnsAvailables && currentMise === 0) return;
   croupierDeck.lastChild.src = croupier.usedCards[croupier.usedCards.length - 1].image;
   croupierScore.textContent = croupier.score;
@@ -247,10 +252,10 @@ async function handleStay(player) {
   if (player.score.length === undefined && !isSplit) {
     const check = checkScores(player.score, player.currentHand); 
     if (check.result === 'win') {
-      handleWin(player, check.blackJack);
+      handleWin(player, [check.blackJack, false], false, double);
       message = 'You win!';
     } else if (check.result === 'lose') {
-      handleLose(player, check.blackJack);
+      handleLose(player, [check.blackJack, false]);
       message = 'You lose!';
     } else if (check.result === 'equality') {
       console.log(check.result)
@@ -263,19 +268,19 @@ async function handleStay(player) {
     const checkRight = checkScores(player.score[0], player.currentHand[0]);
     const checkLeft = checkScores(player.score[1], player.currentHand[1]);
 
-    const doubleWin = checkLeft.result === 'win' && checkRight.result === 'win';
-    const doubleLose = checkLeft.result === 'lose' && checkRight.result === 'lose';
+    const doubleWinSplit = checkLeft.result === 'win' && checkRight.result === 'win';
+    const doubleLoseSplit = checkLeft.result === 'lose' && checkRight.result === 'lose';
 
     if (checkLeft.result === 'win' || checkRight.result === 'win') {
-      handleWin(player, [checkLeft.blackJack, checkRight.blackJack], doubleWin);
-      if (doubleWin) {
+      handleWin(player, [checkLeft.blackJack, checkRight.blackJack], doubleWinSplit, double);
+      if (doubleWinSplit) {
         message = 'You Win for double!';
       } else {
         message = 'You Win one!';
       }
     } else if (checkLeft.result === 'lose' || checkRight.result === 'lose') {
-      handleLose(player, [checkLeft.blackJack, checkRight.blackJack], doubleLose);
-      if (doubleLose) {
+      handleLose(player, [checkLeft.blackJack, checkRight.blackJack], doubleLoseSplit);
+      if (doubleLoseSplit) {
         message = 'You Lose for double!';
       }
     } else if (checkLeft.result === 'equality' || checkRight.result === 'equality') {
@@ -286,7 +291,7 @@ async function handleStay(player) {
         handleEquality(player, false);
       }
     }
-    showModal(message, doubleLose? "#ff8e8e" : "#8bc959", doubleWin ? playerWinSound : moneySound);
+    showModal(message, doubleLoseSplit ? "#ff8e8e" : "#8bc959", doubleWinSplit ? playerWinSound : moneySound);
   }
 }
 function showModal(message, colorAlert, sound) {
@@ -294,6 +299,7 @@ function showModal(message, colorAlert, sound) {
   btnLeave.disabled = true;
   btnHit.disabled = true;
   btnStay.disabled = true;
+  btnDouble.disabled = true;
   btnSplit.style.display = "none";
   sound.play();
   messageModal.firstElementChild.textContent = message;
@@ -307,21 +313,22 @@ function handleEquality(player, split = false) {
     addMoney(totalMise / 2);
   }
 };
-function handleWin(player, blackJack = [false, false], double = false) {
-
-  addMoney(blackJack[0] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
+function handleWin(player, blackJack = [false, false], split = false, double = false) {
+  let moneyToAdd = (blackJack[0] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
+  addMoney(moneyToAdd);
   player.addWin();
-  if (double) {
-    addMoney(blackJack[1] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
+  if (split) {
+    let moneyToAddSplit = (blackJack[1] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
+    addMoney(moneyToAddSplit);
     player.addWin();
   }
 }
-function handleLose(player, blackJack = [false, false], double = false) {
+function handleLose(player, blackJack = [false, false], split = false) {
   if (blackJack[0] || blackJack[1]) {
     console.log("you lose by blackjack... lol");
   }
   playerMoneyDisplay.style.color = "#ff8e8e";
-  if (double) {
+  if (split) {
     player.addLose();
   }
   player.addLose();
@@ -374,7 +381,7 @@ function removeMoney(money) {
   xhttp.onreadystatechange = function () {
     if (this.readyState === 4) {
       if (this.status === 200) {
-        console.log("ok");
+        console.log(`remove money ok : ${money}`);
         // si tout est ok on commence le jeu avec la mise sélectionné
         btnStart.disabled = false;
         // Assuming money is a valid number or a string that can be converted to a number
@@ -387,7 +394,6 @@ function removeMoney(money) {
         playerMiseDisplay.textContent = `${totalMise}`;
         currentMoney -= currentMise;
         playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
-                    
       } else {
         console.error("Erreur");
       }
@@ -402,7 +408,7 @@ function addMoney(money) {
   xhttp.onreadystatechange = function () {
     if (this.readyState === 4) {
       if (this.status === 200) {
-        console.log("ok");
+        console.log(`add money ok : ${money}`);
         currentMoney += money;
         playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
       } else {
@@ -475,7 +481,6 @@ function handleHitCardOnSplit (side, sideContainer, scoreOfSideDisplay, hand) {
       btnSplitHitLeft.disabled = true;
     }
   }
-  // cardsInGame = currentsCards;
 }
 
 btnSplitHitRight.addEventListener('click', ()=> {
@@ -492,8 +497,8 @@ btnSplit.addEventListener("click", (e)=> {
     isSplit = true;
     btnHit.disabled = true;
     btnSplit.disabled = true;
-    // areBtnsAvailables = false;
-    removeMoney(currentMise);
+    btnDouble.disabled = true;
+    removeMoney(totalMise);
     currentPlayer.score = 0;
     // Set the scores
     handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];
@@ -522,6 +527,7 @@ btnStart.addEventListener("click", (e) => {
   btnLeave.style.display = "block";
   btnHit.style.display = "block";
   btnStay.style.display = "block";
+  btnDouble.style.display = "block";
   btnSplit.style.display = "none";
   divJetons.style.display = "none";
   startGame(currentPlayer);
@@ -540,6 +546,14 @@ btnHit.addEventListener("click", (e) => {
   cardSound.play();
   e.preventDefault();
   handleHitCart(currentPlayer);
+});
+// Bouton pour double
+btnDouble.addEventListener("click", (e) => {
+  if (!areBtnsAvailables || currentMise === 0) return;
+  e.preventDefault();
+  handleHitCart(currentPlayer);
+  removeMoney(totalMise);
+  handleStay(currentPlayer);
 });
 // Bouton pour stay
 btnStay.addEventListener("click", (e) => {

@@ -141,6 +141,7 @@ if (!isset($_SESSION['id'])) {
                 <button id="hit">Hit</button>
                 <button id="stay">Stay</button>
                 <button id="start">Start</button>
+                <button id="double">Double</button>
                 <button id="split">Split</button>
             </div>
 
