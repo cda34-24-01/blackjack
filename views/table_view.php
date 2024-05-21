@@ -90,7 +90,6 @@ if (!isset($_SESSION['id'])) {
                         </div>
                         <div class="action_btn">
                             <button id="btn_split_hit_left" class="btnsSplit">Hit</button>
-                            <button id="btn_split_stay_left" class="btnsSplit">Stay</button>
                         </div>
                     </div>
                     <div class="rightHand">
@@ -100,9 +99,8 @@ if (!isset($_SESSION['id'])) {
                         <div class="score_container">
                             <p id="score_split_right">0</p>
                         </div>
-                        <div class="action_btn" style="background-color: red;">
+                        <div class="action_btn">
                             <button id="btn_split_hit_right" class="btnsSplit">Hit</button>
-                            <button id="btn_split_stay_right" class="btnsSplit">Stay</button>
                         </div>
                     </div>
                 </div>
@@ -143,7 +141,7 @@ if (!isset($_SESSION['id'])) {
                 <button id="hit">Hit</button>
                 <button id="stay">Stay</button>
                 <button id="start">Start</button>
-                <button id="split" class="hidden">Split</button>
+                <button id="split">Split</button>
             </div>
 
         </div>

@@ -78,9 +78,11 @@ nav img {
 }
 
 .action_btn {
+  margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: center;
+  gap: 10px;
   width: 80%;
 }
 
@@ -96,8 +98,7 @@ nav img {
   width: 100%;
 }
 
-.action_btn :nth-last-child(2),
-.action_btn :nth-last-child(3) {
+.action_btn button {
   background-color: #8bc959;
 }
 
@@ -112,6 +113,9 @@ nav img {
   padding: 8px 18px;
   box-shadow: rgba(255, 255, 255, 0.911) 0 5px;
   border-radius: 50px;
+}
+.action_btn button:disabled {
+  background-color: #979797;
 }
 
 .player_bid {
@@ -162,7 +166,6 @@ a:hover {
 
 .player_desk .cards_container {
   flex-direction: column;
-  background-color: rgba(255, 0, 0, 0.263);
   justify-content: space-between;
   align-items: center;
 }
@@ -174,7 +177,6 @@ a:hover {
 .split .cartesSplit {
   width: 80px;
   height: 120px;
-  background-color: #4b6587;
   margin-bottom: 10px;
 }
 .split .cartesSplit img {

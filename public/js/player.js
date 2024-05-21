@@ -5,7 +5,7 @@ export class player {
         this.cardsInGame = cardsInGame; // les cartes disponibles
         this.wins = wins
         this.loses = loses
-        this.deck = deck; // le conteneur html ou on va inserer les cartes
+        this.deck = deck; // le conteneur html ou on va insérer les cartes
         this.name = name;
         this.money = money;
         this.usedCards = [];
