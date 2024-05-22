@@ -74,6 +74,14 @@ try {
                 $userController->removeMoney($url[1]);
                 break;
 
+            case "addWin":
+                $userController->addWin($url[1]);
+                break;  
+
+            case "addLose":
+                $userController->addLose($url[1]);
+                break;
+
             case "toggleSound":
                 $userController->toggleSound();
                 break;
