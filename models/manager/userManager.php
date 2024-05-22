@@ -40,7 +40,7 @@ class UserManager extends Model
 
     public function getUserById($id) 
     {
-        $sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = :id";
+        $sql = "SELECT id_utilisateur, money, wins, loses, pseudo FROM utilisateurs WHERE id_utilisateur = :id";
         $req = $this->getDB()->prepare($sql);
         $req->execute([
             "id" => $id

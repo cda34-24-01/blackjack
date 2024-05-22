@@ -11,16 +11,6 @@ class UserController
         $this->userManager = new UserManager;
     }
 
-    public function addWin($id)
-    {
-        $this->userManager->addWin($id);
-    }
-
-    public function addLose($id)
-    {
-        $this->userManager->addLose($id);
-    }
-
     public function getWins($id)
     {
         return $this->userManager->getWins($id);
@@ -195,6 +185,28 @@ class UserController
         if (in_array($money, $moneyValues)) {
             $this->userManager->removeMoney($id, $money);
         }
+    }
+
+    public function addWin() {
+        if (!isset($_SESSION['id'])) {
+            header("Location: /connexion");
+            return;
+        }
+
+        $id = $_SESSION['id'];
+
+        $this->userManager->addWin($id);
+    }
+
+    public function addLose() {
+        if (!isset($_SESSION['id'])) {
+            header("Location: /connexion");
+            return;
+        }
+
+        $id = $_SESSION['id'];
+
+        $this->userManager->addLose($id);
     }
 
     public function toggleSound()

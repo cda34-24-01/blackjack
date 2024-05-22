@@ -1,6 +1,7 @@
 import { cards, getCard } from "./cartes.js";
 import { player } from "./player.js";
 import { getUserInfos } from "./getuser.js";
+import { checkUser } from "./services.js";
 
 // Prendre les elements HTML
 let divJetons = document.querySelector(".money_btn");
@@ -39,7 +40,7 @@ const splitDeck = deckContainer.lastElementChild;
 const cartesRight = document.getElementById('cartes_split_right');
 const cartesLeft = document.getElementById('cartes_split_left');
 const scoreRightDisplay = document.getElementById('score_split_right');
-const scoreLeftDisplay =  document.getElementById('score_split_left');
+const scoreLeftDisplay = document.getElementById('score_split_left');
 let isSplit = false;
 
 // btns hit et stay du split
@@ -197,6 +198,7 @@ function handleHitCart(player) {
     } else if (player.score === 21) {
       handleWin(player, true, flase);
       showModal('BlackJack!!', '#8bc959', playerWinSound);
+      showModal('You lose!', '#ff8e8e', moneySound);
     }
   }
 }
@@ -210,24 +212,24 @@ function checkScores(score, hand) {
   const croupierBlackJack = croupier.score === 21 && croupier.currentHand.length === 2;
 
   if (playerWin && !playerPass21 && !playerBlackJack) {
-    return {result: 'win', blackJack: false};
+    return { result: 'win', blackJack: false };
   } else if (croupierPass21 && !playerPass21 && !playerBlackJack) {
-    return {result: 'win', blackJack: false};
+    return { result: 'win', blackJack: false };
   } else if (playerBlackJack && !croupierBlackJack) {
     // on gagne avec blackjack
-    return {result: 'win', blackJack: true};
+    return { result: 'win', blackJack: true };
   } else if (
     (playerPass21 && croupierPass21) ||
     score === croupier.score
   ) {
-    return {result: 'equality', blackJack: false};
+    return { result: 'equality', blackJack: false };
   } else if (!playerBlackJack && croupierBlackJack) {
-    return {result: 'lose', blackJack: true};
+    return { result: 'lose', blackJack: true };
     // on perde pour blackjack
   } else if (croupierWin && !croupierPass21) {
-    return {result: 'lose', blackJack: false};
+    return { result: 'lose', blackJack: false };
   } else if (playerPass21 && !croupierPass21) {
-    return {result: 'lose', blackJack: false};
+    return { result: 'lose', blackJack: false };
   } else if (
     croupier.usedCards.length === 2 &&
     croupierBlackJack &&
@@ -235,7 +237,7 @@ function checkScores(score, hand) {
   ) {
     // ici on rembourse la mise...
     handleEquality(player);
-    return {result: 'equity', blackJack: false};
+    return { result: 'equity', blackJack: false };
   }
 }
 async function handleStay(player, double = false) {
@@ -253,7 +255,7 @@ async function handleStay(player, double = false) {
   // Comparer les scores
   let message = '';
   if (player.score.length === undefined && !isSplit) {
-    const check = checkScores(player.score, player.currentHand); 
+    const check = checkScores(player.score, player.currentHand);
     if (check.result === 'win') {
       handleWin(player, [check.blackJack, false], false, double);
       message = 'You win!';
@@ -288,8 +290,8 @@ async function handleStay(player, double = false) {
       }
     } else if (checkLeft.result === 'equality' || checkRight.result === 'equality') {
       if (checkLeft.result === 'equality' && checkRight.result === 'equality') {
-      handleEquality(player, true);
-      message = 'Equality!';
+        handleEquality(player, true);
+        message = 'Equality!';
       } else {
         handleEquality(player, false);
       }
@@ -319,6 +321,7 @@ function handleEquality(player, split = false) {
 function handleWin(player, blackJack = [false, false], split = false, double = false) {
   let moneyToAdd = (blackJack[0] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
   addMoney(moneyToAdd);
+  addWin();
   player.addWin();
   if (split) {
     let moneyToAddSplit = (blackJack[1] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
@@ -334,6 +337,7 @@ function handleLose(player, blackJack = [false, false], split = false) {
   if (split) {
     player.addLose();
   }
+  addLose();
   player.addLose();
 }
 
@@ -427,16 +431,46 @@ function addMoney(money) {
   xhttp.send();
 }
 
+function addWin() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState === 4) {
+      if (this.status === 200) {
+        console.log("add win ok");
+      } else {
+        console.error("Erreur");
+      }
+    }
+  };
+  xhttp.open("GET", url + "addWin", true);
+  xhttp.send();
+}
+
+function addLose() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function () {
+    if (this.readyState === 4) {
+      if (this.status === 200) {
+        console.log("add lose ok");
+      } else {
+        console.error("Erreur");
+      }
+    }
+  };
+  xhttp.open("GET", url + "addLose", true);
+  xhttp.send();
+}
+
 // <<<<<<<<< ---- Split ---- >>>>>>>>>>
 
 function calcScoreSplit(hand) {
   let score = hand.reduce((sum, value) => sum + value, 0);
-      let numAces = hand.filter(card => card === 11).length;
-      while (score > 21 && numAces > 0) {
-          score -= 10;
-          numAces--;
-      }
-      return score;
+  let numAces = hand.filter(card => card === 11).length;
+  while (score > 21 && numAces > 0) {
+    score -= 10;
+    numAces--;
+  }
+  return score;
 }
 
 let handLeft = [];
@@ -444,17 +478,17 @@ let handRight = [];
 let scoreLeft = 0;
 let scoreRight = 0;
 
-function handleHitCardOnSplit (side, sideContainer, scoreOfSideDisplay, hand) {
+function handleHitCardOnSplit(side, sideContainer, scoreOfSideDisplay, hand) {
   const { cardSelected, currentsCards } = getCard(cardsInGame);
 
   hand.push(cardSelected.value);
-  
+
   const currentScore = calcScoreSplit(hand);
 
   scoreOfSideDisplay.textContent = currentScore;
-  
+
   currentPlayer.currentHand = [handLeft, handRight];
-  
+
   // DOM manipulation
   const newCard = document.createElement('img');
   newCard.src = cardSelected.image;
@@ -463,8 +497,8 @@ function handleHitCardOnSplit (side, sideContainer, scoreOfSideDisplay, hand) {
 
   const totalCards = cardsOnThisSide.length;
   if (side === 'right') {
-    for (let i = totalCards -1; i>0; i--) {
-      cardsOnThisSide[i].style.transform = `translateX(${ (i === 1? 15: 30) * i - 10}px)`;
+    for (let i = totalCards - 1; i > 0; i--) {
+      cardsOnThisSide[i].style.transform = `translateX(${(i === 1 ? 15 : 30) * i - 10}px)`;
       scoreRight = currentScore;
     }
   } else {
@@ -490,45 +524,45 @@ function handleHitCardOnSplit (side, sideContainer, scoreOfSideDisplay, hand) {
   }
 }
 
-btnSplitHitRight.addEventListener('click', ()=> {
+btnSplitHitRight.addEventListener('click', () => {
   handleHitCardOnSplit('right', cartesRight, scoreRightDisplay, handRight);
 })
-btnSplitHitLeft.addEventListener('click', ()=> {
+btnSplitHitLeft.addEventListener('click', () => {
   handleHitCardOnSplit('left', cartesLeft, scoreLeftDisplay, handLeft);
 })
 
 // Bouton pour Split
-btnSplit.addEventListener("click", (e)=> {
-    e.preventDefault();
-    if(!areBtnsAvailables) return;
-    isSplit = true;
-    btnHit.disabled = true;
-    btnSplit.disabled = true;
-    btnDouble.disabled = true;
-    removeMoney(totalMise);
-    currentPlayer.score = 0;
-    // Set the scores
-    handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];
-    handLeft = [currentPlayer.usedCards[currentPlayer.usedCards.length - 2].value];
-    // Hidden le desk normal
-    deckContainer.firstElementChild.classList.add('hidden');
-    // Visible le desk split
-    splitDeck.classList.remove('hidden');
-    // Add the cards in any side
-    const cardSplitedRight = document.createElement('img');
-    const cardSplitedLeft = document.createElement('img');
-    cardSplitedRight.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 1].image;
-    cardSplitedLeft.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 2].image;
-    cartesRight.appendChild(cardSplitedRight);
-    cartesLeft.appendChild(cardSplitedLeft);
-    // Add the scores
-    currentPlayer.score = [handLeft[0], handRight[0]]
-    scoreRightDisplay.textContent = handRight[0];
-    scoreLeftDisplay.textContent = handLeft[0];
+btnSplit.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (!areBtnsAvailables) return;
+  isSplit = true;
+  btnHit.disabled = true;
+  btnSplit.disabled = true;
+  btnDouble.disabled = true;
+  removeMoney(totalMise);
+  currentPlayer.score = 0;
+  // Set the scores
+  handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];
+  handLeft = [currentPlayer.usedCards[currentPlayer.usedCards.length - 2].value];
+  // Hidden le desk normal
+  deckContainer.firstElementChild.classList.add('hidden');
+  // Visible le desk split
+  splitDeck.classList.remove('hidden');
+  // Add the cards in any side
+  const cardSplitedRight = document.createElement('img');
+  const cardSplitedLeft = document.createElement('img');
+  cardSplitedRight.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 1].image;
+  cardSplitedLeft.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 2].image;
+  cartesRight.appendChild(cardSplitedRight);
+  cartesLeft.appendChild(cardSplitedLeft);
+  // Add the scores
+  currentPlayer.score = [handLeft[0], handRight[0]]
+  scoreRightDisplay.textContent = handRight[0];
+  scoreLeftDisplay.textContent = handLeft[0];
 })
 
 btnStart.addEventListener("click", (e) => {
-  if(currentMise === 0) return;
+  if (currentMise === 0) return;
   e.preventDefault();
   btnStart.style.display = "none";
   btnLeave.style.display = "block";
@@ -619,3 +653,4 @@ Si le croupier tire un AS face visible ( donc sa première carte ) Et que sa car
 Le jeu s’arrête et le croupier gagne SAUF si le joueur a un blackjack aussi alors le jeu s'arrête quand même mais le joueur est remboursée de sa somme misée.
 */
 
+export { id_user };
