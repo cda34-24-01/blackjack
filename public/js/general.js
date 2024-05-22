@@ -194,10 +194,6 @@ function handleHitCart(player) {
     // On a blackjack ou on dépasse 21 alors on ne peut pas jouer plus des cartes
     if (player.score > 21) {
       handleLose(currentPlayer);
-      showModal('You lose!', '#ff8e8e', moneySound); 
-    } else if (player.score === 21) {
-      handleWin(player, true, flase);
-      showModal('BlackJack!!', '#8bc959', playerWinSound);
       showModal('You lose!', '#ff8e8e', moneySound);
     }
   }
@@ -365,27 +361,6 @@ btnsMises.forEach((btn) => {
     });
   });
 });
-
-function checkUser(callback) {
-  $.ajax({
-    type: "GET",
-    url: "get_user_infos.php",
-    data: {
-      userId: id_user,
-    },
-    dataType: "json",
-    success: function (response) {
-      if (!response.error) {
-        callback(response); // Pass the user data to the callback
-      } else {
-        console.log("Erreur de récupération des données utilisateur");
-      }
-    },
-    error: function (xhr, status, error) {
-      reject("Erreur AJAX : " + error);
-    },
-  });
-};
 
 function removeMoney(money) {
   var xhttp = new XMLHttpRequest();
@@ -592,16 +567,9 @@ btnHit.addEventListener("click", (e) => {
 btnDouble.addEventListener("click", (e) => {
   if (!areBtnsAvailables || currentMise === 0) return;
   e.preventDefault();
-  // removeMoney(totalMise);
-  checkUser((user) => {
-    if (user.money < totalMise) {
-      console.log("Vous n'avez pas assez d'argent");
-    } else {
-      removeMoney(totalMise);
-      handleHitCart(currentPlayer);
-      handleStay(currentPlayer);
-    }
-  });
+  handleHitCart(currentPlayer);
+  removeMoney(totalMise);
+  handleStay(currentPlayer);
 });
 // Bouton pour stay
 btnStay.addEventListener("click", (e) => {
