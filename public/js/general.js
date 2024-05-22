@@ -194,6 +194,9 @@ function handleHitCart(player) {
     if (player.score > 21) {
       handleLose(currentPlayer);
       showModal('You lose!', '#ff8e8e', moneySound); 
+    } else if (player.score === 21) {
+      handleWin(player, true, flase);
+      showModal('BlackJack!!', '#8bc959', playerWinSound);
     }
   }
 }
@@ -339,42 +342,46 @@ let url = document.getElementById("url").value;
 let id_user = document.getElementById('user').value;
 let totalMise = 0;
 let $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
+
 btnsMises.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
-
-    $.ajax({
-      type: "GET",
-      url: "get_user_infos.php",
-      data: {
-        userId: id_user,
-      },
-      dataType: "json",
-      success: function (response) {
-        if (!response.error) {
-          /* if (currentMise !== 0) return; */
-          let money = btn.dataset.value;
-          if (response.money < money) {
-            console.log("Vous n'avez pas assez d'argent");
-          } else {
-            if (!$moneyValues.includes(parseInt(money))) {
-              console.log("Erreur");
-              // exit(); // Cette ligne ne fonctionnera pas en JavaScript, voir la note ci-dessous
-              return;
-            } else {
-              removeMoney(money);
-            }
-          }
+    checkUser((user) => {
+      let money = btn.dataset.value;
+      if (user.money < money) {
+        console.log("Vous n'avez pas assez d'argent");
+      } else {
+        if (!$moneyValues.includes(parseInt(money))) {
+          console.log("Erreur");
+          return;
         } else {
-          console.log("Erreur de récupération des données utilisateur");
+          removeMoney(money);
         }
-      },
-      error: function (xhr, status, error) {
-        reject("Erreur AJAX : " + error);
-      },
+      }
     });
   });
 });
+
+function checkUser(callback) {
+  $.ajax({
+    type: "GET",
+    url: "get_user_infos.php",
+    data: {
+      userId: id_user,
+    },
+    dataType: "json",
+    success: function (response) {
+      if (!response.error) {
+        callback(response); // Pass the user data to the callback
+      } else {
+        console.log("Erreur de récupération des données utilisateur");
+      }
+    },
+    error: function (xhr, status, error) {
+      reject("Erreur AJAX : " + error);
+    },
+  });
+};
 
 function removeMoney(money) {
   var xhttp = new XMLHttpRequest();
@@ -551,9 +558,16 @@ btnHit.addEventListener("click", (e) => {
 btnDouble.addEventListener("click", (e) => {
   if (!areBtnsAvailables || currentMise === 0) return;
   e.preventDefault();
-  handleHitCart(currentPlayer);
-  removeMoney(totalMise);
-  handleStay(currentPlayer);
+  // removeMoney(totalMise);
+  checkUser((user) => {
+    if (user.money < totalMise) {
+      console.log("Vous n'avez pas assez d'argent");
+    } else {
+      removeMoney(totalMise);
+      handleHitCart(currentPlayer);
+      handleStay(currentPlayer);
+    }
+  });
 });
 // Bouton pour stay
 btnStay.addEventListener("click", (e) => {
