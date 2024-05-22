@@ -194,7 +194,10 @@ function handleHitCart(player) {
     // On a blackjack ou on dépasse 21 alors on ne peut pas jouer plus des cartes
     if (player.score > 21) {
       handleLose(currentPlayer);
-      showModal('You lose!', '#ff8e8e', moneySound);
+      showModal(`You lose! - $${totalMise}`, '#ff8e8e', moneySound);
+    } else if (player.score === 21) {
+      handleWin(player, [true, false], false, false);
+      showModal(`BlackJack! + $${totalMise * 1.5}`, '#8bc959', playerWinSound);
     }
   }
 }
@@ -232,7 +235,7 @@ function checkScores(score, hand) {
     playerBlackJack
   ) {
     // ici on rembourse la mise...
-    handleEquality(player);
+    // handleEquality(player);
     return { result: 'equity', blackJack: false };
   }
 }
@@ -254,14 +257,17 @@ async function handleStay(player, double = false) {
     const check = checkScores(player.score, player.currentHand);
     if (check.result === 'win') {
       handleWin(player, [check.blackJack, false], false, double);
-      message = 'You win!';
+      message = `You win! +$${totalMise}`;
+      if(check.blackJack) {
+        message = `BlackJack! +$${totalMise * 1.5}`;
+      }
     } else if (check.result === 'lose') {
       handleLose(player, [check.blackJack, false]);
-      message = 'You lose!';
+      message = `You lose! -$${totalMise}`;
     } else if (check.result === 'equality') {
       console.log(check.result)
       handleEquality(player);
-      message = 'Equality!';
+      message = `Equality! - $${totalMise / 2}`;
     }
     showModal(message, check.result === 'lose' ? "#ff8e8e" : "#8bc959", check.result === 'win' ? playerWinSound : moneySound);
     return;
@@ -273,21 +279,21 @@ async function handleStay(player, double = false) {
     const doubleLoseSplit = checkLeft.result === 'lose' && checkRight.result === 'lose';
 
     if (checkLeft.result === 'win' || checkRight.result === 'win') {
-      handleWin(player, [checkLeft.blackJack, checkRight.blackJack], doubleWinSplit, double);
+      handleWin(player, [checkLeft.blackJack, checkRight.blackJack], isSplit, doubleWinSplit);
       if (doubleWinSplit) {
         message = 'You Win for double!';
       } else {
         message = 'You Win one!';
       }
     } else if (checkLeft.result === 'lose' || checkRight.result === 'lose') {
-      handleLose(player, [checkLeft.blackJack, checkRight.blackJack], doubleLoseSplit);
+      handleLose(player, [checkLeft.blackJack, checkRight.blackJack], isSplit);
       if (doubleLoseSplit) {
-        message = 'You Lose for double!';
+        message = `You Lose for double! ${totalMise * 2}`;
       }
     } else if (checkLeft.result === 'equality' || checkRight.result === 'equality') {
+      message = `Equality! -$${totalMise / 2}`;
       if (checkLeft.result === 'equality' && checkRight.result === 'equality') {
         handleEquality(player, true);
-        message = 'Equality!';
       } else {
         handleEquality(player, false);
       }
@@ -314,15 +320,19 @@ function handleEquality(player, split = false) {
     addMoney(totalMise / 2);
   }
 };
-function handleWin(player, blackJack = [false, false], split = false, double = false) {
+function handleWin(player, blackJack = [false, false], double = false, split = false) {
   let moneyToAdd = (blackJack[0] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
   addMoney(moneyToAdd);
   addWin();
   player.addWin();
-  if (split) {
-    let moneyToAddSplit = (blackJack[1] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
+  if (split && double) {
+    let moneyToAddSplit = (blackJack[1] ? (totalMise + totalMise / 2) : totalMise);
     addMoney(moneyToAddSplit);
     player.addWin();
+  } else if (double && !split) {
+    let moneyToAddDouble = (blackJack[0] ? (totalMise + totalMise / 2) : totalMise);
+    addMoney(moneyToAddDouble);
+    console.log(totalMise)
   }
 }
 function handleLose(player, blackJack = [false, false], split = false) {
@@ -567,9 +577,12 @@ btnHit.addEventListener("click", (e) => {
 btnDouble.addEventListener("click", (e) => {
   if (!areBtnsAvailables || currentMise === 0) return;
   e.preventDefault();
-  handleHitCart(currentPlayer);
   removeMoney(totalMise);
-  handleStay(currentPlayer);
+  totalMise *= 2;
+  handleHitCart(currentPlayer);
+  if (currentPlayer.score < 21){
+    handleStay(currentPlayer, true);
+  } 
 });
 // Bouton pour stay
 btnStay.addEventListener("click", (e) => {
