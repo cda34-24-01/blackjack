@@ -107,7 +107,7 @@ getUserInfos(userId.value)
     currentPlayer.deck = playerCardsContainer;
     currentPlayer.wins = wins;
     currentPlayer.loses = loses;
-    currentMoney = money;
+    currentMoney = parseFloat(money);
   })
   .catch((error) => {
     console.error(error);
@@ -127,12 +127,23 @@ const croupier = new player(
 // si c'est false on ne peut pas cliquer les boutons
 let areBtnsAvailables = false;
 
+function handleDisableBtns(disabled = true) {
+  if (disabled) {
+    btnLeave.disabled = true;
+    btnHit.disabled = true;
+    btnStay.disabled = true;
+    btnDouble.disabled = true;
+  } else {
+    btnLeave.disabled = false;
+    btnHit.disabled = false;
+    btnStay.disabled = false;
+    btnDouble.disabled = false;
+  }
+}
+
 function startGame(currentPlayer) {
   areBtnsAvailables = false;
-  btnLeave.disabled = true;
-  btnHit.disabled = true;
-  btnStay.disabled = true;
-  btnDouble.disabled = true;
+  handleDisableBtns(true);
   // 1 carte pour le player
   setTimeout(() => handleHitCart(currentPlayer), 500);
   // 1 carte pour le croupier
@@ -144,10 +155,7 @@ function startGame(currentPlayer) {
     handleHitCart(croupier);
     croupierDeck.lastChild.src = "./public/images/cartes/card_back.png";
     areBtnsAvailables = true;
-    btnLeave.disabled = false;
-    btnHit.disabled = false;
-    btnStay.disabled = false;
-    btnDouble.disabled = false;
+    handleDisableBtns(false);
     // case of split
     if (currentPlayer.currentHand[0] === currentPlayer.currentHand[1]) {
       btnSplit.style.display = "block";
@@ -244,7 +252,7 @@ function checkScores(score, hand) {
   }
 }
 async function handleStay(player, double = false) {
-  if (!areBtnsAvailables && currentMise === 0) return;
+  if (!areBtnsAvailables && totalMise === 0) return;
   croupierDeck.lastChild.src = croupier.usedCards[croupier.usedCards.length - 1].image;
   croupierScore.textContent = croupier.score;
   // Le croupier demandera une carte s'il n'as pas 17 points
@@ -269,7 +277,6 @@ async function handleStay(player, double = false) {
       handleLose(player, [check.blackJack, false]);
       message = `You lose! -$${totalMise}`;
     } else if (check.result === 'equality') {
-      console.log(check.result)
       handleEquality(player);
       message = `Equality! +$${totalMise / 2}`;
     }
@@ -285,7 +292,7 @@ async function handleStay(player, double = false) {
     if (checkLeft.result === 'win' || checkRight.result === 'win') {
       handleWin(player, [checkLeft.blackJack, checkRight.blackJack], isSplit, doubleWinSplit);
       if (doubleWinSplit) {
-        message = `You Win for double! +$${totalMise * 2}`;
+        message = `You Win for double! +$${totalMise}`;
       } else {
         message = `You Win one! +$${totalMise}`;
       }
@@ -309,10 +316,7 @@ async function handleStay(player, double = false) {
 function showModal(message, colorAlert, sound) {
   sound.play();
   areBtnsAvailables = false;
-  btnLeave.disabled = true;
-  btnHit.disabled = true;
-  btnStay.disabled = true;
-  btnDouble.disabled = true;
+  handleDisableBtns(true);
   btnSplit.style.display = "none";
 
   messageModal.firstElementChild.textContent = message;
@@ -331,22 +335,21 @@ function handleEquality(split = false) {
     moneyToAdd = totalMise / 4;
   }
   addMoney(moneyToAdd);
-  updateMoneyDisplay(moneyToAdd)
+  updateMoneyDisplay();
 };
 
 function handleWin(player, blackJack = [false, false], double = false, split = false) {
   let moneyToAdd = (blackJack[0] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
+  currentMoney += moneyToAdd / 2;
   try {
-    currentMoney += moneyToAdd;
     player.win(moneyToAdd);
   } catch (error) {
     console.log('Error adding money in win: ', error);
   }
-
   if (split && double) {
     let moneyToAddSplit = (blackJack[1] ? (totalMise + totalMise / 2) : totalMise);
     try {
-      currentMoney += moneyToAdd;
+      currentMoney += moneyToAddSplit;
       player.win(moneyToAddSplit);
     } catch (error) {
       console.log('Error adding money in splited hand: ', error);
@@ -354,13 +357,13 @@ function handleWin(player, blackJack = [false, false], double = false, split = f
   } else if (double && !split) {
     let moneyToAddDouble = (blackJack[0] ? (totalMise + totalMise / 2) : totalMise);
     try {
-      currentMoney += moneyToAdd;
+      currentMoney += moneyToAddDouble;
       player.win(moneyToAddDouble);
     } catch (error) {
       console.log('Error adding money in win double mise: ', error);
     }
   }
-  playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
+  updateMoneyDisplay();
 }
 function handleLose(player, blackJack = [false, false], split = false) {
   if (blackJack[0] || blackJack[1]) {
@@ -383,33 +386,33 @@ btnsMises.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     checkUser((user) => {
-      let money = parseInt(btn.dataset.value);
+      currentMise = parseInt(btn.dataset.value);
       let userMoney = parseFloat(user.money);
-      if (userMoney < money) {
+      if (userMoney < currentMise) {
         console.log("Vous n'avez pas assez d'argent");
       } else {
-        if (!$moneyValues.includes(money)) {
+        if (!$moneyValues.includes(currentMise)) {
           console.log("Erreur");
           return;
         } else {
-          removeMoney(money);
+          removeMoney(currentMise);
           // si tout est ok on commence le jeu avec la mise sélectionné
+          totalMise += currentMise;
+          playerMiseDisplay.textContent = totalMise;
+          playerMoneyDisplay.textContent = userMoney - currentMise;
           btnStart.disabled = false;
-          updateMoneyDisplay(money)
         }
       }
     });
   });
 });
-function updateMoneyDisplay(money) {
-  currentMise = money;
-  totalMise = parseInt(playerMiseDisplay.textContent) || 0;
-  totalMise += currentMise;
-  // Update playerMiseDisplay.textContent with the calculated total
-  playerMiseDisplay.textContent = `${totalMise}`;
-  currentMoney -= currentMise;
-  playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
-}
+function updateMoneyDisplay() {
+  checkUser((user) => {
+    const money = user.money;
+    playerMiseDisplay.textContent = `${totalMise}`;
+    playerMoneyDisplay.textContent = money;
+  });
+};
 
 
 // <<<<<<<<< ---- Split ---- >>>>>>>>>>
@@ -480,8 +483,9 @@ btnSplit.addEventListener("click", (e) => {
   e.preventDefault();
   if (!areBtnsAvailables) return;
   checkUser((user) => {
-    if (parseFloat(user.money) < parseInt(currentMise)) {
-      console.log('pas de argent');
+    const userMoney = parseFloat(user.money);
+    if (userMoney < parseInt(totalMise)) {
+      console.log("Pas d'argent");
       return;
     } else {
       console.log('spliting');
@@ -490,7 +494,7 @@ btnSplit.addEventListener("click", (e) => {
       btnSplit.disabled = true;
       btnDouble.disabled = true;
       removeMoney(totalMise);
-      updateMoneyDisplay(totalMise);
+      updateMoneyDisplay();
       currentPlayer.score = 0;
       // Set the scores
       handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];
@@ -515,7 +519,7 @@ btnSplit.addEventListener("click", (e) => {
 })
 // Boutton pour start game
 btnStart.addEventListener("click", (e) => {
-  if (currentMise === 0) return;
+  if (totalMise === 0) return;
   e.preventDefault();
   btnStart.style.display = "none";
   btnLeave.style.display = "block";
@@ -529,33 +533,41 @@ btnStart.addEventListener("click", (e) => {
 
 // Bouton pour abandonner
 btnLeave.addEventListener("click", (e) => {
-  if (!areBtnsAvailables || currentMise === 0) return;
+  if (!areBtnsAvailables || totalMise === 0) return;
   e.preventDefault();
   showModal(`You leave the game!\nYou lost $${totalMise / 2} of your money!`, loseColorModal, moneySound);
   addMoney(totalMise / 2);
 });
 // Bouton pour demander une carte (Hit)
 btnHit.addEventListener("click", (e) => {
-  if (!areBtnsAvailables || currentMise === 0) return;
+  if (!areBtnsAvailables || totalMise === 0) return;
   cardSound.play();
   e.preventDefault();
   handleHitCart(currentPlayer);
 });
 // Bouton pour double
 btnDouble.addEventListener("click", (e) => {
-  if (!areBtnsAvailables || currentMise === 0) return;
+  if (!areBtnsAvailables || totalMise === 0) return;
   e.preventDefault();
   checkUser((user) => {
-    if (user.money < totalMise) {
+    const userMoney = parseFloat(user.money);
+    if (userMoney < totalMise) {
       console.log("Vous n'avez pas assez d'argent");
     } else {
-      removeMoney(totalMise);
-      updateMoneyDisplay(totalMise);
-      totalMise *= 2;
-      handleHitCart(currentPlayer);
-      if (currentPlayer.score < 21) {
-        handleStay(currentPlayer, true);
+      try {
+        removeMoney(totalMise);
+        playerMoneyDisplay.textContent = userMoney - totalMise;
+        totalMise += totalMise;
+        playerMiseDisplay.textContent = totalMise;
+        // updateMoneyDisplay();
+        handleHitCart(currentPlayer);
+        if (currentPlayer.score <= 21) {
+          handleStay(currentPlayer, true);
+        }
+      } catch (error) {
+        console.log('Error removing money in double: ', error)
       }
+
     }
   });
 

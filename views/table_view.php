@@ -36,7 +36,7 @@ if (!isset($_SESSION['id'])) {
     <div class="container">
         <header>
             <div>
-                <p class="ui_money">Money 💵: <?= $user['money'] ?></p>
+                <p>Money 💵: <span class="ui_money" ><?= $user['money'] ?></span></p>
                 <p>Mise : <span class="ui_mise"></span></p>
             </div>
             <div class="player_ui">

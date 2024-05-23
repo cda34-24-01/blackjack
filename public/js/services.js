@@ -22,7 +22,6 @@ export function checkUser(callback) {
 }
 
 export function addWin() {
-  console.log('win called');
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState === 4) {
@@ -38,7 +37,6 @@ export function addWin() {
 }
 
 export function addLose() {
-  console.log('lose called')
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function () {
     if (this.readyState === 4) {
@@ -73,7 +71,7 @@ export function removeMoney(money) {
   xhttp.onreadystatechange = function () {
     if (this.readyState === 4) {
       if (this.status === 200) {
-        console.log(`remove money ok : ${money}`);
+        console.log(`Remove money ok : ${money}`);
 
       } else {
         console.error("Erreur");
