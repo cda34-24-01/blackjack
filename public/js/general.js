@@ -1,7 +1,7 @@
 import { cards, getCard } from "./cartes.js";
 import { player } from "./player.js";
 import { getUserInfos } from "./getuser.js";
-import { checkUser } from "./services.js";
+import { checkUser, addMoney, removeMoney } from "./services.js";
 
 // Prendre les elements HTML
 let divJetons = document.querySelector(".money_btn");
@@ -18,7 +18,7 @@ const playerWins = document.querySelector(".ui_wins");
 const playerLoses = document.querySelector(".ui_loses");
 const playerCardsContainer = document.getElementById("cardsPlayer1");
 const playerMoneyDisplay = document.querySelector(".ui_money");
-let playerMiseDisplay = document.querySelector(".ui_mise");
+const playerMiseDisplay = document.querySelector(".ui_mise");
 
 // le modal
 const messageModal = document.querySelector(".message_modal");
@@ -185,7 +185,6 @@ function newRound() {
   btnDouble.style.display = "none";
   divJetons.style.display = "block";
   totalMise = 0;
-  // startGame(currentPlayer);
 }
 
 function handleHitCart(player) {
@@ -293,7 +292,7 @@ async function handleStay(player, double = false) {
     } else if (checkLeft.result === 'lose' || checkRight.result === 'lose') {
       handleLose(player, [checkLeft.blackJack, checkRight.blackJack], isSplit);
       if (doubleLoseSplit) {
-        message = `You Lose for double! -$${totalMise * 2}`;
+        message = `You Lose for double! -$${totalMise}`;
       }
     } else if (checkLeft.result === 'equality' || checkRight.result === 'equality') {
       message = `Equality! +$${totalMise / 2}`;
@@ -326,27 +325,42 @@ function showModal(message, colorAlert, sound) {
   Array.from(cardsImgCroupier).forEach((img) => { img.style.filter = "brightness(0.5)" });
 
 }
-function handleEquality(player, split = false) {
+function handleEquality(split = false) {
+  let moneyToAdd = totalMise / 2;
   if (split) {
-    addMoney(totalMise / 4);
-  } else {
-    addMoney(totalMise / 2);
+    moneyToAdd = totalMise / 4;
   }
+  addMoney(moneyToAdd);
+  updateMoneyDisplay(moneyToAdd)
 };
+
 function handleWin(player, blackJack = [false, false], double = false, split = false) {
   let moneyToAdd = (blackJack[0] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
-  addMoney(moneyToAdd);
-  addWin();
-  player.addWin();
+  try {
+    currentMoney += moneyToAdd;
+    player.win(moneyToAdd);
+  } catch (error) {
+    console.log('Error adding money in win: ', error);
+  }
+
   if (split && double) {
     let moneyToAddSplit = (blackJack[1] ? (totalMise + totalMise / 2) : totalMise);
-    addMoney(moneyToAddSplit);
-    player.addWin();
+    try {
+      currentMoney += moneyToAdd;
+      player.win(moneyToAddSplit);
+    } catch (error) {
+      console.log('Error adding money in splited hand: ', error);
+    }
   } else if (double && !split) {
     let moneyToAddDouble = (blackJack[0] ? (totalMise + totalMise / 2) : totalMise);
-    addMoney(moneyToAddDouble);
-    console.log(totalMise)
+    try {
+      currentMoney += moneyToAdd;
+      player.win(moneyToAddDouble);
+    } catch (error) {
+      console.log('Error adding money in win double mise: ', error);
+    }
   }
+  playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
 }
 function handleLose(player, blackJack = [false, false], split = false) {
   if (blackJack[0] || blackJack[1]) {
@@ -354,14 +368,13 @@ function handleLose(player, blackJack = [false, false], split = false) {
   }
   playerMoneyDisplay.style.color = "#ff8e8e";
   if (split) {
-    player.addLose();
+    player.lose(currentMise);
   }
-  addLose();
-  player.addLose();
+  player.lose(currentMise);
 }
 
 // Boutons pour les mises
-let url = document.getElementById("url").value;
+// let url = document.getElementById("url").value;
 let id_user = document.getElementById('user').value;
 let totalMise = 0;
 let $moneyValues = [1, 5, 25, 50, 100, 500, 1000];
@@ -380,85 +393,24 @@ btnsMises.forEach((btn) => {
           return;
         } else {
           removeMoney(money);
+          // si tout est ok on commence le jeu avec la mise sélectionné
+          btnStart.disabled = false;
+          updateMoneyDisplay(money)
         }
       }
     });
   });
 });
-
-function removeMoney(money) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState === 4) {
-      if (this.status === 200) {
-        console.log(`remove money ok : ${money}`);
-        // si tout est ok on commence le jeu avec la mise sélectionné
-        btnStart.disabled = false;
-        // Assuming money is a valid number or a string that can be converted to a number
-        currentMise = parseInt(money);
-        // Check if playerMiseDisplay.textContent contains a number
-        totalMise = parseInt(playerMiseDisplay.textContent) || 0;
-        // Add currentMise to totalMise
-        totalMise += currentMise;
-        // Update playerMiseDisplay.textContent with the calculated total
-        playerMiseDisplay.textContent = `${totalMise}`;
-        currentMoney -= currentMise;
-        playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
-      } else {
-        console.error("Erreur");
-      }
-    }
-  };
-  xhttp.open("GET", url + "removeMoney/" + money, true);
-  xhttp.send();
+function updateMoneyDisplay(money) {
+  currentMise = money;
+  totalMise = parseInt(playerMiseDisplay.textContent) || 0;
+  totalMise += currentMise;
+  // Update playerMiseDisplay.textContent with the calculated total
+  playerMiseDisplay.textContent = `${totalMise}`;
+  currentMoney -= currentMise;
+  playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
 }
 
-function addMoney(money) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState === 4) {
-      if (this.status === 200) {
-        console.log(`add money ok : ${money}`);
-        currentMoney += money;
-        playerMoneyDisplay.textContent = `Money 💵 : ${currentMoney}`;
-      } else {
-        console.error("Erreur");
-      }
-    }
-  };
-  xhttp.open("GET", url + "addMoney/" + money, true);
-  xhttp.send();
-}
-
-function addWin() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState === 4) {
-      if (this.status === 200) {
-        console.log("add win ok");
-      } else {
-        console.error("Erreur");
-      }
-    }
-  };
-  xhttp.open("GET", url + "addWin", true);
-  xhttp.send();
-}
-
-function addLose() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState === 4) {
-      if (this.status === 200) {
-        console.log("add lose ok");
-      } else {
-        console.error("Erreur");
-      }
-    }
-  };
-  xhttp.open("GET", url + "addLose", true);
-  xhttp.send();
-}
 
 // <<<<<<<<< ---- Split ---- >>>>>>>>>>
 
@@ -478,14 +430,10 @@ let scoreLeft = 0;
 let scoreRight = 0;
 
 function handleHitCardOnSplit(side, sideContainer, scoreOfSideDisplay, hand) {
-  const { cardSelected, currentsCards } = getCard(cardsInGame);
-
+  const { cardSelected } = getCard(cardsInGame);
   hand.push(cardSelected.value);
-
   const currentScore = calcScoreSplit(hand);
-
   scoreOfSideDisplay.textContent = currentScore;
-
   currentPlayer.currentHand = [handLeft, handRight];
 
   // DOM manipulation
@@ -493,7 +441,6 @@ function handleHitCardOnSplit(side, sideContainer, scoreOfSideDisplay, hand) {
   newCard.src = cardSelected.image;
   sideContainer.appendChild(newCard);
   const cardsOnThisSide = sideContainer.getElementsByTagName('img');
-
   const totalCards = cardsOnThisSide.length;
   if (side === 'right') {
     for (let i = totalCards - 1; i > 0; i--) {
@@ -510,9 +457,7 @@ function handleHitCardOnSplit(side, sideContainer, scoreOfSideDisplay, hand) {
   currentPlayer.score = [scoreLeft, scoreRight];
 
   if (currentScore > 21) {
-    console.log(sideContainer);
     Array.from(cardsOnThisSide).forEach((card) => {
-      console.log(card);
       card.style.filter = "brightness(0.5)";
     })
     if (side === 'right') {
@@ -545,6 +490,7 @@ btnSplit.addEventListener("click", (e) => {
       btnSplit.disabled = true;
       btnDouble.disabled = true;
       removeMoney(totalMise);
+      updateMoneyDisplay(totalMise);
       currentPlayer.score = 0;
       // Set the scores
       handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];
@@ -567,7 +513,7 @@ btnSplit.addEventListener("click", (e) => {
     }
   })
 })
-
+// Boutton pour start game
 btnStart.addEventListener("click", (e) => {
   if (currentMise === 0) return;
   e.preventDefault();
@@ -604,6 +550,7 @@ btnDouble.addEventListener("click", (e) => {
       console.log("Vous n'avez pas assez d'argent");
     } else {
       removeMoney(totalMise);
+      updateMoneyDisplay(totalMise);
       totalMise *= 2;
       handleHitCart(currentPlayer);
       if (currentPlayer.score < 21) {
@@ -624,20 +571,6 @@ btnContinuePlaying.addEventListener("click", (e) => {
   e.preventDefault();
   newRound();
 });
-
-function toggleSound() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function () {
-    if (this.readyState === 4) {
-      if (this.status === 200) {
-        console.log("Sound Toggle");
-      }
-    }
-  };
-  // window.location.href = url + "removeMoney/" + money;
-  xhttp.open("GET", url + "toggleSound", true);
-  xhttp.send();
-}
 
 
 /* 
