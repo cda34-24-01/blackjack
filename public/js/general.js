@@ -20,7 +20,11 @@ const playerCardsContainer = document.getElementById("cardsPlayer1");
 const playerMoneyDisplay = document.querySelector(".ui_money");
 let playerMiseDisplay = document.querySelector(".ui_mise");
 
+// le modal
 const messageModal = document.querySelector(".message_modal");
+const winColorModal = "#8bc959a8";
+const loseColorModal = "#dd17177d";
+
 const btnContinuePlaying = document.getElementById("btn_continue_game");
 const btnExitGame = document.getElementById("btn_exit_game");
 
@@ -35,8 +39,8 @@ let musicNone = false;
 const volumeBtn = document.getElementById("volume_btn");
 
 // elements du split
-const deckContainer = document.getElementById('player_desk');
-const splitDeck = deckContainer.lastElementChild;
+const playerDeck = document.getElementById('player_desk');
+const splitDeck = playerDeck.lastElementChild;
 const cartesRight = document.getElementById('cartes_split_right');
 const cartesLeft = document.getElementById('cartes_split_left');
 const scoreRightDisplay = document.getElementById('score_split_right');
@@ -163,9 +167,10 @@ function newRound() {
     scoreRight = 0;
     isSplit = false;
     splitDeck.classList.add('hidden');
-    deckContainer.firstElementChild.classList.remove('hidden');
+    playerDeck.firstElementChild.classList.remove('hidden');
   }
   croupier.reset();
+  croupierDeck.innerHTML = '<img class="cartes_back" src="../public/images/cartes/card_back.png" />'
   croupierScore.textContent = 0;
   playerScore.textContent = 0;
   playerWins.textContent = `Wins: ${currentPlayer.wins}`;
@@ -194,10 +199,10 @@ function handleHitCart(player) {
     // On a blackjack ou on dépasse 21 alors on ne peut pas jouer plus des cartes
     if (player.score > 21) {
       handleLose(currentPlayer);
-      showModal(`You lose! - $${totalMise}`, '#ff8e8e', moneySound);
-    } else if (player.score === 21) {
+      showModal(`You lose! -$${totalMise}`, loseColorModal, moneySound);
+    } else if (player.score === 21 && player.currentHand.length === 2) {
       handleWin(player, [true, false], false, false);
-      showModal(`BlackJack! + $${totalMise * 1.5}`, '#8bc959', playerWinSound);
+      showModal(`BlackJack! +$${totalMise * 1.5}`, winColorModal, playerWinSound);
     }
   }
 }
@@ -258,7 +263,7 @@ async function handleStay(player, double = false) {
     if (check.result === 'win') {
       handleWin(player, [check.blackJack, false], false, double);
       message = `You win! +$${totalMise}`;
-      if(check.blackJack) {
+      if (check.blackJack) {
         message = `BlackJack! +$${totalMise * 1.5}`;
       }
     } else if (check.result === 'lose') {
@@ -267,9 +272,9 @@ async function handleStay(player, double = false) {
     } else if (check.result === 'equality') {
       console.log(check.result)
       handleEquality(player);
-      message = `Equality! - $${totalMise / 2}`;
+      message = `Equality! +$${totalMise / 2}`;
     }
-    showModal(message, check.result === 'lose' ? "#ff8e8e" : "#8bc959", check.result === 'win' ? playerWinSound : moneySound);
+    showModal(message, check.result === 'lose' ? loseColorModal : winColorModal, check.result === 'win' ? playerWinSound : moneySound);
     return;
   } else {
     const checkRight = checkScores(player.score[0], player.currentHand[0]);
@@ -281,37 +286,45 @@ async function handleStay(player, double = false) {
     if (checkLeft.result === 'win' || checkRight.result === 'win') {
       handleWin(player, [checkLeft.blackJack, checkRight.blackJack], isSplit, doubleWinSplit);
       if (doubleWinSplit) {
-        message = 'You Win for double!';
+        message = `You Win for double! +$${totalMise * 2}`;
       } else {
-        message = 'You Win one!';
+        message = `You Win one! +$${totalMise}`;
       }
     } else if (checkLeft.result === 'lose' || checkRight.result === 'lose') {
       handleLose(player, [checkLeft.blackJack, checkRight.blackJack], isSplit);
       if (doubleLoseSplit) {
-        message = `You Lose for double! ${totalMise * 2}`;
+        message = `You Lose for double! -$${totalMise * 2}`;
       }
     } else if (checkLeft.result === 'equality' || checkRight.result === 'equality') {
-      message = `Equality! -$${totalMise / 2}`;
+      message = `Equality! +$${totalMise / 2}`;
       if (checkLeft.result === 'equality' && checkRight.result === 'equality') {
         handleEquality(player, true);
       } else {
         handleEquality(player, false);
       }
     }
-    showModal(message, doubleLoseSplit ? "#ff8e8e" : "#8bc959", doubleWinSplit ? playerWinSound : moneySound);
+    showModal(message, doubleLoseSplit ? loseColorModal : winColorModal, doubleWinSplit ? playerWinSound : moneySound);
   }
 }
+
 function showModal(message, colorAlert, sound) {
+  sound.play();
   areBtnsAvailables = false;
   btnLeave.disabled = true;
   btnHit.disabled = true;
   btnStay.disabled = true;
   btnDouble.disabled = true;
   btnSplit.style.display = "none";
-  sound.play();
+
   messageModal.firstElementChild.textContent = message;
   messageModal.classList.remove("hidden");
   messageModal.style.backgroundColor = colorAlert;
+
+  const cardsImgPlayer = playerDeck.getElementsByTagName('img');
+  const cardsImgCroupier = croupierDeck.getElementsByTagName('img');
+  Array.from(cardsImgPlayer).forEach((img) => { img.style.filter = "brightness(0.5)" });
+  Array.from(cardsImgCroupier).forEach((img) => { img.style.filter = "brightness(0.5)" });
+
 }
 function handleEquality(player, split = false) {
   if (split) {
@@ -357,11 +370,12 @@ btnsMises.forEach((btn) => {
   btn.addEventListener("click", (e) => {
     e.preventDefault();
     checkUser((user) => {
-      let money = btn.dataset.value;
-      if (user.money < money) {
+      let money = parseInt(btn.dataset.value);
+      let userMoney = parseFloat(user.money);
+      if (userMoney < money) {
         console.log("Vous n'avez pas assez d'argent");
       } else {
-        if (!$moneyValues.includes(parseInt(money))) {
+        if (!$moneyValues.includes(money)) {
           console.log("Erreur");
           return;
         } else {
@@ -520,30 +534,38 @@ btnSplitHitLeft.addEventListener('click', () => {
 btnSplit.addEventListener("click", (e) => {
   e.preventDefault();
   if (!areBtnsAvailables) return;
-  isSplit = true;
-  btnHit.disabled = true;
-  btnSplit.disabled = true;
-  btnDouble.disabled = true;
-  removeMoney(totalMise);
-  currentPlayer.score = 0;
-  // Set the scores
-  handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];
-  handLeft = [currentPlayer.usedCards[currentPlayer.usedCards.length - 2].value];
-  // Hidden le desk normal
-  deckContainer.firstElementChild.classList.add('hidden');
-  // Visible le desk split
-  splitDeck.classList.remove('hidden');
-  // Add the cards in any side
-  const cardSplitedRight = document.createElement('img');
-  const cardSplitedLeft = document.createElement('img');
-  cardSplitedRight.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 1].image;
-  cardSplitedLeft.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 2].image;
-  cartesRight.appendChild(cardSplitedRight);
-  cartesLeft.appendChild(cardSplitedLeft);
-  // Add the scores
-  currentPlayer.score = [handLeft[0], handRight[0]]
-  scoreRightDisplay.textContent = handRight[0];
-  scoreLeftDisplay.textContent = handLeft[0];
+  checkUser((user) => {
+    if (parseFloat(user.money) < parseInt(currentMise)) {
+      console.log('pas de argent');
+      return;
+    } else {
+      console.log('spliting');
+      isSplit = true;
+      btnHit.disabled = true;
+      btnSplit.disabled = true;
+      btnDouble.disabled = true;
+      removeMoney(totalMise);
+      currentPlayer.score = 0;
+      // Set the scores
+      handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];
+      handLeft = [currentPlayer.usedCards[currentPlayer.usedCards.length - 2].value];
+      // Hidden le desk normal
+      playerDeck.firstElementChild.classList.add('hidden');
+      // Visible le desk split
+      splitDeck.classList.remove('hidden');
+      // Add the cards in any side
+      const cardSplitedRight = document.createElement('img');
+      const cardSplitedLeft = document.createElement('img');
+      cardSplitedRight.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 1].image;
+      cardSplitedLeft.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 2].image;
+      cartesRight.appendChild(cardSplitedRight);
+      cartesLeft.appendChild(cardSplitedLeft);
+      // Add the scores
+      currentPlayer.score = [handLeft[0], handRight[0]]
+      scoreRightDisplay.textContent = handRight[0];
+      scoreLeftDisplay.textContent = handLeft[0];
+    }
+  })
 })
 
 btnStart.addEventListener("click", (e) => {
@@ -563,7 +585,7 @@ btnStart.addEventListener("click", (e) => {
 btnLeave.addEventListener("click", (e) => {
   if (!areBtnsAvailables || currentMise === 0) return;
   e.preventDefault();
-  showModal(`You leave the game!\nYou lost $${totalMise / 2} of your money!`, '#ff8e8e', moneySound);
+  showModal(`You leave the game!\nYou lost $${totalMise / 2} of your money!`, loseColorModal, moneySound);
   addMoney(totalMise / 2);
 });
 // Bouton pour demander une carte (Hit)
@@ -577,12 +599,19 @@ btnHit.addEventListener("click", (e) => {
 btnDouble.addEventListener("click", (e) => {
   if (!areBtnsAvailables || currentMise === 0) return;
   e.preventDefault();
-  removeMoney(totalMise);
-  totalMise *= 2;
-  handleHitCart(currentPlayer);
-  if (currentPlayer.score < 21){
-    handleStay(currentPlayer, true);
-  } 
+  checkUser((user) => {
+    if (user.money < totalMise) {
+      console.log("Vous n'avez pas assez d'argent");
+    } else {
+      removeMoney(totalMise);
+      totalMise *= 2;
+      handleHitCart(currentPlayer);
+      if (currentPlayer.score < 21) {
+        handleStay(currentPlayer, true);
+      }
+    }
+  });
+
 });
 // Bouton pour stay
 btnStay.addEventListener("click", (e) => {
@@ -618,16 +647,16 @@ Une carte pour moi face visible
 Une carte pour lui (croupier) face visible
 Une deuxième carte pour moi face visible
 Et une deuxième carte pour le croupier MAIS face cachée.
-
+ 
 Ensuite : 
 Le joueur tire autant de cartes qu'il souhaite SAUF si il dépasse 21 dans quel cas, le jeu s’arrête et le croupier gagne.
-
+ 
 Dès que le joueur appuis sur STAY
 Révélation de la carte face cachée du croupier ( donc calcul de ses deux cartes )
-
+ 
 Ensuite :
 Le croupier tire des cartes tant qu'il n'a pas 17 maximum. ( si il a plus de 17 le jeu s'arrête et celui qui a la plus grosse main, gagne. )
-
+ 
 Spécificité : 
 Si le croupier tire un AS face visible ( donc sa première carte ) Et que sa carte cachée est un 10 ou une tête 
      

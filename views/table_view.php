@@ -59,9 +59,9 @@ if (!isset($_SESSION['id'])) {
                     <div class="score_container">
                         <p id="croupier_score">0</p>
                     </div>
-                    <img class="cartes_back" src="../public/images/cartes/card_back.png" />
                 </div>
                 <div id="cardsCroupier" class="cards_container">
+                    <img class="cartes_back" src="../public/images/cartes/card_back.png" />
                     <!-- Cards rendues avec le script general.js -->
                 </div>
             </div>
