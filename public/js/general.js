@@ -3,6 +3,8 @@ import { player } from "./player.js";
 import { checkUser, addMoney, removeMoney, toggleSound } from "./services.js";
 
 /* <<<<<<<<<<<< PRENDRE LES ELEMENTS HTML >>>>>>>>>>>>>>>>>> */
+// Elements
+const playerDeck = document.getElementById('player_desk');
 // Boutons
 let divJetons = document.querySelector(".money_btn");
 const btnStart = document.getElementById("start");
@@ -13,10 +15,7 @@ const btnSplit = document.getElementById("split");
 const btnDouble = document.getElementById("double");
 const btnsMises = document.querySelectorAll(".btnMoney");
 const btnContinuePlaying = document.getElementById("btn_continue_game");
-const btnExitGame = document.getElementById("btn_exit_game");
-// btns hit du split
-const btnSplitHitRight = document.getElementById('btn_split_hit_right');
-const btnSplitHitLeft = document.getElementById('btn_split_hit_left');
+
 // si c'est false on ne peut pas cliquer les boutons specifies
 let areBtnsAvailables = false;
 // Elements du display
@@ -36,14 +35,6 @@ const volumeBtn = document.getElementById("volume_btn");
 // Les elements du croupier
 const croupierDeck = document.getElementById("cardsCroupier");
 const croupierScore = document.getElementById("croupier_score");
-// Les elements du split
-const playerDeck = document.getElementById('player_desk');
-const splitDeck = playerDeck.lastElementChild;
-const cartesRight = document.getElementById('cartes_split_right');
-const cartesLeft = document.getElementById('cartes_split_left');
-const scoreRightDisplay = document.getElementById('score_split_right');
-const scoreLeftDisplay = document.getElementById('score_split_left');
-let isSplit = false;
 // Le modal
 const messageModal = document.querySelector(".message_modal");
 // Ici on peut changer la couleur du bg du modal
@@ -65,6 +56,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Initialiser le jeu de cartes
 let cardsInGame = cards;
+let isSplit = false;
+
 
 // Instancier l'objet jouer pour le current player
 let currentPlayer = new player();
@@ -252,12 +245,14 @@ function handleEquality(split = false) {
     moneyToAdd = totalMise / 4;
   }
   addMoney(moneyToAdd);
+  console.log(currentMoney - moneyToAdd)
   updateMoneyDisplay();
 };
 // Le array blackjack a l'index 0 c'est la hand original et a l'index 1 c'est pour la hand du split
 function handleWin(player, blackJack = [false, false], double = false, split = false) {
+
   let moneyToAdd = (blackJack[0] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
-  currentMoney += moneyToAdd / 2;
+  // currentMoney += moneyToAdd / 2;
   try {
     player.win(moneyToAdd);
   } catch (error) {
@@ -266,7 +261,7 @@ function handleWin(player, blackJack = [false, false], double = false, split = f
   if (split && double) {
     let moneyToAddSplit = (blackJack[1] ? (totalMise + totalMise / 2) : totalMise);
     try {
-      currentMoney += moneyToAddSplit;
+      // currentMoney += moneyToAddSplit;
       player.win(moneyToAddSplit);
     } catch (error) {
       console.log('Error adding money in splitted hand: ', error);
@@ -274,15 +269,17 @@ function handleWin(player, blackJack = [false, false], double = false, split = f
   } else if (double && !split) {
     let moneyToAddDouble = (blackJack[0] ? (totalMise + totalMise / 2) : totalMise);
     try {
-      currentMoney += moneyToAddDouble;
+      // currentMoney += moneyToAddDouble;
       player.win(moneyToAddDouble);
     } catch (error) {
       console.log('Error adding money in win double mise: ', error);
     }
   }
+  console.log(currentMoney)
   updateMoneyDisplay();
 }
 function handleLose(player, blackJack = [false, false], split = false) {
+  console.log(currentMoney);
   if (blackJack[0] || blackJack[1]) {
     console.log("you lose by blackjack... lol");
   }
@@ -371,6 +368,9 @@ function handleHitCart(player) {
   player.cardsInGame = cardsInGame;
   player.demanderUneCarte();
   cardsInGame = player.refreshCardsInGame();
+  if (player.currentHand.length > 2) {
+    btnDouble.disable = true;
+  }
   if (player.name === "Croupier") {
     croupierScore.textContent = player.currentHand[0];
   } else {
@@ -428,6 +428,8 @@ async function handleStay(player, double = false) {
 
     const doubleWinSplit = checkLeft.result === 'win' && checkRight.result === 'win';
     const doubleLoseSplit = checkLeft.result === 'lose' && checkRight.result === 'lose';
+    const doubleEqualitySplit = checkLeft.result === 'equality' && checkRight.result === 'equality';
+    const singleEqualitySplit = checkLeft.result === 'equality' || checkRight.result === 'equality';
 
     // Comparer les scores et appliquer la fonction pertinent avec le message
     if (checkLeft.result === 'win' || checkRight.result === 'win') {
@@ -438,19 +440,19 @@ async function handleStay(player, double = false) {
         message = `You Win one! +$${totalMise}`;
       }
     } else if (checkLeft.result === 'lose' || checkRight.result === 'lose') {
-      handleLose(player, [checkLeft.blackJack, checkRight.blackJack], isSplit);
+      handleLose(player, [checkLeft.blackJack, checkRight.blackJack], doubleLoseSplit);
       if (doubleLoseSplit) {
         message = `You Lose for double! -$${totalMise}`;
-      }
-    } else if (checkLeft.result === 'equality' || checkRight.result === 'equality') {
-      if (checkLeft.result === 'equality' && checkRight.result === 'equality') {
-        message = `Equality! +$${totalMise / 2}`;
-        handleEquality(player, true);
-        console.log('double equality in split', message)
-      } else {
-        handleEquality(player, false);
-        message = `Equality! +$${totalMise / 4}`;
-        console.log('equality in split', message)
+      } else if (singleEqualitySplit) {
+        if (doubleEqualitySplit) {
+          message = `Equality! +$${totalMise / 2}`;
+          handleEquality(player, true);
+          console.log('double equality in split', message)
+        } else {
+          handleEquality(player, false);
+          message = `Equality! +$${totalMise / 4}`;
+          console.log('equality in split', message)
+        }
       }
     }
     showModal(message, doubleLoseSplit ? loseColorModal : winColorModal, doubleWinSplit ? playerWinSound : moneySound);
@@ -565,6 +567,15 @@ btnContinuePlaying.addEventListener("click", (e) => {
   newRound();
 });
 // Boutons pour Split
+// btns hit du split
+const splitDeck = playerDeck.lastElementChild;
+const btnSplitHitRight = document.getElementById('btn_split_hit_right');
+const btnSplitHitLeft = document.getElementById('btn_split_hit_left');
+const cartesRight = document.getElementById('cartes_split_right');
+const cartesLeft = document.getElementById('cartes_split_left');
+const scoreRightDisplay = document.getElementById('score_split_right');
+const scoreLeftDisplay = document.getElementById('score_split_left');
+
 btnSplit.addEventListener("click", (e) => {
   e.preventDefault();
   if (!areBtnsAvailables) return;
@@ -574,13 +585,20 @@ btnSplit.addEventListener("click", (e) => {
       console.log("Pas d'argent");
       return;
     } else {
-      console.log('spliting');
+      console.log('splitting');
+
+      /* btnSplitHitRight.disable = false;
+      btnSplitHitLeft.disable = false;
+ */
+
       isSplit = true;
       btnHit.disabled = true;
       btnSplit.disabled = true;
       btnDouble.disabled = true;
       removeMoney(totalMise);
-      updateMoneyDisplay();
+      playerMoneyDisplay.textContent = userMoney - totalMise;
+      totalMise += totalMise;
+      playerMiseDisplay.textContent = totalMise;
       currentPlayer.score = 0;
       // Set the scores
       handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];

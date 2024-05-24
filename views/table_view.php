@@ -151,7 +151,6 @@ if (!isset($_SESSION['id'])) {
             <p> <!-- Message rendu depuis general.js --> </p>
             <div class="div">
                 <button id="btn_continue_game">Continuer</button>
-                <button id="btn_exit_game">Sortir</button>
             </div>
         </div>
     </div>

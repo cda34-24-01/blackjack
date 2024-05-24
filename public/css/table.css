@@ -98,6 +98,34 @@ nav img {
   width: 100%;
 }
 
+.money_btn :nth-child(1) img {
+  filter: grayscale(10) opacity(0.5);
+}
+
+.money_btn :nth-child(2) img {
+  filter: hue-rotate(181deg);
+}
+
+.money_btn :nth-child(3) img {
+  filter: hue-rotate(241deg);
+}
+
+.money_btn :nth-child(4) img {
+  filter: hue-rotate(0deg);
+}
+
+.money_btn :nth-child(5) img {
+  filter: grayscale(1) brightness(0.5);
+}
+
+.money_btn :nth-child(6) img {
+  filter: hue-rotate(61deg);
+}
+
+.money_btn :nth-child(7) img {
+  filter: sepia();
+}
+
 .action_btn button {
   background-color: #8bc959;
 }
