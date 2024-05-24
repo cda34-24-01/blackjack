@@ -112,7 +112,7 @@ function handleDisableBtns(disabled = true) {
     btnLeave.disabled = false;
     btnHit.disabled = false;
     btnStay.disabled = false;
-    btnDouble.disabled = false;
+    btnDouble.disabled = true;
   }
 }
 // Repartition initial des cartes
@@ -132,14 +132,13 @@ function startGame(currentPlayer) {
     areBtnsAvailables = true;
     handleDisableBtns(false);
     // case double
-    /* const doubleIsPossible = currentPlayer.score === 9 || currentPlayer.score === 10 || currentPlayer.score === 11
+    const doubleIsPossible = currentPlayer.score === 9 || currentPlayer.score === 10 || currentPlayer.score === 11
     const doubleIsPossibleWithAce = currentPlayer.currentHand.includes(11) && (currentPlayer.score === 16 || currentPlayer.score === 17 || currentPlayer.score === 18)
-    console.log(doubleIsPossible, doubleIsPossibleWithAce, currentPlayer.score);
     if (doubleIsPossible || doubleIsPossibleWithAce) {
       btnDouble.disabled = false;
     } else {
       btnDouble.display = true;
-    } */
+    }
     // case of split
     if (currentPlayer.currentHand[0] === currentPlayer.currentHand[1]) {
       btnSplit.style.display = "block";
