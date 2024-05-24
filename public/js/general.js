@@ -131,6 +131,15 @@ function startGame(currentPlayer) {
     croupierDeck.lastChild.src = "./public/images/cartes/card_back.png";
     areBtnsAvailables = true;
     handleDisableBtns(false);
+    // case double
+    /* const doubleIsPossible = currentPlayer.score === 9 || currentPlayer.score === 10 || currentPlayer.score === 11
+    const doubleIsPossibleWithAce = currentPlayer.currentHand.includes(11) && (currentPlayer.score === 16 || currentPlayer.score === 17 || currentPlayer.score === 18)
+    console.log(doubleIsPossible, doubleIsPossibleWithAce, currentPlayer.score);
+    if (doubleIsPossible || doubleIsPossibleWithAce) {
+      btnDouble.disabled = false;
+    } else {
+      btnDouble.display = true;
+    } */
     // case of split
     if (currentPlayer.currentHand[0] === currentPlayer.currentHand[1]) {
       btnSplit.style.display = "block";
@@ -333,7 +342,7 @@ function handleHitCardOnSplit(side, sideContainer, scoreOfSideDisplay, hand) {
   // Actualiser la current score du player apres le calcule de chaque coté dans la boucle for
   currentPlayer.score = [scoreLeft, scoreRight];
   // Appliquer le style aux cartes lors qu'on dépasse 21
-  if (currentScore > 21) {
+  if (currentScore >= 21) {
     Array.from(cardsOnThisSide).forEach((card) => {
       card.style.filter = "brightness(0.5)";
     })
@@ -342,6 +351,17 @@ function handleHitCardOnSplit(side, sideContainer, scoreOfSideDisplay, hand) {
     } else {
       btnSplitHitLeft.disabled = true;
     }
+  }
+}
+// Fonction pour le double de mises
+function handleDouble(userMoney) {
+  removeMoney(totalMise);
+  playerMoneyDisplay.textContent = userMoney - totalMise;
+  totalMise += totalMise;
+  playerMiseDisplay.textContent = totalMise;
+  handleHitCart(currentPlayer);
+  if (currentPlayer.score <= 21) {
+    handleStay(currentPlayer, true);
   }
 }
 /* <<<<<<<<<<<< FIN DES FONCTIONS POUR LE COMPORTEMENT DU JEU >>>>>>>>>>>>>>>>>> */
@@ -424,11 +444,14 @@ async function handleStay(player, double = false) {
         message = `You Lose for double! -$${totalMise}`;
       }
     } else if (checkLeft.result === 'equality' || checkRight.result === 'equality') {
-      message = `Equality! +$${totalMise / 2}`;
       if (checkLeft.result === 'equality' && checkRight.result === 'equality') {
+        message = `Equality! +$${totalMise / 2}`;
         handleEquality(player, true);
+        console.log('double equality in split', message)
       } else {
         handleEquality(player, false);
+        message = `Equality! +$${totalMise / 4}`;
+        console.log('equality in split', message)
       }
     }
     showModal(message, doubleLoseSplit ? loseColorModal : winColorModal, doubleWinSplit ? playerWinSound : moneySound);
@@ -511,6 +534,7 @@ btnHit.addEventListener("click", (e) => {
   e.preventDefault();
   handleHitCart(currentPlayer);
 });
+
 // Bouton pour doubler
 btnDouble.addEventListener("click", (e) => {
   if (!areBtnsAvailables || totalMise === 0) return;
@@ -521,15 +545,7 @@ btnDouble.addEventListener("click", (e) => {
       console.log("Vous n'avez pas assez d'argent");
     } else {
       try {
-        removeMoney(totalMise);
-        playerMoneyDisplay.textContent = userMoney - totalMise;
-        totalMise += totalMise;
-        playerMiseDisplay.textContent = totalMise;
-        // updateMoneyDisplay();
-        handleHitCart(currentPlayer);
-        if (currentPlayer.score <= 21) {
-          handleStay(currentPlayer, true);
-        }
+        handleDouble(userMoney);
       } catch (error) {
         console.log('Error removing money in double: ', error)
       }
@@ -617,4 +633,7 @@ Spécificité :
 Si le croupier tire un AS face visible ( donc sa première carte ) Et que sa carte cachée est un 10 ou une tête 
      
 Le jeu s’arrête et le croupier gagne SAUF si le joueur a un blackjack aussi alors le jeu s'arrête quand même mais le joueur est remboursée de sa somme misée.
+
+Double:
+Possibilité de doubler avec 9, 10 ou 11 points au total avec les 2 premiers cartes ou 16, 17, 18 s'on a un AS
 */
