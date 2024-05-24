@@ -159,7 +159,6 @@ if (!isset($_SESSION['id'])) {
     <input type="hidden" id="user" value="<?= $user['id_utilisateur'] ?>">
     <input type="hidden" id="url" value="<?= URL ?>">
     <script type="module" src="<?= URL . "public/js/general.js" ?> "></script>
-    <script type="module" src="<?= URL . "public/js/table.js" ?> "></script>
 </body>
 
 </html>

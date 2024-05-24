@@ -68,7 +68,3 @@ export class player {
         };
     };
 }
-
-/* export class croupier extends player {
-    
-} */

@@ -1,5 +1,6 @@
 import { id_user } from "./general.js";
 
+// Cette fonction return le user pour l'implementer apres dans différentes fonctions callback
 export function checkUser(callback) {
   $.ajax({
     type: "GET",
@@ -10,7 +11,7 @@ export function checkUser(callback) {
     dataType: "json",
     success: function (response) {
       if (!response.error) {
-        callback(response); // Pass the user data to the callback
+        callback(response);
       } else {
         console.log("Erreur de récupération des données utilisateur");
       }
