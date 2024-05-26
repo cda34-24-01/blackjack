@@ -216,68 +216,58 @@ function turnOffSound() {
   musicNone = true;
   volumeBtn.src = "http://localhost/public/images/icons/volume_off.png";
 }
-// Montrer le modal
+// Montrer le modal et actualiser les displays de currentMoney et totalMise
 function showModal(message, colorAlert, sound) {
   sound.play();
+  // desactiver les boutons
   areBtnsAvailables = false;
   handleDisableBtns(true);
   btnSplit.style.display = "none";
+  // afficher le modal
   messageModal.firstElementChild.textContent = message;
   messageModal.classList.remove("hidden");
   messageModal.style.backgroundColor = colorAlert;
+  // actualiser les displays
+  playerMiseDisplay.textContent = `0`;
+  playerMoneyDisplay.textContent = currentMoney;
   // Appliquer l'effect aux cartes lors qu'l modal est ouvert
   const cardsImgPlayer = playerDeck.getElementsByTagName('img');
   const cardsImgCroupier = croupierDeck.getElementsByTagName('img');
   Array.from(cardsImgPlayer).forEach((img) => { img.style.filter = "brightness(0.5)" });
   Array.from(cardsImgCroupier).forEach((img) => { img.style.filter = "brightness(0.5)" });
-}
-// Actualiser les displays du mise et argent du player
-function updateMoneyDisplay() {
-  checkUser((user) => {
-    const money = user.money;
-    playerMiseDisplay.textContent = `${totalMise}`;
-    playerMoneyDisplay.textContent = money;
-  });
 };
 function handleEquality(split = false) {
   let moneyToAdd = totalMise / 2;
-  if (split) {
+  if (split === true) {
     moneyToAdd = totalMise / 4;
   }
+  currentMoney += moneyToAdd;
   addMoney(moneyToAdd);
-  console.log(currentMoney - moneyToAdd)
-  updateMoneyDisplay();
 };
 // Le array blackjack a l'index 0 c'est la hand original et a l'index 1 c'est pour la hand du split
 function handleWin(player, blackJack = [false, false], double = false, split = false) {
+  // le montant minimum à ajouter en cas de gain
+  // la valeur de la mise multipliée par 2, une fois pour récupérer la mise originale et une fois pour le gain
+  let newMoney = totalMise * 2;
 
-  let moneyToAdd = (blackJack[0] ? (totalMise * 2 + totalMise / 2) : totalMise * 2);
-  // currentMoney += moneyToAdd / 2;
-  try {
-    player.win(moneyToAdd);
-  } catch (error) {
-    console.log('Error adding money in win: ', error);
+  // cas de blackjack avec double ou simple
+  const doubleBlackJack = blackJack[0] && blackJack[1];
+  const singleBlackJack = blackJack[0] || blackJack[1] && !doubleBlackJack;
+  
+  if (!doubleBlackJack && singleBlackJack) {
+    newMoney += totalMise / 2;
+  } else if (doubleBlackJack) {
+    newMoney += totalMise / 2;
   }
-  if (split && double) {
-    let moneyToAddSplit = (blackJack[1] ? (totalMise + totalMise / 2) : totalMise);
-    try {
-      // currentMoney += moneyToAddSplit;
-      player.win(moneyToAddSplit);
-    } catch (error) {
-      console.log('Error adding money in splitted hand: ', error);
-    }
-  } else if (double && !split) {
-    let moneyToAddDouble = (blackJack[0] ? (totalMise + totalMise / 2) : totalMise);
-    try {
-      // currentMoney += moneyToAddDouble;
-      player.win(moneyToAddDouble);
-    } catch (error) {
-      console.log('Error adding money in win double mise: ', error);
-    }
+
+  // cas de split ou double mise
+  if (split || double) {
+    newMoney += totalMise;
   }
-  console.log(currentMoney)
-  updateMoneyDisplay();
-}
+
+  player.win(newMoney);
+  currentMoney += newMoney;
+};
 function handleLose(player, blackJack = [false, false], split = false) {
   console.log(currentMoney);
   if (blackJack[0] || blackJack[1]) {
@@ -288,7 +278,7 @@ function handleLose(player, blackJack = [false, false], split = false) {
     player.lose(currentMise);
   }
   player.lose(currentMise);
-}
+};
 // SPLIT FONCTIONS
 // Verifier que la hand ne dépasse pas 21
 function calcScoreSplit(hand) {
@@ -350,15 +340,47 @@ function handleHitCardOnSplit(side, sideContainer, scoreOfSideDisplay, hand) {
   }
 }
 // Fonction pour le double de mises
-function handleDouble(userMoney) {
+function handleDouble() {
   removeMoney(totalMise);
-  playerMoneyDisplay.textContent = userMoney - totalMise;
+  currentMoney -= totalMise;
+  playerMoneyDisplay.textContent = currentMoney;
   totalMise += totalMise;
   playerMiseDisplay.textContent = totalMise;
   handleHitCart(currentPlayer);
   if (currentPlayer.score <= 21) {
     handleStay(currentPlayer, true);
   }
+}
+function handleSplit() {
+  console.log('splitting');
+  isSplit = true;
+  btnHit.disabled = true;
+  btnSplit.disabled = true;
+  btnDouble.disabled = true;
+  removeMoney(totalMise);
+  currentMoney -= totalMise;
+  playerMoneyDisplay.textContent = currentMoney;
+  totalMise += totalMise;
+  playerMiseDisplay.textContent = totalMise;
+  currentPlayer.score = 0;
+  // Set les scores de chaque côté
+  handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];
+  handLeft = [currentPlayer.usedCards[currentPlayer.usedCards.length - 2].value];
+  // Hidden le desk normal
+  playerDeck.firstElementChild.classList.add('hidden');
+  // Visible le desk split
+  splitDeck.classList.remove('hidden');
+  // Ajouter les cartes dans les deux côtés
+  const cardSplitedRight = document.createElement('img');
+  const cardSplitedLeft = document.createElement('img');
+  cardSplitedRight.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 1].image;
+  cardSplitedLeft.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 2].image;
+  cartesRight.appendChild(cardSplitedRight);
+  cartesLeft.appendChild(cardSplitedLeft);
+  // Montrer les scores et actualiser la valeur dans le objet currentPlayer
+  currentPlayer.score = [handLeft[0], handRight[0]]
+  scoreRightDisplay.textContent = handRight[0];
+  scoreLeftDisplay.textContent = handLeft[0];
 }
 /* <<<<<<<<<<<< FIN DES FONCTIONS POUR LE COMPORTEMENT DU JEU >>>>>>>>>>>>>>>>>> */
 
@@ -438,26 +460,26 @@ async function handleStay(player, double = false) {
         message = `You Win for double! +$${totalMise}`;
       } else {
         message = `You Win one! +$${totalMise}`;
-      }
-    } else if (checkLeft.result === 'lose' || checkRight.result === 'lose') {
+      };
+    };
+    if (checkLeft.result === 'lose' || checkRight.result === 'lose') {
       handleLose(player, [checkLeft.blackJack, checkRight.blackJack], doubleLoseSplit);
       if (doubleLoseSplit) {
-        message = `You Lose for double! -$${totalMise}`;
-      } else if (singleEqualitySplit) {
-        if (doubleEqualitySplit) {
-          message = `Equality! +$${totalMise / 2}`;
-          handleEquality(player, true);
-          console.log('double equality in split', message)
-        } else {
-          handleEquality(player, false);
-          message = `Equality! +$${totalMise / 4}`;
-          console.log('equality in split', message)
-        }
-      }
-    }
+      message = `You Lose for double! -$${totalMise}`;
+      };
+    };
+    if (singleEqualitySplit) {
+      handleEquality(player, true);
+      message = `One equality! +$${totalMise / 4}`;
+      console.log('equality in split', message);
+    } else if (doubleEqualitySplit) {
+      message = `Equality x 2!+$${totalMise / 2}`;
+      handleEquality(player, true);
+      console.log('double equality in split', message);
+    };
     showModal(message, doubleLoseSplit ? loseColorModal : winColorModal, doubleWinSplit ? playerWinSound : moneySound);
-  }
-}
+  };
+};
 // (le reste de fonctionnalités sont implémentés directement dans les callback du click dans les boutons )
 /* <<<<<<<<<<<< FIN FONCTIONS POUR LES ACTIONS DU JOUEUR >>>>>>>>>>>>>>>>>> */
 
@@ -497,11 +519,13 @@ btnsMises.forEach((btn) => {
           console.log("Erreur");
           return;
         } else {
+          currentMoney = userMoney;
           removeMoney(currentMise);
+          currentMoney -= currentMise;
           // si tout est ok on commence le jeu avec la mise sélectionné
           totalMise += currentMise;
           playerMiseDisplay.textContent = totalMise;
-          playerMoneyDisplay.textContent = userMoney - currentMise;
+          playerMoneyDisplay.textContent = currentMoney;
           btnStart.disabled = false;
         }
       }
@@ -546,7 +570,7 @@ btnDouble.addEventListener("click", (e) => {
       console.log("Vous n'avez pas assez d'argent");
     } else {
       try {
-        handleDouble(userMoney);
+        handleDouble();
       } catch (error) {
         console.log('Error removing money in double: ', error)
       }
@@ -585,39 +609,7 @@ btnSplit.addEventListener("click", (e) => {
       console.log("Pas d'argent");
       return;
     } else {
-      console.log('splitting');
-
-      /* btnSplitHitRight.disable = false;
-      btnSplitHitLeft.disable = false;
- */
-
-      isSplit = true;
-      btnHit.disabled = true;
-      btnSplit.disabled = true;
-      btnDouble.disabled = true;
-      removeMoney(totalMise);
-      playerMoneyDisplay.textContent = userMoney - totalMise;
-      totalMise += totalMise;
-      playerMiseDisplay.textContent = totalMise;
-      currentPlayer.score = 0;
-      // Set the scores
-      handRight = [currentPlayer.usedCards[currentPlayer.usedCards.length - 1].value];
-      handLeft = [currentPlayer.usedCards[currentPlayer.usedCards.length - 2].value];
-      // Hidden le desk normal
-      playerDeck.firstElementChild.classList.add('hidden');
-      // Visible le desk split
-      splitDeck.classList.remove('hidden');
-      // Add the cards in any side
-      const cardSplitedRight = document.createElement('img');
-      const cardSplitedLeft = document.createElement('img');
-      cardSplitedRight.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 1].image;
-      cardSplitedLeft.src = currentPlayer.usedCards[currentPlayer.usedCards.length - 2].image;
-      cartesRight.appendChild(cardSplitedRight);
-      cartesLeft.appendChild(cardSplitedLeft);
-      // Add the scores
-      currentPlayer.score = [handLeft[0], handRight[0]]
-      scoreRightDisplay.textContent = handRight[0];
-      scoreLeftDisplay.textContent = handLeft[0];
+      handleSplit();
     }
   })
 })
