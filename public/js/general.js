@@ -390,7 +390,7 @@ function handleHitCart(player) {
   player.cardsInGame = cardsInGame;
   player.demanderUneCarte();
   cardsInGame = player.refreshCardsInGame();
-  if (player.currentHand.length > 2) {
+  if (currentPlayer.currentHand.length >= 2) {
     btnDouble.disable = true;
   }
   if (player.name === "Croupier") {

@@ -35,16 +35,18 @@ if (!isset($_SESSION['id'])) {
     <input id="user_id" type="hidden" value=<?= $_SESSION['id'] ?>>
     <div class="container">
         <header>
-            <div>
-                <p>Money 💵: <span class="ui_money" ><?= $user['money'] ?></span></p>
-                <p>Mise : <span class="ui_mise"></span></p>
+            <div class="ui_data_header">
+                <div>
+                    <p>Money 💵: <span class="ui_money"><?= $user['money'] ?></span></p>
+                    <p>Mise : <span class="ui_mise"></span></p>
+                </div>
+                <div class="player_ui">
+                    <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
+                    <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
+                </div>
             </div>
-            <div class="player_ui">
-                <p class="ui_wins">Wins : <?= $user['wins'] ?></p>
-                <p class="ui_loses">Loses : <?= $user['loses'] ?></p>
-            </div>
-            <div class="logo">BlackJack</div>
             <nav>
+                <div class="logo">BlackJack</div>
                 <a href="aide" target="_blank"><img src="public/images/icons/help.svg" /></a>
                 <a id="audioMute"><img id="volume_btn" src="public/images/icons/volume.svg" /></a>
                 <a href="connexion"><img src="public/images/icons/logout.svg" /></a>
