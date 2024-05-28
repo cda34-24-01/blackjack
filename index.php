@@ -9,7 +9,7 @@ require_once "controllers/UserController.php";
 require_once "controllers/GlobalController.php";
 
 
-define("URL", str_replace("index.php", "", (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[PHP_SELF]"));
+define("URL", str_replace("index.php", "", (isset($_SERVER['localhost']) ?? "localhost")));
 
 $userController = new UserController;
 $globalController = new GlobalController;

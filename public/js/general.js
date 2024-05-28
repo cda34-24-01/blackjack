@@ -83,6 +83,7 @@ checkUser((user) => {
 // Instancier l'objet joueur pour le croupier
 let croupierWins = 0;
 let croupierLoses = 0;
+let hiddenCart = '';
 const croupier = new player(
   "Croupier",
   1000,
@@ -122,6 +123,8 @@ function startGame(currentPlayer) {
   setTimeout(() => {
     handleHitCart(croupier);
     croupierDeck.lastChild.src = "./public/images/cartes/card_back.png";
+    hiddenCart = croupier.usedCards[croupier.usedCards.length - 1].image;
+
     areBtnsAvailables = true;
     handleDisableBtns(false);
     // case double
@@ -253,7 +256,7 @@ function handleWin(player, blackJack = [false, false], double = false, split = f
   // cas de blackjack avec double ou simple
   const doubleBlackJack = blackJack[0] && blackJack[1];
   const singleBlackJack = blackJack[0] || blackJack[1] && !doubleBlackJack;
-  
+
   if (!doubleBlackJack && singleBlackJack) {
     newMoney += totalMise / 2;
   } else if (doubleBlackJack) {
@@ -411,7 +414,9 @@ function handleHitCart(player) {
 async function handleStay(player, double = false) {
   // Return si les boutons ne sont pas disponibles
   if (!areBtnsAvailables && totalMise === 0) return;
-  croupierDeck.lastChild.src = croupier.usedCards[croupier.usedCards.length - 1].image;
+  // Cette line a été remplacé avec la variable hiddenCart pour tester de solver le problem avec .image
+  // croupierDeck.lastChild.src = croupier.usedCards[croupier.usedCards.length - 1].image;
+  croupierDeck.lastChild.src = hiddenCart;
   croupierScore.textContent = croupier.score;
   // Le croupier demandera une carte s'il n'as pas 17 points
   // La promise est implémenté pour donner de delay entre les cartes
@@ -465,7 +470,7 @@ async function handleStay(player, double = false) {
     if (checkLeft.result === 'lose' || checkRight.result === 'lose') {
       handleLose(player, [checkLeft.blackJack, checkRight.blackJack], doubleLoseSplit);
       if (doubleLoseSplit) {
-      message = `You Lose for double! -$${totalMise}`;
+        message = `You Lose for double! -$${totalMise}`;
       };
     };
     if (singleEqualitySplit) {
